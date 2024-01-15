@@ -145,7 +145,7 @@ let Mwindow = {
 let fontFamily = ['serif', 'sans-serif', 'monospace', 'cursive', 'fantasy', 'system-ui', 'ui-serif', 'ui-sans-serif', 'ui-monospace', 'ui-rounded', 'emoji', 'math', 'fangsong']
 let fontStyle = ['normal', 'litalic', 'oblique'];
 let fontWeight = ['100', '200', '300', '400_normal', '500', '600', '700_bold', '800', '900'];
-let winEditPage = ['this window color', 'this window size & line','this window tap & title font', 'del window'];
+let winEditPage = ['this window color', 'this window size & line', 'this window tap & title font', 'del window'];
 
 function copyReturn() { //윈도우 기본 객체
     let clone = {
@@ -167,141 +167,206 @@ let w = {
     type: 'div', className: 'winName',
     child_1: winHead = {
         type: 'div', className: 'winClasss',
-        child_1: btn1 = { type: 'button', innerText: ' + ', event: 'NextNextNextShowEvent:click' },
-        child_2: btn2 = {
-            type: 'button',
-            innerText: 'winTitle',
-            style: 'all:unset',
-            event: 'NextShowEvent:dblclick'
-        },
-        child_3: form1 = {
-            type: 'form',
-            style: 'display:none',
-            child_33: input_1 = {
-                type: 'input',
+        table_winTitle: table = {
+            type: 'table',
+
+            tr_winTitle: tr = {
+                type: 'tr',
+                td_plussBtn: td = {
+                    type: 'td',
+                    child_1: btn1 = { type: 'button', innerText: ' + ', event: 'NextNextNextShowEvent:click' },
+                },
+                td_title: td = {
+                    type: 'td',
+                    child_2: btn2 = {
+                        type: 'button',
+                        innerText: 'winTitle',
+                        style: 'all:unset',
+                        event: 'NextShowEvent:dblclick'
+                    },
+                    child_3: form1 = {
+                        type: 'form',
+                        style: 'display:none',
+                        child_33: input_1 = {
+                            type: 'input',
+                        }
+                    },
+                }
             }
         },
+
+
         child_4: headDiv = {
             type: 'div',
             style: 'display:none',
             child_4: newWinTapBtn = {
-                type: 'div',
-                btn1: wBtn = { type: 'button', innerText: '+ w', event: 'newWindow:click' },
-                btn2: tapBtn = { type: 'button', innerText: '메모' },
-                btn3: tapBtn = { type: 'button', innerText: '계산' },
-                btn4: tapBtn = { type: 'button', innerText: '링크' },
-                btn5: tapBtn = { type: 'button', innerText: '달력' },
-                btn6: tapBtn = { type: 'button', innerText: '타임' },
-                btn7: tapBtn = { type: 'button', innerText: '그림' },
-                btn8: tapBtn = { type: 'button', innerText: '랜덤' },
+                type: 'table',
+                tr: tr = {
+                    type: 'tr',
+                    td1: td = {
+                        type: 'td',
+                        btn1: wBtn = { type: 'button', innerText: '윈도', event: 'newWindow:click' },
+                    },
+                    td2: td = {
+                        type: 'td',
+                        btn2: tapBtn = { type: 'button', innerText: '메모' },
+                    },
+                    td3: td = {
+                        type: 'td',
+                        btn3: tapBtn = { type: 'button', innerText: '계산' },
+                    },
+                    td4: td = {
+                        type: 'td',
+                        btn4: tapBtn = { type: 'button', innerText: '링크' },
+                    },
+                    td5: td = {
+                        type: 'td',
+                        btn5: tapBtn = { type: 'button', innerText: '달력' },
+                    },
+                    td6: td = {
+                        type: 'td',
+                        btn6: tapBtn = { type: 'button', innerText: '타임' },
+                    },
+                    td7: td = {
+                        type: 'td',
+                        btn7: tapBtn = { type: 'button', innerText: '그림' },
+                    },
+                    td8: td = {
+                        type: 'td',
+                        btn8: tapBtn = { type: 'button', innerText: '랜덤' },
+                    },
+                },
             },
             child_5: winEdit = {
-                type: 'div',
-                btn1: winEditBtn = { type: 'button', innerText: 'w edit', event: 'NextShowEvent:click' },
-                winEditDiv: backColor = {
-                    type: 'div', style: 'display:none',
-                    beforeBtn: button = { type: 'button', innerText: ' < ', style: 'fontSize:1em', style_2: 'border:0', style_3: 'width:30px', style_4: 'background-color:transparent', className: 'w0_btn:gray:transparent', event: 'mouseoverEvent:mouseover', event_1: 'mouseoutEvent:mouseout', event_2:'selectBeforAfterBtn:click'},
-                    menuSelect: select = returnSelectOb(winEditPage, { style: 'fontSize:1em', style_2: 'border:0', style_3: 'appearance:none', event:'selectAndNextObShow:change' }),
-                    nextBtn: button = { type: 'button', innerText: ' > ', style: 'fontSize:1em', style_2: 'border:0', style_3: 'width:30px', style_4: 'background-color:transparent', className: 'w0_btn:gray:transparent', event: 'mouseoverEvent:mouseover', event_1: 'mouseoutEvent:mouseout', event_2:'selectBeforAfterBtn:click' },
-                    formDiv: div = {
-                        type: 'div',
-                        form1: backColor = {
-                            type: 'form', style:'display:block',
-
-                            pre1: winBackColor = { type: 'pre', innerText: 'background color : ', style: 'display:inline-block' },
-                            input1: input = { type: 'input', kind: 'color', style: 'display:inline-block' },
-
-                            br1: br = { type: 'span', innerText: '\n' },
-                            pre2: winBackColor = { type: 'pre', innerText: 'button color : ', style: 'display:inline-block' },
-                            input2: input = { type: 'input', kind: 'color' },
-
-                            br11: br = { type: 'span', innerText: '\n' },
-                            pre22: winBackColor = { type: 'pre', innerText: 'button hover color : ', style: 'display:inline-block' },
-                            input22: input = { type: 'input', kind: 'color' },
-
-                            br2: br = { type: 'span', innerText: '\n' },
-                            pre3: winBackColor = { type: 'pre', innerText: 'title background color : ', style: 'display:inline-block' },
-                            input3: input = { type: 'input', kind: 'color' },
-
-
-                            br4: br = { type: 'span', innerText: '\n' },
-                            pre4: winBackColor = { type: 'pre', innerText: 'basic color : ', style: 'display:inline-block' },
-                            basicColor1: select = {
-                                type: 'select',
-                                option1: op = { type: 'option', innerText: 'right mode' },
-                                option2: op = { type: 'option', innerText: 'dark mode' },
-                                option3: op = { type: 'option', innerText: 'other window color' },
-                            },
-                            basicColor2: select = {
-                                type: 'select',
-                                option1: op = { type: 'option', innerText: 'yellow memo' },
-                                option2: op = { type: 'option', innerText: 'blue memo' },
-                            },
-                            basicColor3: select = {
-                                type: 'select',
-                                option1: op = { type: 'option', innerText: 'w0' },
-                                option2: op = { type: 'option', innerText: 'w1' },
-                            },
-
-                            br3: br = { type: 'span', innerText: '\n' },
-                            sub1: sub = { type: 'input', kind: 'submit', value: 'save option' },
-                        },
-                        form2: sizeAndLine = {
-                            type: 'form', style:'display:none',
-                            pre1: winBackColor = { type: 'pre', innerText: 'basic width size : ', style: 'display:inline-block' },
-                            input1: width = { type: 'input', kind: 'number' },
-                            br1: br = { type: 'span', innerText: '\n' },
-
-                            pre2: winBackColor = { type: 'pre', innerText: 'basic height size : ', style: 'display:inline-block' },
-                            input2: width = { type: 'input', kind: 'number' },
-                            br2: br = { type: 'span', innerText: '\n' },
-
-                            pre3: winBackColor = { type: 'pre', innerText: 'basic width Line color & Thickness : ', style: 'display:inline-block' },
-                            input3: width = { type: 'input', kind: 'color' },
-                            input4: width = { type: 'input', kind: 'number' },
-                            br3: br = { type: 'span', innerText: '\n' },
-
-                            pre4: winBackColor = { type: 'pre', innerText: 'basic height color & Thickness : ', style: 'display:inline-block' },
-                            input5: width = { type: 'input', kind: 'color' },
-                            input6: width = { type: 'input', kind: 'number' },
-                            br4: br = { type: 'span', innerText: '\n' },
-
-                            sub1: sub = { type: 'input', kind: 'submit', value: 'save option' },
-                        },
-                        form3: textSize = {
-                            type: 'form',style:'display:none',
-
-                            pre1: tapText = { type: 'pre', innerText: 'title text size & weight : ', style: 'display:inline-block' },
-                            input1: size = { type: 'input', kind: 'number' },
-                            input11: weight = returnSelectOb(fontWeight),
-                            br1: br = { type: 'span', innerText: '\n' },
-
-                            pre2: tapText = { type: 'pre', innerText: 'title font type & kind : ', style: 'display:inline-block' },
-                            select2: family = returnSelectOb(fontFamily),
-                            select22: style = returnSelectOb(fontWeight),
-                            br2: br = { type: 'span', innerText: '\n' },
-
-                            pre3: titleText = { type: 'pre', innerText: 'basic text size & weight : ', style: 'display:inline-block' },
-                            input3: size = { type: 'input', kind: 'number' },
-                            input33: weight = returnSelectOb(fontWeight),
-                            br3: br = { type: 'span', innerText: '\n' },
-
-                            pre4: titleText = { type: 'pre', innerText: 'basic font type & kind : ', style: 'display:inline-block' },
-                            select4: family = returnSelectOb(fontFamily),
-                            select44: style = returnSelectOb(fontStyle),
-                            br4: br = { type: 'span', innerText: '\n' },
-
-                            sub1: sub = { type: 'input', kind: 'submit', value: 'save option' },
-
-                        },
-                        form4: delWin = {
-                            type: 'form', style:'display:none',
-                            pre1: tapText = { type: 'pre', innerText: 'del this window', style: 'display:inline-block' },
-                            br4: br = { type: 'span', innerText: '\n' },
-                            sub1: sub = { type: 'input', kind: 'submit', value: 'del this window' },
-                        }
+                type: 'table',
+                tr1: tr = {
+                    type: 'tr',
+                    td: td = {
+                        type: 'td',
+                        btn1: winEditBtn = { type: 'button', innerText: 'w edit', event: 'NextShowEvent:click' },
                     }
+                },
+                winEditDiv: backColor = {
+                    type: 'table', style: 'display:none',
+                    tr1: tr = {
+                        type: 'tr',
+                        td1: td = {
+                            type: 'td',
+                            beforeBtn: button = { type: 'button', innerText: ' < ', style: 'fontSize:1em', style_2: 'border:0', style_3: 'width:30px', style_4: 'background-color:transparent', className: 'w0_btn:gray:transparent', event: 'mouseoverEvent:mouseover', event_1: 'mouseoutEvent:mouseout', event_2: 'selectBeforAfterBtn:click' },
+                        },
+                        td2: td = {
+                            type: 'td',
+                            menuSelect: select = returnSelectOb(winEditPage, { style: 'fontSize:1em', style_2: 'border:0', style_3: 'appearance:none', style_4: 'padding:5px 5px', event: 'selectAndNextObShow:change' }),
+                            nextBtn: button = { type: 'button', innerText: ' > ', style: 'fontSize:1em', style_2: 'border:0', style_3: 'width:30px', style_4: 'background-color:transparent', className: 'w0_btn:gray:transparent', event: 'mouseoverEvent:mouseover', event_1: 'mouseoutEvent:mouseout', event_2: 'selectBeforAfterBtn:click' },
+                        },
+                    },
+                    tr2: tr = {
+                        type: 'tr',
+                        td1: td = { type: 'td' },
+                        td2: td = {
+                            type: 'td',
 
+                            formDiv: div = {
+                                type: 'div',
+                                form1: backColor = {
+                                    type: 'form', style: 'display:block',
+
+                                    pre1: winBackColor = { type: 'pre', innerText: 'background color : ', style: 'display:inline-block' },
+                                    input1: input = { type: 'input', kind: 'color', style: 'display:inline-block' },
+
+                                    br1: br = { type: 'span', innerText: '\n' },
+                                    pre2: winBackColor = { type: 'pre', innerText: 'button color : ', style: 'display:inline-block' },
+                                    input2: input = { type: 'input', kind: 'color' },
+
+                                    br11: br = { type: 'span', innerText: '\n' },
+                                    pre22: winBackColor = { type: 'pre', innerText: 'button hover color : ', style: 'display:inline-block' },
+                                    input22: input = { type: 'input', kind: 'color' },
+
+                                    br2: br = { type: 'span', innerText: '\n' },
+                                    pre3: winBackColor = { type: 'pre', innerText: 'title background color : ', style: 'display:inline-block' },
+                                    input3: input = { type: 'input', kind: 'color' },
+
+
+                                    br4: br = { type: 'span', innerText: '\n' },
+                                    pre4: winBackColor = { type: 'pre', innerText: 'basic color : ', style: 'display:inline-block' },
+                                    basicColor1: select = {
+                                        type: 'select',
+                                        option1: op = { type: 'option', innerText: 'right mode' },
+                                        option2: op = { type: 'option', innerText: 'dark mode' },
+                                        option3: op = { type: 'option', innerText: 'other window color' },
+                                    },
+                                    basicColor2: select = {
+                                        type: 'select',
+                                        option1: op = { type: 'option', innerText: 'yellow memo' },
+                                        option2: op = { type: 'option', innerText: 'blue memo' },
+                                    },
+                                    basicColor3: select = {
+                                        type: 'select',
+                                        option1: op = { type: 'option', innerText: 'w0' },
+                                        option2: op = { type: 'option', innerText: 'w1' },
+                                    },
+
+                                    br3: br = { type: 'span', innerText: '\n' },
+                                    sub1: sub = { type: 'input', kind: 'submit', value: 'save option' },
+                                },
+                                form2: sizeAndLine = {
+                                    type: 'form', style: 'display:none',
+                                    pre1: winBackColor = { type: 'pre', innerText: 'basic width size : ', style: 'display:inline-block' },
+                                    input1: width = { type: 'input', kind: 'number' },
+                                    br1: br = { type: 'span', innerText: '\n' },
+
+                                    pre2: winBackColor = { type: 'pre', innerText: 'basic height size : ', style: 'display:inline-block' },
+                                    input2: width = { type: 'input', kind: 'number' },
+                                    br2: br = { type: 'span', innerText: '\n' },
+
+                                    pre3: winBackColor = { type: 'pre', innerText: 'basic width Line color & Thickness : ', style: 'display:inline-block' },
+                                    input3: width = { type: 'input', kind: 'color' },
+                                    input4: width = { type: 'input', kind: 'number' },
+                                    br3: br = { type: 'span', innerText: '\n' },
+
+                                    pre4: winBackColor = { type: 'pre', innerText: 'basic height color & Thickness : ', style: 'display:inline-block' },
+                                    input5: width = { type: 'input', kind: 'color' },
+                                    input6: width = { type: 'input', kind: 'number' },
+                                    br4: br = { type: 'span', innerText: '\n' },
+
+                                    sub1: sub = { type: 'input', kind: 'submit', value: 'save option' },
+                                },
+                                form3: textSize = {
+                                    type: 'form', style: 'display:none',
+
+                                    pre1: tapText = { type: 'pre', innerText: 'title text size & weight : ', style: 'display:inline-block' },
+                                    input1: size = { type: 'input', kind: 'number' },
+                                    input11: weight = returnSelectOb(fontWeight),
+                                    br1: br = { type: 'span', innerText: '\n' },
+
+                                    pre2: tapText = { type: 'pre', innerText: 'title font type & kind : ', style: 'display:inline-block' },
+                                    select2: family = returnSelectOb(fontFamily),
+                                    select22: style = returnSelectOb(fontWeight),
+                                    br2: br = { type: 'span', innerText: '\n' },
+
+                                    pre3: titleText = { type: 'pre', innerText: 'basic text size & weight : ', style: 'display:inline-block' },
+                                    input3: size = { type: 'input', kind: 'number' },
+                                    input33: weight = returnSelectOb(fontWeight),
+                                    br3: br = { type: 'span', innerText: '\n' },
+
+                                    pre4: titleText = { type: 'pre', innerText: 'basic font type & kind : ', style: 'display:inline-block' },
+                                    select4: family = returnSelectOb(fontFamily),
+                                    select44: style = returnSelectOb(fontStyle),
+                                    br4: br = { type: 'span', innerText: '\n' },
+
+                                    sub1: sub = { type: 'input', kind: 'submit', value: 'save option' },
+
+                                },
+                                form4: delWin = {
+                                    type: 'form', style: 'display:none',
+                                    pre1: tapText = { type: 'pre', innerText: 'del this window', style: 'display:inline-block' },
+                                    br4: br = { type: 'span', innerText: '\n' },
+                                    sub1: sub = { type: 'input', kind: 'submit', value: 'del this window' },
+                                }
+                            }
+
+                        },
+                    }
                 }
             }
         }
@@ -326,15 +391,16 @@ function returnSelectOb(array, option) {
 //pluss function =======================
 function newWindow(event) {
     let newWin = Mwindow.save('plusNew');
-    console.log(newWin);
     w.className = newWin.title;
-    w.child_1.child_2.innerText = newWin.title;
+
+    w.child_1.table_winTitle.tr_winTitle.td_title.child_2.innerText = newWin.title;
     let aaaa = makeHtml(w);
     main.appendChild(aaaa);
 }
 
 function NextNextNextShowEvent(event) {
-    let target = event.target.nextSibling.nextSibling.nextSibling;
+    let target = event.target.parentNode.parentNode.parentNode.nextSibling;
+
     if (target.style.display != 'none') {
         target.style.display = 'none';
     } else {
@@ -342,38 +408,38 @@ function NextNextNextShowEvent(event) {
     }
 }
 
-function selectAndNextObShow(event){
+function selectAndNextObShow(event) {
     let index = event.target.selectedIndex;
     let nextOb = event.target.nextSibling.nextSibling;
-    for(i=0;i<nextOb.childNodes.length;i++){
+    for (i = 0; i < nextOb.childNodes.length; i++) {
         nextOb.childNodes[i].style.display = 'none';
     }
     nextOb.childNodes[index].style.display = 'block';
 }
-function selectBeforAfterBtn(event){
+function selectBeforAfterBtn(event) {
     let target = event.target;
     let select; let nextOb; let newIndex;
-    if(target.innerText == '<'){
+    if (target.innerText == '<') {
         select = event.target.nextSibling;
         nextOb = event.target.nextSibling.nextSibling.nextSibling;
         newIndex = select.selectedIndex - 1;
-        if(newIndex < 1){ newIndex = select.childNodes.length-1; }
+        if (newIndex < 1) { newIndex = select.childNodes.length - 1; }
         select.selectedIndex = newIndex;
-    }else if(target.innerText == '>'){
+    } else if (target.innerText == '>') {
         select = event.target.previousSibling;
         nextOb = event.target.nextSibling;
         newIndex = select.selectedIndex + 1;
-        if(newIndex > select.childNodes.length-1){ newIndex = 1; }
+        if (newIndex > select.childNodes.length - 1) { newIndex = 1; }
         select.selectedIndex = newIndex;
     }
-    for(i=0;i<nextOb.childNodes.length;i++){
+    for (i = 0; i < nextOb.childNodes.length; i++) {
         nextOb.childNodes[i].style.display = 'none';
     }
     nextOb.childNodes[newIndex].style.display = 'block';
 }
 
 function NextShowEvent(event) {
-    let target = event.target.nextSibling;
+    let target = event.target.parentNode.parentNode.nextSibling;
     if (target.style.display != 'none') {
         target.style.display = 'none';
     } else {
@@ -418,7 +484,7 @@ function makeEvent(ob, option) {
     } else if (option1 == 'selectBeforAfterBtn') {
         ob.addEventListener(`${clickOption}`, selectBeforAfterBtn);
         return ob;
-    } 
+    }
 }
 
 function makeOb(ob) {
@@ -474,6 +540,8 @@ function makeStyle(ob, option) {
         ob.style.border = value;
     } else if (option2 == 'appearance') {
         ob.style.appearance = value;
+    } else if (option2 == 'padding') {
+        ob.style.padding = value;
     }
     return ob;
 }
@@ -519,7 +587,7 @@ let array2 = Mwindow.save('new');
 for (let i = 0; i < 10; i++) {
     if (array2[i] != null) {
         w.className = `w${i}`
-        w.child_1.child_2.innerText = array2[i].title;
+        w.child_1.table_winTitle.tr_winTitle.td_title.child_2.innerText = array2[i].title;
         let aaaa = makeHtml(w);
         main.appendChild(aaaa);
     }

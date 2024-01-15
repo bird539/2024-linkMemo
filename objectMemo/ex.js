@@ -3,13 +3,30 @@ let w = {
     className : 'winName',
     child_1 : winHead = {
         type : 'div', className : 'winClasss',
-        child_1 : btn1 = { type : 'button', innerText : ' + ', event : 'NextNextNextShowEvent:click'},
-        child_2 : btn2 = {
-            type : 'button',
-            innerText : 'winTitle',
-            style : 'all:unset',
-            event : 'NextShowEvent:dblclick'
+        table : table = { 
+            type : 'table',
+            tr1 : tr = {
+                type : 'tr',
+                
+                td_plussBtn : td = {
+                    type : 'td',
+                    child_1 : btn1 = { type : 'button', innerText : ' + ', event : 'NextNextNextShowEvent:click'}
+                },
+
+                td_wTitle : td = {
+                    type : 'td',
+                    child_2 : btn2 = {
+                        type : 'button',
+                        innerText : 'winTitle',
+                        style : 'all:unset',
+                        event : 'NextShowEvent:dblclick'
+                    },
+                }
+
+            }
         },
+        
+
         child_3 : form1 = {
             type : 'form',
             style : 'display:none',
