@@ -46,15 +46,14 @@ let basicTap = {
 
 let Mwindow = {
     pk: null,
-    winShow: true,
-    titleShow: true,
-
-    withSize: 123,
-    heightSize: 456,
-
-    title: 'winTitle',
-    fontSize: 11,
-    buttonColor: 'blue',
+    title: 'w0',
+    show: true,
+    backColor: ['FEF896', 'FEF896', 'gray', 'FEF896'], ////윈 배경, 버튼 배경, 버튼 호버색, 타이틀 배경
+    tapFont: [10, 'white', 'normal'],               //탭  폰트 사이즈, 색, 두께, 글꼴
+    winTitleFont: [10, 'white', 'normal'],          //윈도 폰트 사이즈, 색, 두께, 글꼴
+    line: [['B8D993', 1.5], ['ff8c82', 1.5]],             //본문 가로 라인[컬러, 두께], 본문 세로 라인[컬러, 두께],
+    basicSize: [370, null],                         //win with, height
+    tap: null,
 
     //winArray : { 0 : {title:'win0', backColor:['black','black','black'], text:['10pt','white',null,'h3'], tap:[null] }
     winArray: {
@@ -147,14 +146,15 @@ let fontStyle = ['normal', 'litalic', 'oblique'];
 let fontWeight = ['100', '200', '300', '400_normal', '500', '600', '700_bold', '800', '900'];
 let winEditPage = ['this window color', 'this window size & line', 'this window tap & title font', 'del window'];
 
+//배경색 #FEF896, 가로선 #B8D993, 세로선 #FFDD8D
 function copyReturn() { //윈도우 기본 객체
     let clone = {
         title: 'w0',
         show: true,
-        backColor: ['white', 'white', 'gray', 'black'], ////윈 배경, 버튼 배경, 버튼 호버색, 타이틀 배경
+        backColor: ['FEF896', 'FEF896', 'gray', 'FEF896'], ////윈 배경, 버튼 배경, 버튼 호버색, 타이틀 배경
         tapFont: [10, 'white', 'normal'],               //탭  폰트 사이즈, 색, 두께, 글꼴
-        winTitleFont: [10, 'white', 'normal'],         //윈도 폰트 사이즈, 색, 두께, 글꼴
-        line: [['black', 1], ['black', 1]],             //본문 세로 라인[컬러, 두께], 본문 가로 라인[컬러, 두께]
+        winTitleFont: [10, 'white', 'normal'],          //윈도 폰트 사이즈, 색, 두께, 글꼴
+        line: [['B8D993', 1], ['FFDD8D', 1]],             //본문 가로 라인[컬러, 두께], 본문 세로 라인[컬러, 두께],
         basicSize: [370, null],                         //win with, height
         tap: null                                       //tap [class,name] array
     }
@@ -164,25 +164,33 @@ const kj = document.createElement('button');
 kj.style.button
 //window table =======================
 let w = {
-    type: 'div', className: 'winName',
+    type: 'div', className: 'winName',style_4: `background-color:#${Mwindow.backColor[0]}`,
     child_1: winHead = {
         type: 'div', className: 'winClasss',
         table_winTitle: table = {
-            type: 'table',
+            type: 'table', style : 'borderCollapse:collapse', style_1:'width:100%',
 
             tr_winTitle: tr = {
-                type: 'tr',
+                type: 'tr', 
                 td_plussBtn: td = {
-                    type: 'td',
-                    child_1: btn1 = { type: 'button', innerText: ' + ', event: 'NextNextNextShowEvent:click' },
+                    type: 'td',style_11:'width:3%',
+                    style_1:`borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`,style_2:`borderRight:${Mwindow.line[1][1]}px solid #${Mwindow.line[1][0]}`,
+                    style : 'borderCollapse:collapse',
+                    child_1: btn1 = { type: 'button', innerText: ' + ', event: 'NextNextNextShowEvent:click', style_4: `background-color:#${Mwindow.backColor[1]}`, 
+                },
                 },
                 td_title: td = {
-                    type: 'td',
+                    type: 'td', style_11:'width:97%',
+                    style_1:`borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`,
+                    //style_2:`borderRight:${Mwindow.line[1][1]}px solid #${Mwindow.line[1][0]}`,
+                    style_2 : 'borderRight:none',
+                    style : 'borderCollapse:collapse',
                     child_2: btn2 = {
                         type: 'button',
                         innerText: 'winTitle',
-                        style: 'all:unset',
-                        event: 'NextShowEvent:dblclick'
+                        event: 'NextShowEvent2:dblclick',
+                        style_4: `background-color:#${Mwindow.backColor[3]}`,
+
                     },
                     child_3: form1 = {
                         type: 'form',
@@ -204,36 +212,36 @@ let w = {
                 tr: tr = {
                     type: 'tr',
                     td1: td = {
-                        type: 'td',
-                        btn1: wBtn = { type: 'button', innerText: '윈도', event: 'newWindow:click' },
+                        type: 'td', style_1:`borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`,style_2:`borderLeft:${Mwindow.line[1][1]}px solid #${Mwindow.line[1][0]}`,
+                        btn1: wBtn = { type: 'button', innerText: '윈도', event: 'newWindow:click',style_4: `background-color:#${Mwindow.backColor[3]}`, },
                     },
                     td2: td = {
                         type: 'td',
-                        btn2: tapBtn = { type: 'button', innerText: '메모' },
+                        btn2: tapBtn = { type: 'button', innerText: '메모',style_4: `background-color:#${Mwindow.backColor[3]}`, },
                     },
                     td3: td = {
                         type: 'td',
-                        btn3: tapBtn = { type: 'button', innerText: '계산' },
+                        btn3: tapBtn = { type: 'button', innerText: '계산',style_4: `background-color:#${Mwindow.backColor[3]}`, },
                     },
                     td4: td = {
                         type: 'td',
-                        btn4: tapBtn = { type: 'button', innerText: '링크' },
+                        btn4: tapBtn = { type: 'button', innerText: '링크',style_4: `background-color:#${Mwindow.backColor[3]}`, },
                     },
                     td5: td = {
                         type: 'td',
-                        btn5: tapBtn = { type: 'button', innerText: '달력' },
+                        btn5: tapBtn = { type: 'button', innerText: '달력' ,style_4: `background-color:#${Mwindow.backColor[3]}`,},
                     },
                     td6: td = {
                         type: 'td',
-                        btn6: tapBtn = { type: 'button', innerText: '타임' },
+                        btn6: tapBtn = { type: 'button', innerText: '타임' ,style_4: `background-color:#${Mwindow.backColor[3]}`,},
                     },
                     td7: td = {
                         type: 'td',
-                        btn7: tapBtn = { type: 'button', innerText: '그림' },
+                        btn7: tapBtn = { type: 'button', innerText: '그림' ,style_4: `background-color:#${Mwindow.backColor[3]}`,},
                     },
                     td8: td = {
                         type: 'td',
-                        btn8: tapBtn = { type: 'button', innerText: '랜덤' },
+                        btn8: tapBtn = { type: 'button', innerText: '랜덤' ,style_4: `background-color:#${Mwindow.backColor[3]}`,},
                     },
                 },
             },
@@ -243,7 +251,7 @@ let w = {
                     type: 'tr',
                     td: td = {
                         type: 'td',
-                        btn1: winEditBtn = { type: 'button', innerText: 'w edit', event: 'NextShowEvent:click' },
+                        btn1: winEditBtn = { type: 'button', innerText: 'w edit', event: 'NextShowEvent:click',style_4: `background-color:#${Mwindow.backColor[3]}`, },
                     }
                 },
                 winEditDiv: backColor = {
@@ -252,12 +260,12 @@ let w = {
                         type: 'tr',
                         td1: td = {
                             type: 'td',
-                            beforeBtn: button = { type: 'button', innerText: ' < ', style: 'fontSize:1em', style_2: 'border:0', style_3: 'width:30px', style_4: 'background-color:transparent', className: 'w0_btn:gray:transparent', event: 'mouseoverEvent:mouseover', event_1: 'mouseoutEvent:mouseout', event_2: 'selectBeforAfterBtn:click' },
+                            beforeBtn: button = { type: 'button', innerText: ' < ', style: 'fontSize:1em', style_2: 'border:0', style_3: 'width:30px', style_4: `background-color:#${Mwindow.backColor[1]}`, className: `w0_btn:gray:#${Mwindow.backColor[1]}`, event: 'mouseoverEvent:mouseover', event_1: 'mouseoutEvent:mouseout', event_2: 'selectBeforAfterBtn:click' },
                         },
                         td2: td = {
                             type: 'td',
                             menuSelect: select = returnSelectOb(winEditPage, { style: 'fontSize:1em', style_2: 'border:0', style_3: 'appearance:none', style_4: 'padding:5px 5px', event: 'selectAndNextObShow:change' }),
-                            nextBtn: button = { type: 'button', innerText: ' > ', style: 'fontSize:1em', style_2: 'border:0', style_3: 'width:30px', style_4: 'background-color:transparent', className: 'w0_btn:gray:transparent', event: 'mouseoverEvent:mouseover', event_1: 'mouseoutEvent:mouseout', event_2: 'selectBeforAfterBtn:click' },
+                            nextBtn: button = { type: 'button', innerText: ' > ', style: 'fontSize:1em', style_2: 'border:0', style_3: 'width:30px', style_4: `background-color:#${Mwindow.backColor[1]}`, className: `w0_btn:gray:#${Mwindow.backColor[1]}`, event: 'mouseoverEvent:mouseover', event_1: 'mouseoutEvent:mouseout', event_2: 'selectBeforAfterBtn:click' },
                         },
                     },
                     tr2: tr = {
@@ -420,14 +428,14 @@ function selectBeforAfterBtn(event) {
     let target = event.target;
     let select; let nextOb; let newIndex;
     if (target.innerText == '<') {
-        select = event.target.nextSibling;
-        nextOb = event.target.nextSibling.nextSibling.nextSibling;
+        select = event.target.parentNode.nextSibling.childNodes[0];
+        nextOb = event.target.parentNode.parentNode.nextSibling.childNodes[1].childNodes[0];
         newIndex = select.selectedIndex - 1;
         if (newIndex < 1) { newIndex = select.childNodes.length - 1; }
         select.selectedIndex = newIndex;
     } else if (target.innerText == '>') {
         select = event.target.previousSibling;
-        nextOb = event.target.nextSibling;
+        nextOb = event.target.parentNode.parentNode.nextSibling.childNodes[1].childNodes[0];
         newIndex = select.selectedIndex + 1;
         if (newIndex > select.childNodes.length - 1) { newIndex = 1; }
         select.selectedIndex = newIndex;
@@ -440,6 +448,14 @@ function selectBeforAfterBtn(event) {
 
 function NextShowEvent(event) {
     let target = event.target.parentNode.parentNode.nextSibling;
+    if (target.style.display != 'none') {
+        target.style.display = 'none';
+    } else {
+        target.style.display = 'block';
+    }
+}
+function NextShowEvent2(event) {
+    let target = event.target.nextSibling;
     if (target.style.display != 'none') {
         target.style.display = 'none';
     } else {
@@ -465,6 +481,9 @@ function makeEvent(ob, option) {
     let clickOption = option.split(':')[1];
     if (option1 == 'NextShowEvent') {
         ob.addEventListener(`${clickOption}`, NextShowEvent);
+        return ob;
+    }else if (option1 == 'NextShowEvent2') {
+        ob.addEventListener(`${clickOption}`, NextShowEvent2);
         return ob;
     } else if (option1 == 'NextNextNextShowEvent') {
         ob.addEventListener(`${clickOption}`, NextNextNextShowEvent);
@@ -542,6 +561,15 @@ function makeStyle(ob, option) {
         ob.style.appearance = value;
     } else if (option2 == 'padding') {
         ob.style.padding = value;
+    } else if(option2 == 'borderBottom'){
+        ob.style.borderBottom = value;
+        console.log(value)
+    }else if(option2 == 'borderLeft'){
+        ob.style.borderLeft = value;
+    }else if(option2 == 'borderRight'){
+        ob.style.borderRight = value;
+    }else if(option2 =='borderCollapse'){
+        ob.style.borderCollapse = value;
     }
     return ob;
 }
@@ -557,7 +585,7 @@ function makeHtml(ob) {
         if (target == 'object') {
             child = makeHtml(ob[key], 'child');
             newOb = makeAppend(newOb, child);
-
+            
         } else if (target == 'string' && keyy == 'type') {
             newOb = makeOb(ob[key]);
         } else if (target == 'string' && keyy == 'kind') {
