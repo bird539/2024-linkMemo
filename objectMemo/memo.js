@@ -43,6 +43,13 @@ let basicTap = {
 
     }
 }
+let Btitle = 'w0';
+let Bshow = true;
+let BhtmlBack = 'white';
+let BwinBack = 'FEF896';
+let BbtnBack = 'FEF896';
+let BbtnHover = 'gray';
+let BtitleBack = 'FEF896';
 
 let Mwindow = {
     pk: null,
@@ -164,27 +171,28 @@ const kj = document.createElement('button');
 kj.style.button
 //window table =======================
 let w = {
-    type: 'div', className: 'winName',style_4: `background-color:#${Mwindow.backColor[0]}`,
+    type: 'div', className: 'winName', style_4: `background-color:#${Mwindow.backColor[0]}`,
     child_1: winHead = {
         type: 'div', className: 'winClasss',
         table_winTitle: table = {
-            type: 'table', style : 'borderCollapse:collapse', style_1:'width:100%',
+            type: 'table', style: 'borderCollapse:collapse', style_1: 'width:100%',
 
             tr_winTitle: tr = {
-                type: 'tr', 
+                type: 'tr',
                 td_plussBtn: td = {
-                    type: 'td',style_11:'width:3%',
-                    style_1:`borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`,style_2:`borderRight:${Mwindow.line[1][1]}px solid #${Mwindow.line[1][0]}`,
-                    style : 'borderCollapse:collapse',
-                    child_1: btn1 = { type: 'button', innerText: ' + ', event: 'NextNextNextShowEvent:click', style_4: `background-color:#${Mwindow.backColor[1]}`, 
-                },
+                    type: 'td', style_11: 'width:3%',
+                    style_1: `borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`, style_2: `borderRight:${Mwindow.line[1][1]}px solid #${Mwindow.line[1][0]}`,
+                    style: 'borderCollapse:collapse',
+                    child_1: btn1 = {
+                        type: 'button', innerText: ' + ', event: 'NextNextNextShowEvent:click', style_4: `background-color:#${Mwindow.backColor[1]}`,
+                    },
                 },
                 td_title: td = {
-                    type: 'td', style_11:'width:97%',
-                    style_1:`borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`,
+                    type: 'td', style_11: 'width:97%',
+                    style_1: `borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`,
                     //style_2:`borderRight:${Mwindow.line[1][1]}px solid #${Mwindow.line[1][0]}`,
-                    style_2 : 'borderRight:none',
-                    style : 'borderCollapse:collapse',
+                    style_2: 'borderRight:none',
+                    style: 'borderCollapse:collapse',
                     child_2: btn2 = {
                         type: 'button',
                         innerText: 'winTitle',
@@ -208,78 +216,87 @@ let w = {
             type: 'div',
             style: 'display:none',
             child_4: newWinTapBtn = {
-                type: 'table',
+                type: 'table',style:'width:100%',
                 tr: tr = {
-                    type: 'tr',
+                    type: 'tr', style:'width:100%',
+                    td0: td={type: 'td', style_1: `borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`, style_2: `borderRight:${Mwindow.line[1][1]}px solid #${Mwindow.line[1][0]}`,
+                    style_width:'width:4.05%',
+                    btn1: winEditBtn = { type: 'button', innerText: 'e', event: 'NextShowEvent:click', style_4: `background-color:#${Mwindow.backColor[3]}`, },
+                    },
                     td1: td = {
-                        type: 'td', style_1:`borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`,style_2:`borderLeft:${Mwindow.line[1][1]}px solid #${Mwindow.line[1][0]}`,
-                        btn1: wBtn = { type: 'button', innerText: '윈도', event: 'newWindow:click',style_4: `background-color:#${Mwindow.backColor[3]}`, },
+                        type: 'td', style_1: `borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`,style_width:'width:12%',
+                        btn1: wBtn = { type: 'button', innerText: '윈도', event: 'newWindow:click', style_4: `background-color:#${Mwindow.backColor[3]}`, style:'width:100%', style_textAlign:'textAlign:left'},
                     },
                     td2: td = {
-                        type: 'td',
-                        btn2: tapBtn = { type: 'button', innerText: '메모',style_4: `background-color:#${Mwindow.backColor[3]}`, },
+                        type: 'td', style_1: `borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`,style_width:'width:12%',
+                        btn2: tapBtn = { type: 'button', innerText: '메모', style_4: `background-color:#${Mwindow.backColor[3]}`, style:'width:100%',style_textAlign:'textAlign:left'},
                     },
                     td3: td = {
-                        type: 'td',
-                        btn3: tapBtn = { type: 'button', innerText: '계산',style_4: `background-color:#${Mwindow.backColor[3]}`, },
+                        type: 'td', style_1: `borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`,style_width:'width:12%',
+                        btn3: tapBtn = { type: 'button', innerText: '계산', style_4: `background-color:#${Mwindow.backColor[3]}`, style:'width:100%',style_textAlign:'textAlign:left'},
                     },
                     td4: td = {
-                        type: 'td',
-                        btn4: tapBtn = { type: 'button', innerText: '링크',style_4: `background-color:#${Mwindow.backColor[3]}`, },
+                        type: 'td', style_1: `borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`,style_width:'width:12%',
+                        btn4: tapBtn = { type: 'button', innerText: '링크', style_4: `background-color:#${Mwindow.backColor[3]}`, style:'width:100%',style_textAlign:'textAlign:left'},
                     },
                     td5: td = {
-                        type: 'td',
-                        btn5: tapBtn = { type: 'button', innerText: '달력' ,style_4: `background-color:#${Mwindow.backColor[3]}`,},
+                        type: 'td', style_1: `borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`,style_width:'width:12%',
+                        btn5: tapBtn = { type: 'button', innerText: '달력', style_4: `background-color:#${Mwindow.backColor[3]}`, style:'width:100%',style_textAlign:'textAlign:left'},
                     },
                     td6: td = {
-                        type: 'td',
-                        btn6: tapBtn = { type: 'button', innerText: '타임' ,style_4: `background-color:#${Mwindow.backColor[3]}`,},
+                        type: 'td', style_1: `borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`,style_width:'width:12%',
+                        btn6: tapBtn = { type: 'button', innerText: '타임', style_4: `background-color:#${Mwindow.backColor[3]}`, style:'width:100%',style_textAlign:'textAlign:left'},
                     },
                     td7: td = {
-                        type: 'td',
-                        btn7: tapBtn = { type: 'button', innerText: '그림' ,style_4: `background-color:#${Mwindow.backColor[3]}`,},
+                        type: 'td', style_1: `borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`,style_width:'width:12%',
+                        btn7: tapBtn = { type: 'button', innerText: '그림', style_4: `background-color:#${Mwindow.backColor[3]}`, style:'width:100%',style_textAlign:'textAlign:left'},
                     },
                     td8: td = {
-                        type: 'td',
-                        btn8: tapBtn = { type: 'button', innerText: '랜덤' ,style_4: `background-color:#${Mwindow.backColor[3]}`,},
+                        type: 'td', style_1: `borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`,style_width:'width:12%',
+                        btn8: tapBtn = { type: 'button', innerText: '랜덤', style_4: `background-color:#${Mwindow.backColor[3]}`, style:'width:100%',style_textAlign:'textAlign:left'},
                     },
                 },
             },
             child_5: winEdit = {
-                type: 'table',
-                tr1: tr = {
-                    type: 'tr',
-                    td: td = {
-                        type: 'td',
-                        btn1: winEditBtn = { type: 'button', innerText: 'w edit', event: 'NextShowEvent:click',style_4: `background-color:#${Mwindow.backColor[3]}`, },
-                    }
-                },
+                type: 'table', style: 'display:none',
+                style_row: `borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`, 
+
                 winEditDiv: backColor = {
-                    type: 'table', style: 'display:none',
+                    type: 'tr',
                     tr1: tr = {
                         type: 'tr',
                         td1: td = {
-                            type: 'td',
-                            beforeBtn: button = { type: 'button', innerText: ' < ', style: 'fontSize:1em', style_2: 'border:0', style_3: 'width:30px', style_4: `background-color:#${Mwindow.backColor[1]}`, className: `w0_btn:gray:#${Mwindow.backColor[1]}`, event: 'mouseoverEvent:mouseover', event_1: 'mouseoutEvent:mouseout', event_2: 'selectBeforAfterBtn:click' },
+                            type: 'td', //style_width:'width:6.3%',
+                            //style_row: `borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`, 
+                            style_col: `borderRight:${Mwindow.line[1][1]}px solid #${Mwindow.line[1][0]}`,
+                            beforeBtn: button = { type: 'button', innerText: '<', style_2: 'border:0',  style_4: `background-color:#${Mwindow.backColor[1]}`, className: `w0_btn:gray:#${Mwindow.backColor[1]}`, event: 'mouseoverEvent:mouseover', event_1: 'mouseoutEvent:mouseout', event_2: 'selectBeforAfterBtn:click' },
+
                         },
                         td2: td = {
                             type: 'td',
-                            menuSelect: select = returnSelectOb(winEditPage, { style: 'fontSize:1em', style_2: 'border:0', style_3: 'appearance:none', style_4: 'padding:5px 5px', event: 'selectAndNextObShow:change' }),
-                            nextBtn: button = { type: 'button', innerText: ' > ', style: 'fontSize:1em', style_2: 'border:0', style_3: 'width:30px', style_4: `background-color:#${Mwindow.backColor[1]}`, className: `w0_btn:gray:#${Mwindow.backColor[1]}`, event: 'mouseoverEvent:mouseover', event_1: 'mouseoutEvent:mouseout', event_2: 'selectBeforAfterBtn:click' },
+                            style_padding:'padding:0 0 0 3px',
+
+                            menuSelect: select = returnSelectOb(winEditPage, {  style_2: 'border:0', style_3: 'appearance:none', style_4: 'padding:5px 5px', event: 'selectAndNextObShow:change', style_back: `background-color:#${Mwindow.backColor[1]}`}),
+                            nextBtn: button = { type: 'button', innerText: ' > ', style_2: 'border:0', style_3: 'width:30px', style_4: `background-color:#${Mwindow.backColor[1]}`, className: `w0_btn:gray:#${Mwindow.backColor[1]}`, event: 'mouseoverEvent:mouseover', event_1: 'mouseoutEvent:mouseout', event_2: 'selectBeforAfterBtn:click' },
                         },
                     },
                     tr2: tr = {
                         type: 'tr',
-                        td1: td = { type: 'td' },
+                        td1: td = { type: 'td' ,
+                        type: 'td',
+                        style_col: `borderRight:${Mwindow.line[1][1]}px solid #${Mwindow.line[1][0]}`,
+                        },
                         td2: td = {
                             type: 'td',
+                            style_padding:'padding:0 0 0 8px',
+                            style_width:'width:100%',
 
                             formDiv: div = {
                                 type: 'div',
                                 form1: backColor = {
                                     type: 'form', style: 'display:block',
 
-                                    pre1: winBackColor = { type: 'pre', innerText: 'background color : ', style: 'display:inline-block' },
+                                    pre1: winBackColor = { type: 'pre', innerText: 'background color : ', style: 'display:inline-block'},
                                     input1: input = { type: 'input', kind: 'color', style: 'display:inline-block' },
 
                                     br1: br = { type: 'span', innerText: '\n' },
@@ -447,7 +464,7 @@ function selectBeforAfterBtn(event) {
 }
 
 function NextShowEvent(event) {
-    let target = event.target.parentNode.parentNode.nextSibling;
+    let target = event.target.parentNode.parentNode.parentNode.nextSibling;
     if (target.style.display != 'none') {
         target.style.display = 'none';
     } else {
@@ -482,7 +499,7 @@ function makeEvent(ob, option) {
     if (option1 == 'NextShowEvent') {
         ob.addEventListener(`${clickOption}`, NextShowEvent);
         return ob;
-    }else if (option1 == 'NextShowEvent2') {
+    } else if (option1 == 'NextShowEvent2') {
         ob.addEventListener(`${clickOption}`, NextShowEvent2);
         return ob;
     } else if (option1 == 'NextNextNextShowEvent') {
@@ -561,15 +578,16 @@ function makeStyle(ob, option) {
         ob.style.appearance = value;
     } else if (option2 == 'padding') {
         ob.style.padding = value;
-    } else if(option2 == 'borderBottom'){
+    } else if (option2 == 'borderBottom') {
         ob.style.borderBottom = value;
-        console.log(value)
-    }else if(option2 == 'borderLeft'){
+    } else if (option2 == 'borderLeft') {
         ob.style.borderLeft = value;
-    }else if(option2 == 'borderRight'){
+    } else if (option2 == 'borderRight') {
         ob.style.borderRight = value;
-    }else if(option2 =='borderCollapse'){
+    } else if (option2 == 'borderCollapse') {
         ob.style.borderCollapse = value;
+    } else if(option2 =='textAlign'){
+        ob.style.textAlign = value;
     }
     return ob;
 }
@@ -585,7 +603,7 @@ function makeHtml(ob) {
         if (target == 'object') {
             child = makeHtml(ob[key], 'child');
             newOb = makeAppend(newOb, child);
-            
+
         } else if (target == 'string' && keyy == 'type') {
             newOb = makeOb(ob[key]);
         } else if (target == 'string' && keyy == 'kind') {
