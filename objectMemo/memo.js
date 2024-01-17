@@ -43,6 +43,7 @@ let basicTap = {
 
     }
 }
+//color
 let Btitle = 'w0';
 let Bshow = true;
 let BhtmlBack = 'white';
@@ -50,6 +51,26 @@ let BwinBack = 'FEF896';
 let BbtnBack = 'FEF896';
 let BbtnHover = 'gray';
 let BtitleBack = 'FEF896';
+//font
+let BwinFontSize = 1;
+let BwinFontWeight = 100;
+let BwinFontColor = 'black';
+let BwinFontType = 'serif';
+let BwinFontKind = 'normal';
+
+let BtitleFontSize = 1;
+let BtitleFontWeight = 100;
+let BtitleFontColor = 'black';
+let BtitleFontType = 'serif';
+let BtitleFontKind = 'normal';
+//line
+let BlineRowColor = 'black';
+let BlineRowWeight = 1;
+let BlineColColor = 'black';
+let BlineColWeight = 1;
+//win size
+let BwinWidth = 370;
+let BwinHeight = null;
 
 let Mwindow = {
     pk: null,
