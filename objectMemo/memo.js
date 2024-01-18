@@ -192,9 +192,13 @@ const kj = document.createElement('button');
 kj.style.button
 //window table =======================
 let w = {
-    type: 'div', className: 'winName', style_4: `background-color:#${Mwindow.backColor[0]}`,
+    type: 'div', className: 'winName',
+    style_display:'display:inlie-block', 
+    style_width:'width:375px',
+    style_padding:'padding:3px',
     child_1: winHead = {
         type: 'div', className: 'winClasss',
+        style_4: `background-color:#${Mwindow.backColor[0]}`,
         table_winTitle: table = {
             type: 'table', style: 'borderCollapse:collapse', style_1: 'width:100%',
 
@@ -264,7 +268,7 @@ let w = {
                             type: 'button', innerText: '윈도', event: 'newWindow:click', style_4: `background-color:#${Mwindow.backColor[3]}`,
                             style_textAlign: 'textAlign:left',
                             style_width: 'width:100%',
-                            style_height:'height:100%',
+                            style_height:'height:20px',
                             className: `w0_btn:gray:#${Mwindow.backColor[1]}`, event: 'mouseoverEvent:mouseover', event_1: 'mouseoutEvent:mouseout', event_2: 'selectBeforAfterBtn:click' 
                         },
                     },

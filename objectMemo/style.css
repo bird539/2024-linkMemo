@@ -9,3 +9,11 @@ button {
 table { 
     border-collapse: collapse;
 }
+.main{
+    display:flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    overflow-y: none;
+    overflow-y: auto;
+}
