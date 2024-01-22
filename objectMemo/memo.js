@@ -263,9 +263,11 @@ let w = {
                     type: 'td', style_width: 'width:100%',
                     style_BrowLine: `borderBottom:${this.basic.BlineRowWeight}px solid #${this.basic.BlineRowColor}`,
                     style_border: 'borderCollapse:collapse',
+                    style_BtitleBack: `background-color:#${BtitleBack}`,
                     titleBtn: btn2 = {
                         type: 'button',
                         style_width: 'width:100%',
+                        //style_height:'heigth:20px',
                         innerText_Btitle: `${this.basic.BclassName}`,
                         event: 'NextShowEvent2:dblclick',
                         style_BtitleBack: `background-color:#${BtitleBack}`,
