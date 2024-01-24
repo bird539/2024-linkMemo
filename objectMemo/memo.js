@@ -258,6 +258,7 @@ let w = {
                         type: 'button', innerText: ' + ', 
                         event: 'NextNextNextShowEvent:click',
                         style_width:'width:20px',
+                        style_height:'height:20px',
                         style_BbtnBack: `background-color:#${this.basic.BbtnBack}`,
                         className_BbtnClassName: `winTitle_plsBtn:#${this.basic.BbtnHover}:#${this.basic.BbtnBack}`, 
                         event_out: 'mouseoverEvent:mouseover', 
@@ -273,7 +274,7 @@ let w = {
                     titleBtn: btn2 = {
                         type: 'button',
                         style_width: 'width:100%',
-                        //style_height:'heigth:20px',
+                        style_height:'heigth:20px',
                         innerText_Btitle: `${this.basic.BclassName}`,
                         event: 'NextShowEvent2:dblclick',
                         style_BtitleBack: `background-color:#${BtitleBack}`,
@@ -347,6 +348,7 @@ let w = {
                             style_BbtnBack: `background-color:#${Mwindow.backColor[3]}`,
                             style_textAlign: 'textAlign:left',
                             style_width: 'width:100%',
+                            style_height:'height:20px',
                             className_BbtnClassName: `w0_btn:#${BbtnHover}:#${BbtnBack}`, event_out: 'mouseoverEvent:mouseover', event_in: 'mouseoutEvent:mouseout',
                         },
                     },
@@ -362,6 +364,7 @@ let w = {
                             style_BbtnBack: `background-color:#${Mwindow.backColor[3]}`,
                             style_textAlign: 'textAlign:left',
                             style_width: 'width:100%',
+                            style_height:'height:20px',
                             className_BbtnClassName: `w0_btn:#${BbtnHover}:#${BbtnBack}`, event_out: 'mouseoverEvent:mouseover', event_in: 'mouseoutEvent:mouseout',
                         },
                     },
@@ -377,6 +380,7 @@ let w = {
                             style_BbtnBack: `background-color:#${Mwindow.backColor[3]}`,
                             style_textAlign: 'textAlign:left',
                             style_width: 'width:100%',
+                            style_height:'height:20px',
                             className_BbtnClassName: `w0_btn:#${BbtnHover}:#${BbtnBack}`, event_out: 'mouseoverEvent:mouseover', event_in: 'mouseoutEvent:mouseout',
                         },
                     },
@@ -391,6 +395,7 @@ let w = {
                             style_BbtnBack: `background-color:#${Mwindow.backColor[3]}`,
                             style_textAlign: 'textAlign:left',
                             style_width: 'width:100%',
+                            style_height:'height:20px',
                             className_BbtnClassName: `w0_btn:#${BbtnHover}:#${BbtnBack}`, event_out: 'mouseoverEvent:mouseover', event_in: 'mouseoutEvent:mouseout',
                         },
                     },
@@ -405,6 +410,7 @@ let w = {
                             style_BbtnBack: `background-color:#${Mwindow.backColor[3]}`,
                             style_width: 'width:100%',
                             style_textAlign: 'textAlign:left',
+                            style_height:'height:20px',
                             className_BbtnClassName: `w0_btn:#${BbtnHover}:#${BbtnBack}`, event_out: 'mouseoverEvent:mouseover', event_in: 'mouseoutEvent:mouseout',
                         },
                     },
@@ -419,6 +425,7 @@ let w = {
                             style_BbtnBack: `background-color:#${Mwindow.backColor[3]}`,
                             style_width: 'width:100%',
                             style_textAlign: 'textAlign:left',
+                            style_height:'height:20px',
                             className_BbtnClassName: `w0_btn:#${BbtnHover}:#${BbtnBack}`, event_out: 'mouseoverEvent:mouseover', event_in: 'mouseoutEvent:mouseout',
                         },
                     },
@@ -433,6 +440,7 @@ let w = {
                             style_BbtnBack: `background-color:#${Mwindow.backColor[3]}`,
                             style_width: 'width:100%',
                             style_textAlign: 'textAlign:left',
+                            style_height:'height:20px',
                             className_BbtnClassName: `w0_btn:#${BbtnHover}:#${BbtnBack}`, event_out: 'mouseoverEvent:mouseover', event_in: 'mouseoutEvent:mouseout',
                         },
                     },
@@ -470,6 +478,7 @@ let w = {
                                 event_in: 'mouseoutEvent:mouseout',
                                 event_2: 'selectBeforAfterBtn:click',
                                 style_width:'width:20px',
+                                style_height:'height:20px',
                             },
 
                         },
@@ -481,6 +490,7 @@ let w = {
                                 style_2: 'border:0',
                                 style_3: 'appearance:none',
                                 style_4: 'padding:0px 5px',
+                                style_height:'height:20px',
                                 event: 'selectAndNextObShow:change',
                                 style_BwinBack: `background-color:#${Mwindow.backColor[1]}`,
                                 className_BbtnClassName: `w0_btn:gray:#${Mwindow.backColor[1]}`,
@@ -489,6 +499,7 @@ let w = {
                             nextBtn: button = {
                                 type: 'button',
                                 innerText: ' > ', style_2: 'border:0', style_3: 'width:30px',
+                                style_height:'height:20px',
                                 style_BwinBack: `background-color:#${Mwindow.backColor[1]}`,
                                 className_BbtnClassName: `w0_btn:gray:#${Mwindow.backColor[1]}`, 
                                 event: 'mouseoverEvent:mouseover', 
@@ -621,21 +632,19 @@ let w = {
                                 form2: sizeAndLine = {
                                     type: 'form', style: 'display:none',
                                     pre1: basicWidth = { type: 'pre', innerText: 'basic width size : ', style: 'display:inline-block' },
-                                    input1: width = { type: 'input', kind: 'number' },
+                                    input1: width = { type: 'input', kind: 'number', style_width:'width:40px' },
                                     br1: br = { type: 'span', innerText: '\n' },
 
                                     pre2: basicHeight = { type: 'pre', innerText: 'basic height size : ', style: 'display:inline-block' },
-                                    input2: width = { type: 'input', kind: 'number' },
+                                    input2: width = { type: 'input', kind: 'number', style_width:'width:40px' },
                                     br2: br = { type: 'span', innerText: '\n' },
 
-                                    pre3: basicRow = { type: 'pre', innerText: 'basic width Line color & Thickness : ', style: 'display:inline-block' },
-                                    input3: width = { type: 'input', kind: 'color' },
-                                    input4: width = { type: 'input', kind: 'number' },
+                                    pre3: basicRow = { type: 'pre', innerText: 'basic row line Thickness : ', style: 'display:inline-block' },
+                                    input4: width = { type: 'input', kind: 'number', style_width:'width:40px' },
                                     br3: br = { type: 'span', innerText: '\n' },
 
-                                    pre4: basicCol = { type: 'pre', innerText: 'basic height color & Thickness : ', style: 'display:inline-block' },
-                                    input5: width = { type: 'input', kind: 'color' },
-                                    input6: width = { type: 'input', kind: 'number' },
+                                    pre4: basicCol = { type: 'pre', innerText: 'basic col line Thickness : ', style: 'display:inline-block' },
+                                    input6: width = { type: 'input', kind: 'number', style_width:'width:40px' },
                                     br4: br = { type: 'span', innerText: '\n' },
 
                                     sub1: sub = { type: 'input', kind: 'submit', value: 'save option' },
@@ -644,7 +653,7 @@ let w = {
                                     type: 'form', style: 'display:none',
 
                                     pre1: titleSizeWeight = { type: 'pre', innerText: 'title text size & weight : ', style: 'display:inline-block' },
-                                    input1: size = { type: 'input', kind: 'number' },
+                                    input1: size = { type: 'input', kind: 'number', style_width:'width:40px' },
                                     input11: weight = returnSelectOb(fontWeight),
                                     br1: br = { type: 'span', innerText: '\n' },
 
@@ -654,7 +663,7 @@ let w = {
                                     br2: br = { type: 'span', innerText: '\n' },
 
                                     pre3: basicFontSizeWeight = { type: 'pre', innerText: 'basic text size & weight : ', style: 'display:inline-block' },
-                                    input3: size = { type: 'input', kind: 'number' },
+                                    input3: size = { type: 'input', kind: 'number', style_width:'width:40px' },
                                     input33: weight = returnSelectOb(fontWeight),
                                     br3: br = { type: 'span', innerText: '\n' },
 
@@ -850,13 +859,15 @@ function editWin(event) {
         for(i=0;i<text3.length;i++){
             text3[i].className = `${winName}_btn:${btnColor[1]}:${btnColor[2]}:${inputValue}:${btnColor[4]}`;
         }
+    }else if(inputOption=='wWidthSize'){
+
+    }else if(inputOption=='wHeightSize'){
+
+    }else if(inputOption=='wRowLineThik'){
+
+    }else if(inputOption=='wColLineThik'){
+
     }
-
-
-
-
-
-    
     //wRowLineColor
     //wColLineColor
 
@@ -865,8 +876,6 @@ function editWin(event) {
 
     //wBtnHoverBackColor
     //wBtnHoverFontColor
-
-
 }
 
 function NextNextNextShowEvent(event) {
@@ -881,7 +890,7 @@ function NextNextNextShowEvent(event) {
 
 function selectAndNextObShow(event) {
     let index = event.target.selectedIndex;
-    let nextOb = event.target.nextSibling.nextSibling;
+    let nextOb = event.target.parentNode.parentNode.nextSibling.childNodes[1].childNodes[0];
     for (i = 0; i < nextOb.childNodes.length; i++) {
         nextOb.childNodes[i].style.display = 'none';
     }
