@@ -225,9 +225,9 @@ let w = {
         BtitleFontType: 'serif',
         BtitleFontKind: 'normal',
         //line
-        BrowLine : `borderBottom:${BlineRowWeight}px solid #${BlineRowColor}`,
-        BcolLine : `borderRight:${BlineColWeight}px solid #${BlineColColor}`,
-        
+        BrowLine: `borderBottom:${BlineRowWeight}px solid #${BlineRowColor}`,
+        BcolLine: `borderRight:${BlineColWeight}px solid #${BlineColColor}`,
+
         BlineRowColor: 'B8D993',
         BlineRowWeight: 1.5,
         BlineColColor: 'ff8c82',
@@ -249,14 +249,19 @@ let w = {
             tr_winTitle: tr = {
                 type: 'tr',
                 td_plussBtn: td = {
-                    type: 'td', style_11: 'width:30px',
+                    type: 'td', style_width: 'width:30px',
                     style_BrowLine: `borderBottom:${this.basic.BlineRowWeight}px solid #${this.basic.BlineRowColor}`,
                     style_BcolLine: `borderRight:${this.basic.BlineColWeight}px solid #${this.basic.BlineColColor}`,
                     style_border: 'borderCollapse:collapse',
+                    className: 'title_rowCol',
                     plussBtn: btn1 = {
-                        type: 'button', innerText: ' + ', event: 'NextNextNextShowEvent:click',
+                        type: 'button', innerText: ' + ', 
+                        event: 'NextNextNextShowEvent:click',
+                        style_width:'width:20px',
                         style_BbtnBack: `background-color:#${this.basic.BbtnBack}`,
-                        className_color: `w0_btn:#${this.basic.BbtnHover}:#${this.basic.BbtnBack}`, event_out: 'mouseoverEvent:mouseover', event_in: 'mouseoutEvent:mouseout',
+                        className_BbtnClassName: `winTitle_plsBtn:#${this.basic.BbtnHover}:#${this.basic.BbtnBack}`, 
+                        event_out: 'mouseoverEvent:mouseover', 
+                        event_in: 'mouseoutEvent:mouseout',
                     },
                 },
                 td_titleBtn: td = {
@@ -264,6 +269,7 @@ let w = {
                     style_BrowLine: `borderBottom:${this.basic.BlineRowWeight}px solid #${this.basic.BlineRowColor}`,
                     style_border: 'borderCollapse:collapse',
                     style_BtitleBack: `background-color:#${BtitleBack}`,
+                    className: 'title_row',
                     titleBtn: btn2 = {
                         type: 'button',
                         style_width: 'width:100%',
@@ -272,11 +278,12 @@ let w = {
                         event: 'NextShowEvent2:dblclick',
                         style_BtitleBack: `background-color:#${BtitleBack}`,
                         style_textAlign: 'textAlign:left',
-
+                        className: 'winTitle_titleBtn',
                     },
                     titleEditForm: form1 = {
                         type: 'form',
                         style_display: 'display:none',
+                        className: 'winTitle_titleEditForm',
                         input: input_1 = {
                             type: 'input',
                         }
@@ -291,6 +298,8 @@ let w = {
             style_display: 'display:none',
             table_plsTap: newWinTapBtn = {
                 type: 'table', style_border: 'borderCollapse:collapse', style_width: 'width:100%',
+                style_back: `background-color:#${BbtnBack}`,
+                
                 //style_1: 'width:100%',
                 tr_plsTap: tr = {
                     type: 'tr',
@@ -300,12 +309,15 @@ let w = {
                         style_BrowLine: `borderBottom:${BlineRowWeight}px solid #${BlineRowColor}`,
                         style_BcolLine: `borderRight:${BlineColWeight}px solid #${BlineColColor}`,
                         style_border: 'borderCollapse:collapse',
+                        className:'rowCol',
                         winEditBtn: btn1 = {
                             type: 'button', innerText: 'e', event: 'NextNextNextShowEvent:click',
                             style_BbtnBack: `background-color:#${BbtnBack}`,
                             style_width: 'width:20px',
                             style_height: 'height:20px',
-                            className_BbtnClassName: `w0_btn:#${BbtnHover}:#${BbtnBack}`, event_out: 'mouseoverEvent:mouseover', event_in: 'mouseoutEvent:mouseout',
+                            className_BbtnClassName: `w0_btn:#${BbtnHover}:#${BbtnBack}`, 
+                            event_out: 'mouseoverEvent:mouseover', 
+                            event_in: 'mouseoutEvent:mouseout',
                         },
                     },
                     td1: td = {
@@ -313,6 +325,7 @@ let w = {
                         style_BrowLine: `borderBottom:${BlineRowWeight}px solid #${BlineRowColor}`,
                         style_border: 'borderCollapse:collapse',
                         style_width: 'width:50px',
+                        className:'row',
                         btn1: wBtn = {
                             type: 'button', innerText: '윈도', event: 'newWindow:click',
                             style_BbtnBack: `background-color:#${BbtnBack}`,
@@ -327,9 +340,10 @@ let w = {
                         style_BrowLine: `borderBottom:${BlineRowWeight}px solid #${BlineRowColor}`,
                         style_border: 'borderCollapse:collapse',
                         style_width: 'width:50px',
+                        className:'row',
                         btn2: tapBtn = {
-                            type: 'button', 
-                            innerText: '메모', 
+                            type: 'button',
+                            innerText: '메모',
                             style_BbtnBack: `background-color:#${Mwindow.backColor[3]}`,
                             style_textAlign: 'textAlign:left',
                             style_width: 'width:100%',
@@ -341,9 +355,10 @@ let w = {
                         style_BrowLine: `borderBottom:${BlineRowWeight}px solid #${BlineRowColor}`,
                         style_border_: 'borderCollapse:collapse',
                         style_width: 'width:50px',
+                        className:'row',
                         btn3: tapBtn = {
-                            type: 'button', 
-                            innerText: '계산', 
+                            type: 'button',
+                            innerText: '계산',
                             style_BbtnBack: `background-color:#${Mwindow.backColor[3]}`,
                             style_textAlign: 'textAlign:left',
                             style_width: 'width:100%',
@@ -355,9 +370,10 @@ let w = {
                         style_BrowLine: `borderBottom:${BlineRowWeight}px solid #${BlineRowColor}`,
                         style: 'borderCollapse:collapse',
                         style_width: 'width:50px',
+                        className:'row',
                         btn4: tapBtn = {
-                            type: 'button', 
-                            innerText: '링크', 
+                            type: 'button',
+                            innerText: '링크',
                             style_BbtnBack: `background-color:#${Mwindow.backColor[3]}`,
                             style_textAlign: 'textAlign:left',
                             style_width: 'width:100%',
@@ -369,6 +385,7 @@ let w = {
                         style_BrowLine: `borderBottom:${BlineRowWeight}px solid #${BlineRowColor}`,
                         style_border: 'borderCollapse:collapse',
                         style_width: 'width:50px',
+                        className:'row',
                         btn5: tapBtn = {
                             type: 'button', innerText: '달력',
                             style_BbtnBack: `background-color:#${Mwindow.backColor[3]}`,
@@ -382,8 +399,9 @@ let w = {
                         style_BrowLine: `borderBottom:${BlineRowWeight}px solid #${BlineRowColor}`,
                         style_border: 'borderCollapse:collapse',
                         style_width: 'width:50px',
+                        className:'row',
                         btn6: tapBtn = {
-                            type: 'button', innerText: '타임', 
+                            type: 'button', innerText: '타임',
                             style_BbtnBack: `background-color:#${Mwindow.backColor[3]}`,
                             style_width: 'width:100%',
                             style_textAlign: 'textAlign:left',
@@ -395,8 +413,9 @@ let w = {
                         style_BrowLine: `borderBottom:${BlineRowWeight}px solid #${BlineRowColor}`,
                         style_border: 'borderCollapse:collapse',
                         style_width: 'width:50px',
+                        className:'row',
                         btn7: tapBtn = {
-                            type: 'button', innerText: '그림', 
+                            type: 'button', innerText: '그림',
                             style_BbtnBack: `background-color:#${Mwindow.backColor[3]}`,
                             style_width: 'width:100%',
                             style_textAlign: 'textAlign:left',
@@ -408,8 +427,9 @@ let w = {
                         style_BrowLine: `borderBottom:${BlineRowWeight}px solid #${BlineRowColor}`,
                         style_border: 'borderCollapse:collapse',
                         style_width: 'width:50px',
+                        className:'row',
                         btn8: tapBtn = {
-                            type: 'button', innerText: '랜덤', 
+                            type: 'button', innerText: '랜덤',
                             style_BbtnBack: `background-color:#${Mwindow.backColor[3]}`,
                             style_width: 'width:100%',
                             style_textAlign: 'textAlign:left',
@@ -420,6 +440,7 @@ let w = {
                         type: 'td',
                         style_BrowLine: `borderBottom:${BlineRowWeight}px solid #${BlineRowColor}`,
                         style_border: 'borderCollapse:collapse',
+                        className:'row',
                         //style_width: 'width:40px',
                     },
                 },
@@ -427,6 +448,8 @@ let w = {
             editPage_Table: winEdit = {
                 type: 'table', style_display: 'display:none',
                 style_BrowLine: `borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`,
+                className: 'row',
+                style_BbtnBack: `background-color:#${Mwindow.backColor[1]}`,
 
                 winEdit_Tr: backColor = {
                     type: 'tr',
@@ -436,28 +459,42 @@ let w = {
                             type: 'td', //style_width:'width:6.3%',
                             //style_row: `borderBottom:${Mwindow.line[0][1]}px solid #${Mwindow.line[0][0]}`, 
                             style_BcolLine: `borderRight:${Mwindow.line[1][1]}px solid #${Mwindow.line[1][0]}`,
-                            beforeBtn: button = { type: 'button', 
-                            innerText: '<', style_2: 'border:0', 
-                            style_BbtnBack: `background-color:#${Mwindow.backColor[1]}`, 
-                            BbtnClassName: `w0_btn:gray:#${Mwindow.backColor[1]}`, 
-                            event: 'mouseoverEvent:mouseover', event_1: 'mouseoutEvent:mouseout', event_2: 'selectBeforAfterBtn:click' },
+                            className: 'col',
+                            beforeBtn: button = {
+                                type: 'button',
+                                innerText: '<', style_2: 'border:0',
+                                style_BbtnBack: `background-color:#${Mwindow.backColor[1]}`,
+                                className_BbtnClassName: `w0_btn:gray:#${Mwindow.backColor[1]}`,
+                                //BbtnClassName: `winTitle_plsBtn:#${this.basic.BbtnHover}:#${this.basic.BbtnBack}`, 
+                                event_out: 'mouseoverEvent:mouseover', 
+                                event_in: 'mouseoutEvent:mouseout',
+                                event_2: 'selectBeforAfterBtn:click',
+                                style_width:'width:20px',
+                            },
 
                         },
                         td2: td = {
                             type: 'td',
                             style_padding: 'padding:0 0 0 3px',
 
-                            menuSelect: select = returnSelectOb(winEditPage, { style_2: 'border:0', 
-                            style_3: 'appearance:none', 
-                            style_4: 'padding:0px 5px', 
-                            event: 'selectAndNextObShow:change', 
-                            style_BwinBack: `background-color:#${Mwindow.backColor[1]}`, 
-                            className_BbtnClassName: `w0_btn:gray:#${Mwindow.backColor[1]}`, 
-                            event_out: 'mouseoverEvent:mouseover', event_in: 'mouseoutEvent:mouseout', }),
-                            nextBtn: button = { type: 'button', 
-                            innerText: ' > ', style_2: 'border:0', style_3: 'width:30px', 
-                            style_BwinBack: `background-color:#${Mwindow.backColor[1]}`, 
-                            className_BbtnClassName: `w0_btn:gray:#${Mwindow.backColor[1]}`, event: 'mouseoverEvent:mouseover', event_1: 'mouseoutEvent:mouseout', event_2: 'selectBeforAfterBtn:click' },
+                            menuSelect: select = returnSelectOb(winEditPage, {
+                                style_2: 'border:0',
+                                style_3: 'appearance:none',
+                                style_4: 'padding:0px 5px',
+                                event: 'selectAndNextObShow:change',
+                                style_BwinBack: `background-color:#${Mwindow.backColor[1]}`,
+                                className_BbtnClassName: `w0_btn:gray:#${Mwindow.backColor[1]}`,
+                                event_out: 'mouseoverEvent:mouseover', event_in: 'mouseoutEvent:mouseout',
+                            }),
+                            nextBtn: button = {
+                                type: 'button',
+                                innerText: ' > ', style_2: 'border:0', style_3: 'width:30px',
+                                style_BwinBack: `background-color:#${Mwindow.backColor[1]}`,
+                                className_BbtnClassName: `w0_btn:gray:#${Mwindow.backColor[1]}`, 
+                                event: 'mouseoverEvent:mouseover', 
+                                event_1: 'mouseoutEvent:mouseout', 
+                                event_2: 'selectBeforAfterBtn:click'
+                            },
                         },
                     },
                     tr2: tr = {
@@ -465,6 +502,7 @@ let w = {
                         td1: td = {
                             type: 'td',
                             style_BcolLine: `borderRight:${Mwindow.line[1][1]}px solid #${Mwindow.line[1][0]}`,
+                            className: 'col'
                         },
                         td2: td = {
                             type: 'td',
@@ -477,23 +515,89 @@ let w = {
                                     type: 'form', style: 'display:block',
 
                                     pre1: winBackColor = { type: 'pre', innerText: 'background color : ', style: 'display:inline-block' },
-                                    input1: input = { type: 'input', kind: 'color', style: 'display:inline-block' },
+                                    input1: input = {
+                                        type: 'input',
+                                        kind: 'color',
+                                        style: 'display:inline-block',
+                                        event_1: 'editWin:input',
+                                        className: 'wBackColor',
+                                    },
+                                    br33: br = { type: 'span', innerText: '\n' },
+                                    pre33: fontColor = { type: 'pre', 
+                                    innerText: 'font color : ', style: 'display:inline-block' },
+                                    input33: input = { type: 'input', 
+                                    kind: 'color', 
+                                    className: 'wFontColor', 
+                                    event_1: 'editWin:input',
+                                    },
 
-                                    br1: br = { type: 'span', innerText: '\n' },
-                                    pre2: buttonColor = { type: 'pre', innerText: 'button color : ', style: 'display:inline-block' },
-                                    input2: input = { type: 'input', kind: 'color' },
+                                    br_htmlBack: br = { type: 'span', innerText: '\n' },
+                                    pre_htmlBack: pre = { type: 'pre', 
+                                    innerText: 'html background color : ', style: 'display:inline-block', className: 'htmlBackColor', },
+                                    input_htmlBack: input = { 
+                                        type: 'input', 
+                                        kind: 'color' ,
+                                        className:'htmlBackColor',
+                                        event_1: 'editWin:input',
+                                    },
 
-                                    br11: br = { type: 'span', innerText: '\n' },
-                                    pre22: btnHoverColor = { type: 'pre', innerText: 'button hover color : ', style: 'display:inline-block' },
-                                    input22: input = { type: 'input', kind: 'color' },
+                                    br_rowLine: br = { type: 'span', innerText: '\n' },
+                                    pre_rowLine: rowLineColor = { type: 'pre', innerText: 'row line color : ', style: 'display:inline-block', className: 'wRowLineColor', },
+                                    input_rowLine: input = { 
+                                        type: 'input', 
+                                        kind: 'color' ,
+                                        className:'wRowLineColor',
+                                        event_1: 'editWin:input',
+                                    },
+
+                                    br_colLineLine: br = { type: 'span', innerText: '\n' },
+                                    pre_colLine: rowLineColor = { type: 'pre', innerText: 'col line color : ', style: 'display:inline-block', className: 'wColLineColor', },
+                                    input_colLine: input = { 
+                                        type: 'input', 
+                                        kind: 'color', 
+                                        className:'wColLineColor',
+                                        event_1: 'editWin:input',
+                                    },
 
                                     br2: br = { type: 'span', innerText: '\n' },
-                                    pre3: titleBack = { type: 'pre', innerText: 'title background color : ', style: 'display:inline-block' },
-                                    input3: input = { type: 'input', kind: 'color' },
+                                    pre3: titleBack = { type: 'pre', 
+                                    innerText: 'title background color : ', style: 'display:inline-block', className: 'wTitleBackColor', },
+                                    input3: input = { 
+                                        type: 'input', 
+                                        kind: 'color',
+                                        className:'wTitleBackColor',
+                                        event_1: 'editWin:input',
+                                    },
 
+                                    br_title: br = { type: 'span', innerText: '\n' },
+                                    pre_title: titleBack = { type: 'pre', 
+                                    innerText: 'title font color : ', 
+                                    style: 'display:inline-block', },
+                                    input_title: input = { 
+                                        type: 'input', kind: 'color',
+                                        className: 'wTitleFontColor', 
+                                    event_1: 'editWin:input',
+                                },
+
+                                    br11: br = { type: 'span', innerText: '\n' },
+                                    pre22: btnHoverColor = { type: 'pre', 
+                                    innerText: 'button hover color : ', style: 'display:inline-block', className: 'wBtnHoverBackColor', },
+                                    input22: input = { 
+                                        type: 'input', kind: 'color',
+                                        event_1: 'editWin:input',
+                                        className: 'wBtnHoverBackColor', 
+                                    },
+
+                                    br1: br = { type: 'span', innerText: '\n' },
+                                    pre2: btnHoverFontColor = { type: 'pre', 
+                                    innerText: 'button hover font color : ', style: 'display:inline-block', className: 'wBtnHoverFontColor', },
+                                    input2: input = { type: 'input', kind: 'color',
+                                    className: 'wBtnHoverFontColor', 
+                                    event_1: 'editWin:input',
+                                },
 
                                     br4: br = { type: 'span', innerText: '\n' },
-                                    pre4: basicColor = { type: 'pre', innerText: 'basic color : ', style: 'display:inline-block' },
+                                    pre4: basicColor = { type: 'pre', innerText: 'basic design : ', style: 'display:inline-block' },
                                     basicColor1: select = {
                                         type: 'select',
                                         option1: op = { type: 'option', innerText: 'right mode' },
@@ -601,21 +705,169 @@ function returnSelectOb(array, option) {
 //pluss function =======================
 function newWindow(event) {
     let newWin = Mwindow.save('plusNew');
-
-
-    console.log(newWin);
     let n = reW(newWin.title)
-
-    console.log(n);
     n.basic.setset(newWin.title);
-    console.log(n.basic.Btitle);
-    console.log(n.className);
-
-
     let aaaa = makeHtml(n);
     main.appendChild(aaaa);
 }
 
+function editWin(event) {
+    const inputValue = event.target.value;
+    const inputOption = event.target.className;
+    const winName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className;
+    let BbtnHover = 'blue';
+    if (inputOption == 'wBackColor') {
+        //wBackColor
+        let table = document.querySelectorAll(`.${winName} table`);
+        for (i = 0; i < table.length; i++) {
+            table[i].style.backgroundColor = inputValue;
+        }
+
+        let btn = document.querySelectorAll(`.${winName} button`);
+        const btnColor = btn[0].className.split(':');
+        for (i = 0; i < btn.length; i++) {
+            btn[i].style.backgroundColor = inputValue;
+            btn[i].className = `${winName}_btn:${btnColor[1]}:${inputValue}:${btnColor[3]}:${btnColor[4]}`;
+        }
+
+        let select = document.querySelectorAll(`.${winName} select`);
+        for (i = 0; i < select.length; i++) {
+            select[i].style.backgroundColor = inputValue;
+            select[i].className = `${winName}_btn:${btnColor[1]}:${inputValue}:${btnColor[3]}:${btnColor[4]}`;
+        }
+
+        let title_rowCol = document.querySelector(`.${winName} .title_rowCol`);
+        let title_plsBtn = title_rowCol.childNodes[0];
+        let title_row = document.querySelector(`.${winName} .title_row`);
+        let title_titleBtn = title_row.childNodes[0];
+        
+        title_row.style.backgroundColor = inputValue;
+        title_rowCol.style.backgroundColor = inputValue;
+        title_plsBtn.style.backgroundColor = inputValue;
+        title_titleBtn.style.backgroundColor = inputValue;
+    }else if(inputOption == 'wFontColor') {//winName
+        let pre = document.querySelectorAll(`.${winName} pre`);
+        let btn = document.querySelectorAll(`.${winName} button`);
+        let select = document.querySelectorAll(`.${winName} select`);
+
+        const btnColor = btn[0].className.split(':');
+
+        for (i = 0; i < pre.length; i++) {
+            pre[i].style.color = inputValue;
+
+        }
+        for (i = 0; i < btn.length; i++) {
+            btn[i].style.color = inputValue;
+            btn[i].className = `${winName}_btn:${btnColor[1]}:${btnColor[2]}:${btnColor[3]}:${inputValue}`;
+
+        }
+        for (i = 0; i < select.length; i++) {
+            select[i].style.color = inputValue;
+            select[i].className = `${winName}_btn:${btnColor[1]}:${btnColor[2]}:${btnColor[3]}:${inputValue}`;
+
+        }
+
+        //text.style.color = 'blue';
+        //wFontColor
+
+    }else if (inputOption == 'htmlBackColor') {
+        //htmlBackColor
+        const html = document.querySelector(`body`);
+        html.style.backgroundColor = inputValue;
+    }else if(inputOption =='wRowLineColor'){
+        let row = document.querySelectorAll(`.${winName} .row`);
+        let rowCol = document.querySelectorAll(`.${winName} .rowCol`);
+        for (i = 0; i < row.length; i++) {
+            row[i].style.borderBottom = `${1.5}px solid ${inputValue}`;
+        }
+        for (i = 0; i < rowCol.length; i++) {
+            rowCol[i].style.borderBottom = `${1.5}px solid ${inputValue}`;
+        }
+
+        let title_rowCol = document.querySelector(`.${winName} .title_rowCol`);
+        let title_row = document.querySelector(`.${winName} .title_row`);
+        
+        title_row.style.borderBottom = `${1.5}px solid ${inputValue}`;
+        title_rowCol.style.borderBottom = `${1.5}px solid ${inputValue}`;
+
+    }else if(inputOption=='wColLineColor'){
+        let col = document.querySelectorAll(`.${winName} .col`);
+        let rowCol = document.querySelectorAll(`.${winName} .rowCol`);
+        
+        let title_rowCol = document.querySelector(`.${winName} .title_rowCol`);
+        title_rowCol.style.borderRight = `${1.5}px solid ${inputValue}`;
+
+        for (i = 0; i < col.length; i++) {
+            col[i].style.borderRight = `${1.5}px solid ${inputValue}`;
+        }
+        
+        for (i = 0; i < rowCol.length; i++) {
+            rowCol[i].style.borderRight = `${1.5}px solid ${inputValue}`;
+        }
+    }else if(inputOption =='wTitleBackColor'){
+        let title_rowCol = document.querySelector(`.${winName} .title_rowCol`);
+        let title_plsBtn = title_rowCol.childNodes[0];
+        let title_row = document.querySelector(`.${winName} .title_row`);
+        let title_titleBtn = title_row.childNodes[0];
+        
+        title_row.style.backgroundColor = inputValue;
+        title_rowCol.style.backgroundColor = inputValue;
+        title_plsBtn.style.backgroundColor = inputValue;
+        title_titleBtn.style.backgroundColor = inputValue;
+
+    }else if(inputOption=='wTitleFontColor'){
+        let title_rowCol = document.querySelector(`.${winName} .title_rowCol`);
+        let title_plsBtn = title_rowCol.childNodes[0];
+        let title_row = document.querySelector(`.${winName} .title_row`);
+        let title_titleBtn = title_row.childNodes[0];
+
+        title_plsBtn.style.color = inputValue;
+        title_titleBtn.style.color = inputValue;
+    }else if(inputOption=='wBtnHoverBackColor'){
+        let text2 = document.querySelectorAll(`.${winName} button`);
+        let text3 = document.querySelectorAll(`.${winName} select`);
+
+        const btnColor = text2[0].className.split(':');
+        
+        for(i=0;i<text2.length;i++){
+            text2[i].className = `${winName}_btn:${inputValue}:${btnColor[2]}:${btnColor[3]}:${btnColor[4]}`;            //`${winName}_btn:${hover}:${back}:{hoverFont}:{basicFont}`
+        }
+        for(i=0;i<text3.length;i++){
+            text3[i].className = `${winName}_btn:${inputValue}:${btnColor[2]}:${btnColor[3]}:${btnColor[4]}`;
+        }
+        //`${winName}_btn:${hover}:${back}:{hoverFont}:{basicFont}`
+    }else if(inputOption=='wBtnHoverFontColor'){
+        let text2 = document.querySelectorAll(`.${winName} button`);
+        let text3 = document.querySelectorAll(`.${winName} select`);
+
+        const btnColor = text2[0].className.split(':');
+        
+        for(i=0;i<text2.length;i++){
+            text2[i].className = `${winName}_btn:${btnColor[1]}:${btnColor[2]}:${inputValue}:${btnColor[4]}`;            
+            
+        }
+        //`${winName}_btn:${hover}:${back}:{hoverFont}:{basicFont}`
+        for(i=0;i<text3.length;i++){
+            text3[i].className = `${winName}_btn:${btnColor[1]}:${btnColor[2]}:${inputValue}:${btnColor[4]}`;
+        }
+    }
+
+
+
+
+
+    
+    //wRowLineColor
+    //wColLineColor
+
+    //wTitleBackColor
+    //wTitleFontColor
+
+    //wBtnHoverBackColor
+    //wBtnHoverFontColor
+
+
+}
 
 function NextNextNextShowEvent(event) {
     let target = event.target.parentNode.parentNode.parentNode.nextSibling;
@@ -642,13 +894,13 @@ function selectBeforAfterBtn(event) {
         select = event.target.parentNode.nextSibling.childNodes[0];
         nextOb = event.target.parentNode.parentNode.nextSibling.childNodes[1].childNodes[0];
         newIndex = select.selectedIndex - 1;
-        if (newIndex < 1) { newIndex = select.childNodes.length - 1; }
+        if (newIndex < 0) { newIndex = select.childNodes.length - 1; }
         select.selectedIndex = newIndex;
     } else if (target.innerText == '>') {
         select = event.target.previousSibling;
         nextOb = event.target.parentNode.parentNode.nextSibling.childNodes[1].childNodes[0];
         newIndex = select.selectedIndex + 1;
-        if (newIndex > select.childNodes.length - 1) { newIndex = 1; }
+        if (newIndex > select.childNodes.length - 1) { newIndex = 0; }
         select.selectedIndex = newIndex;
     }
     for (i = 0; i < nextOb.childNodes.length; i++) {
@@ -678,13 +930,19 @@ function mouseoverEvent(event) {
     const target = event.target;
     let className = target.className;
     let color = className.split(':')[1];
-    target.style.backgroundColor = `${color}`;
+    target.style.backgroundColor = color;
+    
+    let fontColor = className.split(':')[3];
+    target.style.color = fontColor;
 }
 function mouseoutEvent(event) {
     const target = event.target;
     let className = target.className;
     let color = className.split(':')[2];
-    target.style.backgroundColor = `${color}`;
+    target.style.backgroundColor = color;
+
+    let fontColor = className.split(':')[4];
+    target.style.color = fontColor;
 }
 //make html function =======================
 function makeEvent(ob, option) {
@@ -713,6 +971,9 @@ function makeEvent(ob, option) {
         return ob;
     } else if (option1 == 'selectBeforAfterBtn') {
         ob.addEventListener(`${clickOption}`, selectBeforAfterBtn);
+        return ob;
+    } else if (option1 == 'editWin') {
+        ob.addEventListener(`${clickOption}`, editWin);
         return ob;
     }
 }
@@ -805,43 +1066,40 @@ function makeHtml(ob, set) {
         } else if (target == 'string' && keyy == 'kind') {
             newOb = makeType(newOb, ob[key]);
         } else if (target == 'string' && keyy == 'value') {
-            if(sett != null && sett.charAt(0) == 'B'){
+            if (sett != null && sett.charAt(0) == 'B') {
                 newOb = makeValue(newOb, set[`${sett}`]);
-            }else{
+            } else {
                 newOb = makeValue(newOb, ob[key]);
             }
         } else if (target == 'string' && keyy == 'event') {
             newOb = makeEvent(newOb, ob[key]);
         } else if (target == 'string' && keyy == 'innerText') {
-            if(sett != null && sett.charAt(0) == 'B'){
+            if (sett != null && sett.charAt(0) == 'B') {
                 newOb = makeInnerText(newOb, set[`${sett}`]);
-            }else{
+            } else {
                 newOb = makeInnerText(newOb, ob[key]);
             }
         } else if (target == 'string' && keyy == 'style') {
 
-            if(sett != null && sett.charAt(0) == 'B'){
-                if(sett != 'BcolLine' && sett != 'BrowLine'){
-                    console.log('============');
-                    console.log(`${ob[key].split(':')[0]}:${set[sett]}`);
-                    console.log(set[sett], sett, keyy);
-                    console.log('============');
+            if (sett != null && sett.charAt(0) == 'B') {
+                if (sett != 'BcolLine' && sett != 'BrowLine') {
                     newOb = makeStyle(newOb, `${ob[key].split(':')[0]}:${set[sett]}`);
-                }else{
+                } else {
                     newOb = makeStyle(newOb, set[sett]);
-                    console.log('**************');
-                    console.log(set[sett], sett, keyy);
-                    console.log('**************');
                 }
 
-                
-            }else{
+
+            } else {
                 newOb = makeStyle(newOb, ob[key]);
             }
         } else if (target == 'string' && keyy == 'className') {
-            if(sett != null && sett.charAt(0) == 'B'){
-                newOb = makeClassName(newOb, set[`${sett}`]);
-            }else{
+            if (sett != null && sett.charAt(0) == 'B') {
+                if(sett == 'BclassName'){
+                    newOb = makeClassName(newOb, set[sett]);
+                }else if(sett == 'BbtnClassName'){
+                    newOb = makeClassName(newOb, set.BbtnClassName);
+                }
+            } else {
                 newOb = makeClassName(newOb, ob[key]);
             }
         }
@@ -859,8 +1117,8 @@ let array2 = Mwindow.save('new');
 for (let i = 0; i < 10; i++) {
     if (array2[i] != null) {
         let set = {
-            Btitle : `${array2[i].title}`,
-            BclassName : `w${i}`,
+            Btitle: `${array2[i].title}`,
+            BclassName: `w${i}`,
 
             //color
             Bshow: true,
@@ -870,33 +1128,34 @@ for (let i = 0; i < 10; i++) {
             BbtnHover: '#999999',
             BtitleBack: '#FEF896',
 
-            BbtnClassName: `w${i}_btn:#${this.BbtnHover}:#${this.BbtnBack}`,
+            BbtnClassName: `w${i}_btn:#${this.BbtnHover}:#${this.BbtnBack}:#000000:#000000`,
             //font
             BwinFontSize: 1,
             BwinFontWeight: 100,
             BwinFontColor: 'black',
             BwinFontType: 'serif',
             BwinFontKind: 'normal',
-    
+
             BtitleFontSize: 1,
             BtitleFontWeight: 100,
             BtitleFontColor: 'black',
             BtitleFontType: 'serif',
             BtitleFontKind: 'normal',
             //line
- 
+
             BlineRowColor: 'B8D993',
             BlineRowWeight: 1.5,
             BlineColColor: 'ff8c82',
             BlineColWeight: 1.5,
-           
+
             //win size
             BwinWidth: '456px',
             BwinHeight: null,
         }
+        set.BbtnClassName = `w${i}_btn:${set.BbtnHover}:${set.BbtnBack}:#000000:#000000`;
         set.BrowLine = `borderBottom:${set.BlineRowWeight}px solid #${set.BlineRowColor}`;
         set.BcolLine = `borderRight:${set.BlineColWeight}px solid #${set.BlineColColor}`;
-        let aaaa = makeHtml(w,set);
+        let aaaa = makeHtml(w, set);
         main.appendChild(aaaa);
     }
 
