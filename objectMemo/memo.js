@@ -76,8 +76,8 @@ let BwinHeight = null;
 
 //font option
 let fontFamily = ['serif', 'sans-serif', 'monospace', 'cursive', 'fantasy', 'system-ui', 'ui-serif', 'ui-sans-serif', 'ui-monospace', 'ui-rounded', 'emoji', 'math', 'fangsong']
-let fontStyle = ['normal', 'litalic', 'oblique'];
-let fontWeight = ['100', '200', '300', '400_normal', '500', '600', '700_bold', '800', '900'];
+let fontStyle = ['normal', 'italic', 'oblique'];
+let fontWeight = ['100', '200', '300', '400', '500', '600', '700', '800', '900'];
 let winEditPage = ['this window color', 'this window size & line', 'this window tap & title font', 'del window'];
 //=============================== basic option 
 
@@ -241,7 +241,7 @@ let w = {
     style_BwinWidth: `width:${this.basic.BwinWidth}px`,
     style_padding: 'padding:3px',
     window_n: div = {
-        type: 'div', className_BclassName: this.basic.BclassName,
+        type: 'div', //className_BclassName: this.basic.BclassName,
         style_BwinBack: `background-color:#${this.basic.BwinBack}`,
         table_winTitle: table = {
             type: 'table', style_border: 'borderCollapse:collapse', style_1: 'width:100%',
@@ -631,20 +631,56 @@ let w = {
                                 },
                                 form2: sizeAndLine = {
                                     type: 'form', style: 'display:none',
-                                    pre1: basicWidth = { type: 'pre', innerText: 'basic width size : ', style: 'display:inline-block' },
-                                    input1: width = { type: 'input', kind: 'number', style_width:'width:40px' },
+                                    pre1: basicWidth = { 
+                                        type: 'pre', 
+                                    innerText: 'basic width size : ', 
+                                    style: 'display:inline-block' ,
+                                    
+
+                                },
+                                    input1: width = { 
+                                        type: 'input', 
+                                        kind: 'number', 
+                                        style_width:'width:40px', 
+                                        event:'editWin:input',
+                                        className:'wWidthSize'
+                                        
+                                    },
                                     br1: br = { type: 'span', innerText: '\n' },
 
-                                    pre2: basicHeight = { type: 'pre', innerText: 'basic height size : ', style: 'display:inline-block' },
-                                    input2: width = { type: 'input', kind: 'number', style_width:'width:40px' },
+                                    pre2: basicHeight = { 
+                                        type: 'pre', 
+                                    innerText: 'basic height size : ', 
+                                    style: 'display:inline-block' ,
+                                    
+                                },
+                                    input2: height = { 
+                                        type: 'input', 
+                                        kind: 'number', 
+                                        style_width:'width:40px', 
+                                        event:'editWin:input', 
+                                        className:'wHeightSize'
+                                    },
                                     br2: br = { type: 'span', innerText: '\n' },
 
                                     pre3: basicRow = { type: 'pre', innerText: 'basic row line Thickness : ', style: 'display:inline-block' },
-                                    input4: width = { type: 'input', kind: 'number', style_width:'width:40px' },
+                                    input4: rowLine = { 
+                                        type: 'input', 
+                                        kind: 'number', 
+                                        style_width:'width:40px', 
+                                        event:'editWin:input', 
+                                        className:'wRowLineThik'
+                                    },
                                     br3: br = { type: 'span', innerText: '\n' },
 
                                     pre4: basicCol = { type: 'pre', innerText: 'basic col line Thickness : ', style: 'display:inline-block' },
-                                    input6: width = { type: 'input', kind: 'number', style_width:'width:40px' },
+                                    input6: colLine = { 
+                                        type: 'input', 
+                                        kind: 'number', 
+                                        style_width:'width:40px', 
+                                        event:'editWin:input', 
+                                        className:'wColLineThik',
+                                    },
                                     br4: br = { type: 'span', innerText: '\n' },
 
                                     sub1: sub = { type: 'input', kind: 'submit', value: 'save option' },
@@ -653,13 +689,31 @@ let w = {
                                     type: 'form', style: 'display:none',
 
                                     pre1: titleSizeWeight = { type: 'pre', innerText: 'title text size & weight : ', style: 'display:inline-block' },
-                                    input1: size = { type: 'input', kind: 'number', style_width:'width:40px' },
-                                    input11: weight = returnSelectOb(fontWeight),
+                                    input1: size = { 
+                                        type: 'input', 
+                                        kind: 'number', 
+                                        style_width:'width:40px', 
+                                        className:'wTextSize',
+                                        event:'editWin:input', 
+                                    },
+                                    input11: weight = returnSelectOb(fontWeight, {
+                                        className:'wTextWeight', 
+                                        event:'editWin:input', 
+                                    }),
                                     br1: br = { type: 'span', innerText: '\n' },
 
-                                    pre2: titleFontKind = { type: 'pre', innerText: 'title font type & kind : ', style: 'display:inline-block' },
-                                    select2: family = returnSelectOb(fontFamily),
-                                    select22: style = returnSelectOb(fontWeight),
+                                    pre2: titleFontKind = { 
+                                        type: 'pre', 
+                                        innerText: 'title font type & kind : ', 
+                                        style: 'display:inline-block' },
+                                    select2: family = returnSelectOb(fontFamily, {
+                                        className:'wFontType', 
+                                        event:'editWin:input',
+                                    }),
+                                    select22: style = returnSelectOb(fontStyle, {
+                                        className:'wFontKind', 
+                                        event:'editWin:input',
+                                    }),
                                     br2: br = { type: 'span', innerText: '\n' },
 
                                     pre3: basicFontSizeWeight = { type: 'pre', innerText: 'basic text size & weight : ', style: 'display:inline-block' },
@@ -723,7 +777,7 @@ function newWindow(event) {
 function editWin(event) {
     const inputValue = event.target.value;
     const inputOption = event.target.className;
-    const winName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className;
+    const winName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className;
     let BbtnHover = 'blue';
     if (inputOption == 'wBackColor') {
         //wBackColor
@@ -860,13 +914,123 @@ function editWin(event) {
             text3[i].className = `${winName}_btn:${btnColor[1]}:${btnColor[2]}:${inputValue}:${btnColor[4]}`;
         }
     }else if(inputOption=='wWidthSize'){
+        let widthValue = event.target.value;
+        const div = document.querySelector(`.${winName}`);
+        if(widthValue.length<=0 || widthValue<=50){
+            widthValue =456;
+            div.style.removeProperty('overflow');
+        }else if(widthValue>10){
+            div.style.overflow = 'auto';
+        }
+        div.style.width = `${widthValue}px`;
+        
 
     }else if(inputOption=='wHeightSize'){
-
+        let widthValue = event.target.value;
+        let div = document.querySelector(`.${winName}`);
+        if(widthValue.length<=0 || widthValue<=50){
+            div.style.removeProperty('height');
+            div.style.removeProperty('overflow');
+        }else if(widthValue>10){
+            div.style.height = `${widthValue}px`;
+            div.style.overflow = 'auto';
+        }
     }else if(inputOption=='wRowLineThik'){
+        let row = document.querySelectorAll(`.${winName} .row`);
+        let rowCol = document.querySelectorAll(`.${winName} .rowCol`);
+        let before = row[0].style.borderBottom;
+        let beforeSet = before.split(' ');
+
+        for (i = 0; i < row.length; i++) {
+            row[i].style.borderBottom = `${inputValue}px solid ${beforeSet[2]} ${beforeSet[3]} ${beforeSet[4]}`;
+        }
+        for (i = 0; i < rowCol.length; i++) {
+            rowCol[i].style.borderBottom = `${inputValue}px solid ${beforeSet[2]} ${beforeSet[3]} ${beforeSet[4]}`;
+        }
+
+        let title_rowCol = document.querySelector(`.${winName} .title_rowCol`);
+        let title_row = document.querySelector(`.${winName} .title_row`);
+        
+        title_row.style.borderBottom = `${inputValue}px solid ${beforeSet[2]} ${beforeSet[3]} ${beforeSet[4]}`;
+        title_rowCol.style.borderBottom = `${inputValue}px solid ${beforeSet[2]} ${beforeSet[3]} ${beforeSet[4]}`;
 
     }else if(inputOption=='wColLineThik'){
+        let col = document.querySelectorAll(`.${winName} .col`);
+        let rowCol = document.querySelectorAll(`.${winName} .rowCol`);
+        let before = col[0].style.borderRight;
+        let beforeSet = before.split(' ');
 
+        let title_rowCol = document.querySelector(`.${winName} .title_rowCol`);
+        title_rowCol.style.borderRight = `${inputValue}px solid ${beforeSet[2]} ${beforeSet[3]} ${beforeSet[4]}`;
+
+        for (i = 0; i < col.length; i++) {
+            col[i].style.borderRight = `${inputValue}px solid ${beforeSet[2]} ${beforeSet[3]} ${beforeSet[4]}`;
+        }
+        
+        for (i = 0; i < rowCol.length; i++) {
+            rowCol[i].style.borderRight = `${inputValue}px solid ${beforeSet[2]} ${beforeSet[3]} ${beforeSet[4]}`;
+        }
+    }else if(inputOption=='wTextSize'){
+        let pre = document.querySelectorAll(`.${winName} pre`);
+        let btn = document.querySelectorAll(`.${winName} button`);
+        let select = document.querySelectorAll(`.${winName} select`);
+        let value;
+        if(inputValue.length>= 0 && inputValue >= 5){
+            value = inputValue;
+        }else{
+            value = 10
+        }
+        for (i = 0; i < pre.length; i++) {
+            pre[i].style.fontSize = `${value}px`;
+        }
+        for (i = 0; i < btn.length; i++) {
+            btn[i].style.fontSize = `${value}px`;
+        }
+        for (i = 0; i < select.length; i++) {
+            select[i].style.fontSize = `${value}px`;
+        }
+    }else if(inputOption=='wTextWeight'){
+        let pre = document.querySelectorAll(`.${winName} pre`);
+        let btn = document.querySelectorAll(`.${winName} button`);
+        let select = document.querySelectorAll(`.${winName} select`);
+
+        for (i = 0; i < pre.length; i++) {
+            pre[i].style.fontWeight = inputValue;
+        }
+        for (i = 0; i < btn.length; i++) {
+            btn[i].style.fontWeight = inputValue;
+        }
+        for (i = 0; i < select.length; i++) {
+            select[i].style.fontWeight = inputValue;
+        }
+    }else if(inputOption=='wFontType'){
+        let pre = document.querySelectorAll(`.${winName} pre`);
+        let btn = document.querySelectorAll(`.${winName} button`);
+        let select = document.querySelectorAll(`.${winName} select`);
+
+        for (i = 0; i < pre.length; i++) {
+            pre[i].style.fontFamily = inputValue;
+        }
+        for (i = 0; i < btn.length; i++) {
+            btn[i].style.fontFamily = inputValue;
+        }
+        for (i = 0; i < select.length; i++) {
+            select[i].style.fontFamily = inputValue;
+        }
+    }else if(inputOption=='wFontKind'){
+        let pre = document.querySelectorAll(`.${winName} pre`);
+        let btn = document.querySelectorAll(`.${winName} button`);
+        let select = document.querySelectorAll(`.${winName} select`);
+
+        for (i = 0; i < pre.length; i++) {
+            pre[i].style['fontStyle'] = inputValue;
+        }
+        for (i = 0; i < btn.length; i++) {
+            btn[i].style['fontStyle'] = inputValue;
+        }
+        for (i = 0; i < select.length; i++) {
+            select[i].style['fontStyle'] = inputValue;
+        }
     }
     //wRowLineColor
     //wColLineColor

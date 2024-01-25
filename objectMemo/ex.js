@@ -162,7 +162,7 @@ function makeHtml(ob){
         }else if(target =='string' && keyy == 'event'){
             newOb = makeEvent(newOb, ob[key]);
         }else if(target =='string' && keyy == 'innerText'){
-            newOb = makeInnerText(newOb, ob[key])
+            newOb = makeInnerText(newOb, ob[key]);
         }else if(target =='string' && keyy == 'style'){
             newOb = makeStyle(newOb, ob[key]);
         }else if(target == 'string' && keyy == 'className'){
