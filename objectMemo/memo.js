@@ -63,7 +63,7 @@ let wB = {
     BtitleFontColor: 'black',
 
     BbtnHover: '999999',
-    BbtnHoverfontColor: '999999',
+    BbtnHoverfontColor: '000000',
 
     //size & line
     BwinWidth: 456,
@@ -84,11 +84,13 @@ let wB = {
     BtitleFontStyle: 'normal',
 
     //line
-    BrowLine: `borderBottom:${this.BlineRowWeight}px solid #${this.BlineRowColor}`,
-    BcolLine: `borderRight:${this.BlineColWeight}px solid #${this.BlineColColor}`,
-    BbtnClassName: `${this.BclassName}_btn:${this.BbtnHover}:${this.BwinBack}:${this.BbtnHoverfontColor}:${this.BwinFontColor}`,
     //`${winName}_btn:${hover}:${back}:{hoverFont}:{basicFont}`
 }
+wB.BrowLine= `borderBottom:${wB.BlineRowWeight}px solid #${wB.BlineRowColor}`;
+wB.BcolLine= `borderRight:${wB.BlineColWeight}px solid #${wB.BlineColColor}`;
+wB.BbtnClassName= `${wB.BclassName}_btn:#${wB.BbtnHover}:#${wB.BwinBack}:#${wB.BbtnHoverfontColor}:#${wB.BwinFontColor}`;
+
+
 function wBreturn(){
     return wB;
 }
@@ -152,20 +154,41 @@ function wBmatchWinArray(array, num){
     set.BclassName = `w${num}`;
     set.Bshow = array.show;
 
-    set.BwinBack      =  array.color[0];
-    set.BwinFontColor = array.color[0];
-    set.BhtmlBack     = array.color[0];
-/*
-    set.BlineRowColor: 'B8D993',
-    set.BlineColColor: 'ff8c82',
+    //color
+    set.BwinBack          =  array.color[0];
+    set.BwinFontColor     =  array.color[1];
+    set.BhtmlBack         =  'white';
 
-    set.BtitleBack: 'FEF896',
-    set.BtitleFontColor: 'black',
+    set.BlineRowColor     =  array.color[2];
+    set.BlineColColor     =  array.color[3];
 
-    set.BbtnHover: '999999',
-    set.BbtnHoverfontColor: '999999',
-*/
+    set.BtitleBack        =  array.color[4];
+    set.BtitleFontColor   =  array.color[5];
 
+    set.BbtnHover         =  array.color[6];
+    set.BbtnHoverfontColor=  array.color[7];
+
+    //size & line
+    set.BwinWidth         =  array.size[0];
+    set.BwinHeight        =  array.size[1];
+
+    set.BlineRowWeight    =  array.size[2];
+    set.BlineColWeight    =  array.size[3];
+
+    //tap & title font
+    set.BwinFontSize      =  array.tapFont[0];
+    set.BwinFontWeight    =  array.tapFont[1];
+    set.BwinFontFamily    =  array.tapFont[2];
+    set.BwinFontStyle     =  array.tapFont[3];
+
+    set.BtitleFontSize    =  array.titleFont[0];
+    set.BtitleFontWeight  =  array.titleFont[1];
+    set.BtitleFontFamily  =  array.titleFont[2];
+    set.BtitleFontStyle   =  array.titleFont[3];
+
+    set.BrowLine = `borderBottom:${set.BlineRowWeight}px solid #${set.BlineRowColor}`;
+    set.BcolLine = `borderRight:${set.BlineColWeight}px solid #${set.BlineColColor}`;
+    set.BbtnClassName = `${set.BclassName}_btn:${set.BbtnHover}:${set.BwinBack}:${set.BbtnHoverfontColor}:${set.BwinFontColor}`;
 
 
 }
@@ -359,8 +382,8 @@ let w = {
                 type: 'tr',
                 td_plussBtn: td = {
                     type: 'td', style_width: 'width:30px',
-                    style_BrowLine: `borderBottom:${wB.BlineRowWeight}px solid #${wB.BlineRowColor}`,
-                    style_BcolLine: `borderRight:${wB.BlineColWeight}px solid #${wB.BlineColColor}`,
+                    style_BrowLine: `${wB.BrowLine}`,
+                    style_BcolLine: `${wB.BcolLine}`,
                     style_border: 'borderCollapse:collapse',
                     className: 'title_rowCol',
                     plussBtn: btn1 = {
@@ -369,8 +392,8 @@ let w = {
                         event: 'NextNextNextShowEvent:click',
                         style_width: 'width:20px',
                         style_height: 'height:20px',
-                        style_BbtnBack: `background-color:#${wB.BbtnBack}`,
-                        className_BbtnClassName: `winTitle_plsBtn:#${wB.BbtnHover}:#${wB.BbtnBack}`,
+                        style_BbtnBack: `background-color:#${wB.BwinBack}`,
+                        className_BbtnClassName: `winTitle_plsBtn:#${wB.BbtnHover}:#${wB.BwinBack}`,
                         event_out: 'mouseoverEvent:mouseover',
                         event_in: 'mouseoutEvent:mouseout',
                     },
@@ -1246,15 +1269,7 @@ function makeHtml(ob, set) {
                 newOb = makeInnerText(newOb, ob[key]);
             }
         } else if (target == 'string' && keyy == 'style') {
-            if (sett != null && sett.charAt(0) == 'B') {
-                if (sett != 'BcolLine' && sett != 'BrowLine') {
-                    newOb = makeStyle(newOb, `${ob[key].split(':')[0]}:${set[sett]}`);
-                } else {
-                    newOb = makeStyle(newOb, set[sett]);
-                }
-            } else {
-                newOb = makeStyle(newOb, ob[key]);
-            }
+            newOb = makeStyle(newOb, ob[key]);
         } else if (target == 'string' && keyy == 'className') {
             if (sett != null && sett.charAt(0) == 'B') {
                 if (sett == 'BclassName') {
