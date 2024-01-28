@@ -86,111 +86,88 @@ let wB = {
     //line
     //`${winName}_btn:${hover}:${back}:{hoverFont}:{basicFont}`
 }
-wB.BrowLine= `borderBottom:${wB.BlineRowWeight}px solid #${wB.BlineRowColor}`;
-wB.BcolLine= `borderRight:${wB.BlineColWeight}px solid #${wB.BlineColColor}`;
-wB.BbtnClassName= `${wB.BclassName}_btn:#${wB.BbtnHover}:#${wB.BwinBack}:#${wB.BbtnHoverfontColor}:#${wB.BwinFontColor}`;
+wB.BrowLine = `borderBottom:${wB.BlineRowWeight}px solid #${wB.BlineRowColor}`;
+wB.BcolLine = `borderRight:${wB.BlineColWeight}px solid #${wB.BlineColColor}`;
+wB.BbtnClassName = `${wB.BclassName}_btn:#${wB.BbtnHover}:#${wB.BwinBack}:#${wB.BbtnHoverfontColor}:#${wB.BwinFontColor}`;
 
 
-function wBreturn(){
+function wBreturn() {
     return wB;
 }
-function wBmatchWinArray(array, num){
+function wBmatchWinArray(option, array, num,) {
+    if (option == 'makeSetToWarray') {
+        let wArray = {
+            title:array.title,
+            show :array.show,
+            //color
+            color: [array.BwinBack, array.BwinFontColor, array.BlineRowColor, array.BlineColColor, array.BtitleBack, array.BtitleFontColor, array.BbtnHover, array.BbtnHoverfontColor],
+            //size & line
+            //win width, height, row두께, col두께,
+            size: [array.BwinWidth, array.BwinHeight, array.BlineRowWeight, array.BlineColWeight],
+            //tap & title font
+            //탭    폰트 사이즈, 두께, family, style
+            tapFont: [array.BwinFontSize, array.BwinFontWeight, array.BwinFontFamily, array.BwinFontStyle],
+            //타이틀 폰트 사이즈, 두께, family, style
+            titleFont: [array.BtitleFontSize, array.BtitleFontWeight, array.BtitleFontFamily, array.BtitleFontStyle],
+        }
+        console.log(wArray);
+        return wArray;
+    } else if(option =='makeWarrayToSet') {
+        set = wBreturn();
+        set.Btitle = array.title;
+        set.BclassName = `w${num}`;
+        set.Bshow = array.show;
+        
 
-    /*
-    title: 'w0',
-    show: true,
-    color: ['FEF896', 'FEF896', 'gray', 'FEF896'],  //윈배경색, 폰트색, row색, col색, 타이틀배경색, 타이틀글자색, 버튼호버색, 버튼호버폰트색
-    tapFont: [10, 'white', 'normal'],               //탭    폰트 사이즈, 두께, family, style
-    titleFont: [10, 'white', 'normal'],             //타이틀 폰트 사이즈, 두께, family, style
-    size: [370, null, 1.5, 1.5],                   //win width, height, row두께, col두께, 
+        //color
+        set.BwinBack = array.color[0];
+        set.BwinFontColor = array.color[1];
+        set.BhtmlBack = 'white';
 
-    tap: null,
-    */
+        set.BlineRowColor = array.color[2];
+        set.BlineColColor = array.color[3];
 
-    /*
-    Btitle: 'w0',
-    BclassName: 'w0',
-    Bshow: true,
+        set.BtitleBack = array.color[4];
+        set.BtitleFontColor = array.color[5];
 
-    //color
-    BwinBack: 'FEF896',
-    BwinFontColor: 'black',
-    BhtmlBack: 'white',
+        set.BbtnHover = array.color[6];
+        set.BbtnHoverfontColor = array.color[7];
 
-    BlineRowColor: 'B8D993',
-    BlineColColor: 'ff8c82',
+        //size & line
+        set.BwinWidth = array.size[0];
+        set.BwinHeight = array.size[1];
 
-    BtitleBack: 'FEF896',
-    BtitleFontColor: 'black',
+        set.BlineRowWeight = array.size[2];
+        set.BlineColWeight = array.size[3];
 
-    BbtnHover: '999999',
-    BbtnHoverfontColor: '999999',
+        //tap & title font
+        set.BwinFontSize = array.tapFont[0];
+        set.BwinFontWeight = array.tapFont[1];
+        set.BwinFontFamily = array.tapFont[2];
+        set.BwinFontStyle = array.tapFont[3];
 
-    //size & line
-    BwinWidth: 456,
-    BwinHeight: null,
+        set.BtitleFontSize = array.titleFont[0];
+        set.BtitleFontWeight = array.titleFont[1];
+        set.BtitleFontFamily = array.titleFont[2];
+        set.BtitleFontStyle = array.titleFont[3];
 
-    BlineRowWeight: 1.5,
-    BlineColWeight: 1.5,
+        set.BrowLine = `borderBottom:${set.BlineRowWeight}px solid #${set.BlineRowColor}`;
+        set.BcolLine = `borderRight:${set.BlineColWeight}px solid #${set.BlineColColor}`;
+        set.BbtnClassName = `${set.BclassName}_btn:${set.BbtnHover}:${set.BwinBack}:${set.BbtnHoverfontColor}:${set.BwinFontColor}`;
 
-    //tap & title font
-    BwinFontSize: 1,
-    BwinFontWeight: 100,
-    BwinFontFamily: 'serif',
-    BwinFontStyle: 'normal',
-
-    BtitleFontSize: 1,
-    BtitleFontWeight: 100,
-    BtitleFontFamily: 'serif',
-    BtitleFontStyle: 'normal',
-
-    //line
-    BrowLine: `borderBottom:${this.BlineRowWeight}px solid #${this.BlineRowColor}`,
-    BcolLine: `borderRight:${this.BlineColWeight}px solid #${this.BlineColColor}`,
-    BbtnClassName: `${this.BclassName}_btn:${this.BbtnHover}:${this.BwinBack}:${this.BbtnHoverfontColor}:${this.BwinFontColor}`,
-    */
-    set = wBreturn();
-    set.Btitle = array.title;
-    set.BclassName = `w${num}`;
-    set.Bshow = array.show;
-
-    //color
-    set.BwinBack          =  array.color[0];
-    set.BwinFontColor     =  array.color[1];
-    set.BhtmlBack         =  'white';
-
-    set.BlineRowColor     =  array.color[2];
-    set.BlineColColor     =  array.color[3];
-
-    set.BtitleBack        =  array.color[4];
-    set.BtitleFontColor   =  array.color[5];
-
-    set.BbtnHover         =  array.color[6];
-    set.BbtnHoverfontColor=  array.color[7];
-
-    //size & line
-    set.BwinWidth         =  array.size[0];
-    set.BwinHeight        =  array.size[1];
-
-    set.BlineRowWeight    =  array.size[2];
-    set.BlineColWeight    =  array.size[3];
-
-    //tap & title font
-    set.BwinFontSize      =  array.tapFont[0];
-    set.BwinFontWeight    =  array.tapFont[1];
-    set.BwinFontFamily    =  array.tapFont[2];
-    set.BwinFontStyle     =  array.tapFont[3];
-
-    set.BtitleFontSize    =  array.titleFont[0];
-    set.BtitleFontWeight  =  array.titleFont[1];
-    set.BtitleFontFamily  =  array.titleFont[2];
-    set.BtitleFontStyle   =  array.titleFont[3];
-
-    set.BrowLine = `borderBottom:${set.BlineRowWeight}px solid #${set.BlineRowColor}`;
-    set.BcolLine = `borderRight:${set.BlineColWeight}px solid #${set.BlineColColor}`;
-    set.BbtnClassName = `${set.BclassName}_btn:${set.BbtnHover}:${set.BwinBack}:${set.BbtnHoverfontColor}:${set.BwinFontColor}`;
-
-
+        console.log(set);        
+        return set;
+    }else if(option=='wArrayToArray'){
+        let clone = [
+            array.title,
+            array.show,
+            array.color, 
+            array.size, 
+            array.tapFont, 
+            array.titleFont
+        ];
+        return clone;
+    }
 }
 
 //배경색 #FEF896, 가로선 #B8D993, 세로선 #FFDD8D
@@ -302,7 +279,20 @@ let Mwindow = {
 
         } else if (option == 'editSave') {
             let win = this.save('new');
-
+            let nn = set.target;
+            let setOb = wBmatchWinArray('makeWarrayToSet', win[nn], nn);
+            for (let key in set) {
+                console.log(key, setOb[key]);
+                console.log(key, set[key]);
+                if (setOb[key] != null) {
+                    setOb[key] = set[key];
+                }
+            }
+            setOb = wBmatchWinArray('makeSetToWarray', setOb, nn);
+            setOb = wBmatchWinArray('wArrayToArray', setOb);
+            win[nn] = setOb;
+            console.log(win);
+            localStorage.setItem('winArray', JSON.stringify(win));
         }
 
     },
@@ -544,6 +534,7 @@ let w = {
                                 form1: backColor = {
                                     type: 'form',
                                     style: 'display:block',
+                                    className: 'wForm1',
 
                                     pre1: winBackColor = { type: 'pre', innerText: 'background color : ', style: 'display:inline-block' },
                                     input1: input = {
@@ -663,6 +654,7 @@ let w = {
                                 },
                                 form2: sizeAndLine = {
                                     type: 'form', style: 'display:none',
+                                    className: 'wForm2',
                                     pre1: basicWidth = {
                                         type: 'pre',
                                         innerText: 'basic width size : ',
@@ -717,6 +709,9 @@ let w = {
                                 },
                                 form3: textSize = {
                                     type: 'form', style: 'display:none',
+                                    className: 'wForm3',
+                                    event: 'editWin:submit',
+
 
                                     pre1: titleSizeWeight = { type: 'pre', innerText: 'title text size & weight : ', style: 'display:inline-block' },
                                     input1: size = {
@@ -757,11 +752,18 @@ let w = {
                                     select44: style = returnSelectOb(fontStyle),
                                     br4: br = { type: 'span', innerText: '\n' },
 
-                                    sub1: sub = { type: 'input', kind: 'submit', value: 'save option' },
+                                    sub1: sub = { 
+                                        type: 'input', 
+                                        kind: 'submit', 
+                                        value: 'save option',
+                                        className: 'wForm3_submit',
+                                        event: 'editWin:submit',
+                                    },
 
                                 },
                                 form4: delWin = {
                                     type: 'form', style: 'display:none',
+                                    className: 'wForm4',
                                     pre1: tapText = { type: 'pre', innerText: 'del this window', style: 'display:inline-block' },
                                     br4: br = { type: 'span', innerText: '\n' },
                                     sub1: sub = { type: 'input', kind: 'submit', value: 'del this window' },
@@ -794,9 +796,12 @@ function editWin(event) {
     const inputValue = event.target.value;
     const inputOption = event.target.className;
     const winName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className;
-
+    
     if (inputOption == 'wBackColor') {
         //wBackColor
+        let dd = document.querySelector(`.wForm3_submit`); 
+        console.log(dd.event);
+
         let table = document.querySelectorAll(`.${winName} table`);
         for (i = 0; i < table.length; i++) {
             table[i].style.backgroundColor = inputValue;
@@ -833,21 +838,15 @@ function editWin(event) {
 
         for (i = 0; i < pre.length; i++) {
             pre[i].style.color = inputValue;
-
         }
         for (i = 0; i < btn.length; i++) {
             btn[i].style.color = inputValue;
             btn[i].className = `${winName}_btn:${btnColor[1]}:${btnColor[2]}:${btnColor[3]}:${inputValue}`;
-
         }
         for (i = 0; i < select.length; i++) {
             select[i].style.color = inputValue;
             select[i].className = `${winName}_btn:${btnColor[1]}:${btnColor[2]}:${btnColor[3]}:${inputValue}`;
-
         }
-
-        //text.style.color = 'blue';
-        //wFontColor
 
     } else if (inputOption == 'htmlBackColor') {
         //htmlBackColor
@@ -883,6 +882,7 @@ function editWin(event) {
         for (i = 0; i < rowCol.length; i++) {
             rowCol[i].style.borderRight = `${1.5}px solid ${inputValue}`;
         }
+
     } else if (inputOption == 'wTitleBackColor') {
         let title_rowCol = document.querySelector(`.${winName} .title_rowCol`);
         let title_plsBtn = title_rowCol.childNodes[0];
@@ -902,6 +902,7 @@ function editWin(event) {
 
         title_plsBtn.style.color = inputValue;
         title_titleBtn.style.color = inputValue;
+
     } else if (inputOption == 'wBtnHoverBackColor') {
         let text2 = document.querySelectorAll(`.${winName} button`);
         let text3 = document.querySelectorAll(`.${winName} select`);
@@ -923,12 +924,12 @@ function editWin(event) {
 
         for (i = 0; i < text2.length; i++) {
             text2[i].className = `${winName}_btn:${btnColor[1]}:${btnColor[2]}:${inputValue}:${btnColor[4]}`;
-
         }
         //`${winName}_btn:${hover}:${back}:{hoverFont}:{basicFont}`
         for (i = 0; i < text3.length; i++) {
             text3[i].className = `${winName}_btn:${btnColor[1]}:${btnColor[2]}:${inputValue}:${btnColor[4]}`;
         }
+
     } else if (inputOption == 'wWidthSize') {
         let widthValue = event.target.value;
         const div = document.querySelector(`.${winName}`);
@@ -1047,6 +1048,20 @@ function editWin(event) {
         for (i = 0; i < select.length; i++) {
             select[i].style['fontStyle'] = inputValue;
         }
+    }  else if(inputOption == 'wForm3'){
+        event.preventDefault();
+        let form = document.querySelector(`.${winName} .${inputOption}`);
+        let Bw = {};
+        const wName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className;
+        let regex = /[^0-9]/g;
+        let n = wName.replace(regex, "");
+
+        Bw.target = Number(n);
+        Bw.BwinFontSize = form.elements[0].value;
+        Bw.BwinFontWeight = form.elements[1].value;
+        Bw.BwinFontFamily = form.elements[2].value;
+        Bw.BwinFontStyle = form.elements[3].value;
+        Mwindow.save('editSave', Bw);
     }
     //wRowLineColor
     //wColLineColor
@@ -1295,8 +1310,7 @@ let array2 = Mwindow.save('new');
 for (let i = 0; i < 10; i++) {
     if (array2[i] != null) {
         let set = wBreturn();
-        console.log(array2[i]);
-        console.log(set);
+
         set.BbtnClassName = `${set.BbtnClassName}`;
         set.BrowLine = `borderBottom:${set.BlineRowWeight}px solid #${set.BlineRowColor}`;
         set.BcolLine = `borderRight:${set.BlineColWeight}px solid #${set.BlineColColor}`;
