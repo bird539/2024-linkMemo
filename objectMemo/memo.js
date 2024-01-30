@@ -91,105 +91,36 @@ wB.BcolLine = `borderRight:${wB.BlineColWeight}px solid #${wB.BlineColColor}`;
 wB.BbtnClassName = `${wB.BclassName}_btn:#${wB.BbtnHover}:#${wB.BwinBack}:#${wB.BbtnHoverfontColor}:#${wB.BwinFontColor}`;
 
 
-function wBreturn() {
-    return wB;
-}
-function wBmatchWinArray(option, array, num,) {
-    if (option == 'makeSetToWarray') {
-        let wArray = {
-            title:array.title,
-            show :array.show,
-            //color
-            color: [array.BwinBack, array.BwinFontColor, array.BlineRowColor, array.BlineColColor, array.BtitleBack, array.BtitleFontColor, array.BbtnHover, array.BbtnHoverfontColor],
-            //size & line
-            //win width, height, row두께, col두께,
-            size: [array.BwinWidth, array.BwinHeight, array.BlineRowWeight, array.BlineColWeight],
-            //tap & title font
-            //탭    폰트 사이즈, 두께, family, style
-            tapFont: [array.BwinFontSize, array.BwinFontWeight, array.BwinFontFamily, array.BwinFontStyle],
-            //타이틀 폰트 사이즈, 두께, family, style
-            titleFont: [array.BtitleFontSize, array.BtitleFontWeight, array.BtitleFontFamily, array.BtitleFontStyle],
+function wBmatchWinArray(option, array) {
+    if (option == 'makeSetToArray') {
+        if(array == null){
+            return null;
         }
-        console.log(wArray);
+        let wArray = [];
+        for(key in array){
+            wArray.push(array[key]);
+        }
         return wArray;
-    } else if(option =='makeWarrayToSet') {
-        set = wBreturn();
-        set.Btitle = array.title;
-        set.BclassName = `w${num}`;
-        set.Bshow = array.show;
-        
+    } else if(option =='makeArrayToSet') {
 
-        //color
-        set.BwinBack = array.color[0];
-        set.BwinFontColor = array.color[1];
-        set.BhtmlBack = 'white';
-
-        set.BlineRowColor = array.color[2];
-        set.BlineColColor = array.color[3];
-
-        set.BtitleBack = array.color[4];
-        set.BtitleFontColor = array.color[5];
-
-        set.BbtnHover = array.color[6];
-        set.BbtnHoverfontColor = array.color[7];
-
-        //size & line
-        set.BwinWidth = array.size[0];
-        set.BwinHeight = array.size[1];
-
-        set.BlineRowWeight = array.size[2];
-        set.BlineColWeight = array.size[3];
-
-        //tap & title font
-        set.BwinFontSize = array.tapFont[0];
-        set.BwinFontWeight = array.tapFont[1];
-        set.BwinFontFamily = array.tapFont[2];
-        set.BwinFontStyle = array.tapFont[3];
-
-        set.BtitleFontSize = array.titleFont[0];
-        set.BtitleFontWeight = array.titleFont[1];
-        set.BtitleFontFamily = array.titleFont[2];
-        set.BtitleFontStyle = array.titleFont[3];
-
+        set = copyReturn();
+        let ii=0;
+        for(key in set){
+            set[key] = array[ii];
+            ii++;
+        }
         set.BrowLine = `borderBottom:${set.BlineRowWeight}px solid #${set.BlineRowColor}`;
         set.BcolLine = `borderRight:${set.BlineColWeight}px solid #${set.BlineColColor}`;
-        set.BbtnClassName = `${set.BclassName}_btn:${set.BbtnHover}:${set.BwinBack}:${set.BbtnHoverfontColor}:${set.BwinFontColor}`;
-
-        console.log(set);        
+        set.BbtnClassName = `${set.BclassName}_btn:${set.BbtnHover}:${set.BwinBack}:${set.BbtnHoverfontColor}:${set.BwinFontColor}`;       
         return set;
-    }else if(option=='wArrayToArray'){
-        let clone = [
-            array.title,
-            array.show,
-            array.color, 
-            array.size, 
-            array.tapFont, 
-            array.titleFont
-        ];
-        return clone;
     }
 }
 
 //배경색 #FEF896, 가로선 #B8D993, 세로선 #FFDD8D
 function copyReturn() { //윈도우 기본 객체
-    let clone = {
-        title: 'w0',
-        show: true,
-        //color
-        //윈배경색,(html),폰트색, row색, col색, 타이틀배경색, 타이틀글자색, 버튼호버색, 버튼호버폰트색
-        color: [wB.BwinBack, wB.BwinFontColor, wB.BlineRowColor, wB.BlineColColor, wB.BtitleBack, wB.BtitleFontColor, wB.BbtnHover, wB.BbtnHoverfontColor],
-
-        //size & line
-        //win width, height, row두께, col두께,
-        size: [wB.BwinWidth, wB.BwinHeight, wB.BlineRowWeight, wB.BlineColWeight],
-
-        //tap & title font
-        //탭    폰트 사이즈, 두께, family, style
-        tapFont: [wB.BwinFontSize, wB.BwinFontWeight, wB.BwinFontFamily, wB.BwinFontStyle],
-        //타이틀 폰트 사이즈, 두께, family, style
-        titleFont: [wB.BtitleFontSize, wB.BtitleFontWeight, wB.BtitleFontFamily, wB.BtitleFontStyle],
-
-        tap: null                                           //tap [class,name] array
+    let clone = {};                                //tap [class,name] array
+    for(let key in wB){
+        clone[key] = wB[key];
     }
     return clone;
 }
@@ -198,15 +129,7 @@ function copyReturn() { //윈도우 기본 객체
 
 let Mwindow = {
     pk: null,
-
-    title: 'w0',
-    show: true,
-    color: ['FEF896', 'FEF896', 'gray', 'FEF896'],  //윈배경색, 폰트색, row색, col색, 타이틀배경색, 타이틀글자색, 버튼호버색, 버튼호버폰트색
-    tapFont: [10, 'white', 'normal'],               //탭    폰트 사이즈, 두께, family, style
-    titleFont: [10, 'white', 'normal'],             //타이틀 폰트 사이즈, 두께, family, style
-    size: [370, null, 1.5, 1.5],                   //win width, height, row두께, col두께, 
-
-    tap: null,
+    length:10,
 
     //winArray : { 0 : {title:'win0', backColor:['black','black','black'], text:['10pt','white',null,'h3'], tap:[null] }
     winArray: {
@@ -214,84 +137,62 @@ let Mwindow = {
         1: null, 2: null, 3: null, 4: null, 5: null, 6: null, 7: null, 8: null, 9: null
     },
 
-    saveArray: [null, null, null, null, null, null, null, null, null, null],
-    makeSaveArray: function (option, array) {
-        if (option == true) {
-            for (i = 0; i < 10; i++) {
-                if (this.winArray[i] != null) {
-                    let newArr = [
-                        this.winArray[i].title,
-                        this.winArray[i].show,
-                        this.winArray[i].color,
-                        this.winArray[i].size,
-                        this.winArray[i].tapFont,
-                        this.winArray[i].titleFont,
-                        this.winArray[i].tap
-                    ]
-                    this.saveArray[i] = newArr;
-                }
-            }
-            return this.saveArray;
-        } else if (option == false) {
-            for (i = 0; i < 10; i++) {
-                if (array[i] != null) {
-                    let copy = copyReturn();
-                    let newArr = array[i];
-                    this.winArray[i] = copy;
-
-                    this.winArray[i].title = newArr[0];
-                    this.winArray[i].show = newArr[1];
-                    this.winArray[i].color = newArr[2];
-                    this.winArray[i].size = newArr[3];
-                    this.winArray[i].tapFont = newArr[4];
-                    this.winArray[i].titleFont = newArr[5];
-                    this.winArray[i].tap = newArr[6];
-                }
-            }
-            return this.winArray;
-        }
-    },
-
     save: function (option, set) {
         if (option == 'new') {
             let getSave = localStorage.getItem('winArray');
             if (getSave == null) {
-                let newWinArray = this.makeSaveArray(true, this.winArray);
+                let newWinArray = this.winArray;
+                let Array = wBmatchWinArray('makeSetToArray', newWinArray[0]);
+                newWinArray[0] = Array;
                 localStorage.setItem('winArray', JSON.stringify(newWinArray));
-                return this.winArray;
+                return newWinArray;
             } else {
                 getSave = JSON.parse(getSave);
-                let newWinArray = this.makeSaveArray(false, getSave);
-                this.winArray = newWinArray;
-                return this.winArray;
+                let saveWin = [];
+                for(i=0;i<this.length;i++){
+                    if(getSave[i]!=null){
+                        getSave[i] = wBmatchWinArray('makeArrayToSet',getSave[i]);
+                        getSave[i].BclassName = `w${i}`;
+                    }
+                }
+                return getSave;
             }
         } else if (option == 'plusNew') {
-            let copy = copyReturn(this.winArray[0]);
-            for (i = 0; i < 10; i++) {
-                if (this.winArray[i] == null) {
-                    copy.title = `w${i}`;
-                    this.winArray[i] = copy;
-                    let newWinArray = this.makeSaveArray(true, this.winArray);
-                    localStorage.setItem('winArray', JSON.stringify(newWinArray));
-                    return copy;
+            let copy1 = copyReturn();
+            let newWin = this.save('new');
+            let num;
+            for(i=0;i<this.length;i++){
+                if(newWin[i]==null){
+                    copy1.Btitle = `w${i}`;
+                    copy1.BclassName = `w${i}`;
+                    num = i;
+                    break
                 }
             }
+            newWin[num] = copy1;
+            for(k=0;k<this.length;k++){
+                newWin[k] = wBmatchWinArray('makeSetToArray', newWin[k]);
+            }
+            localStorage.setItem('winArray', JSON.stringify(newWin));
+            return copy1;
 
         } else if (option == 'editSave') {
             let win = this.save('new');
+            
             let nn = set.target;
-            let setOb = wBmatchWinArray('makeWarrayToSet', win[nn], nn);
+            let setOb = win[nn];
             for (let key in set) {
-                console.log(key, setOb[key]);
-                console.log(key, set[key]);
-                if (setOb[key] != null) {
+                if (setOb[key] != null && key != 'target') {
                     setOb[key] = set[key];
                 }
             }
-            setOb = wBmatchWinArray('makeSetToWarray', setOb, nn);
-            setOb = wBmatchWinArray('wArrayToArray', setOb);
             win[nn] = setOb;
-            console.log(win);
+
+            newWin = [];
+            for(i=0;i<this.length;i++){
+                win[i] = wBmatchWinArray('makeSetToArray', win[i]);
+            }
+
             localStorage.setItem('winArray', JSON.stringify(win));
         }
 
@@ -408,6 +309,7 @@ let w = {
                         type: 'form',
                         style_display: 'display:none',
                         className: 'winTitle_titleEditForm',
+                        event: 'titleNameChange:submit',
                         input: input_1 = {
                             type: 'input',
                         }
@@ -777,18 +679,13 @@ let w = {
         }
     }
 }
-function reW(v1) {
-    w.basic.BclassName = v1;
-    w.basic.Btitle = v1;
-    return w;
-}
 
 //pluss function =======================
 function newWindow(event) {
     let newWin = Mwindow.save('plusNew');
-    let n = reW(newWin.title)
-    n.basic.setset(newWin.title);
-    let aaaa = makeHtml(n);
+    wB.BclassName = newWin.BclassName;
+    wB.Btitle = newWin.Btitle; 
+    let aaaa = makeHtml(w, newWin);
     main.appendChild(aaaa);
 }
 
@@ -799,9 +696,6 @@ function editWin(event) {
     
     if (inputOption == 'wBackColor') {
         //wBackColor
-        let dd = document.querySelector(`.wForm3_submit`); 
-        console.log(dd.event);
-
         let table = document.querySelectorAll(`.${winName} table`);
         for (i = 0; i < table.length; i++) {
             table[i].style.backgroundColor = inputValue;
@@ -1073,6 +967,26 @@ function editWin(event) {
     //wBtnHoverFontColor
 }
 
+function titleNameChange(event){
+    event.preventDefault();
+    let wName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.className;
+
+    let form = document.querySelector(`.${wName} .${event.target.className}`);
+    let Bw = {};
+    let regex = /[^0-9]/g;
+    let n = wName.replace(regex, "");
+    Bw.target = Number(n);
+    Bw.Btitle = form.elements[0].value;
+    Mwindow.save('editSave', Bw);
+
+    let title = event.target.previousSibling;
+    title.innerText = Bw.Btitle;
+    form.style.display = 'none';
+
+
+    console.log(form);
+}
+
 function NextNextNextShowEvent(event) {
     let target = event.target.parentNode.parentNode.parentNode.nextSibling;
 
@@ -1178,6 +1092,9 @@ function makeEvent(ob, option) {
         return ob;
     } else if (option1 == 'editWin') {
         ob.addEventListener(`${clickOption}`, editWin);
+        return ob;
+    } else if(option1 == 'titleNameChange'){
+        ob.addEventListener(`${clickOption}`, titleNameChange);
         return ob;
     }
 }
@@ -1309,11 +1226,14 @@ let array2 = Mwindow.save('new');
 
 for (let i = 0; i < 10; i++) {
     if (array2[i] != null) {
-        let set = wBreturn();
+        let set = copyReturn();
 
-        set.BbtnClassName = `${set.BbtnClassName}`;
-        set.BrowLine = `borderBottom:${set.BlineRowWeight}px solid #${set.BlineRowColor}`;
-        set.BcolLine = `borderRight:${set.BlineColWeight}px solid #${set.BlineColColor}`;
+        set.Btitle = array2[i].Btitle;
+        set.BclassName = array2[i].BclassName;
+
+        set.BbtnClassName = `${array2[i].BbtnClassName}`;
+        set.BrowLine = `borderBottom:${array2[i].BlineRowWeight}px solid #${array2[i].BlineRowColor}`;
+        set.BcolLine = `borderRight:${array2[i].BlineColWeight}px solid #${array2[i].BlineColColor}`;
         let aaaa = makeHtml(w, set);
         main.appendChild(aaaa);
     }
