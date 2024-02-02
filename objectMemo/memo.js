@@ -95,7 +95,7 @@ function checkValue(ob){
     let color = [
         'BwinBack','BwinFontColor','BhtmlBack',
         'BlineRowColor','BlineColColor',
-        'BtitleBack', 'BtitleBack',
+        'BtitleBack', 'BtitleFontColor',
         'BbtnHover','BbtnHoverfontColor'
     ]
     let number = [
@@ -119,6 +119,8 @@ function checkValue(ob){
     ob.BrowLine = `${ob.BlineRowWeight} solid ${ob.BlineRowColor}`;
     ob.BcolLine = `${ob.BlineColWeight} solid ${ob.BlineColColor}`;
     ob.BbtnClassName = `${ob.BclassName}_btn:${ob.BbtnHover}:${ob.BwinBack}:${ob.BbtnHoverfontColor}:${ob.BwinFontColor}`;
+    ob.BtitleBtnClassName = `${ob.BclassName}_btn:${ob.BbtnHover}:${ob.BtitleBack}:${ob.BbtnHoverfontColor}:${ob.BtitleFontColor}`;       
+
     
     return ob;
 }
@@ -218,7 +220,6 @@ let Mwindow = {
                     setOb[key] = set[key];
                 }
             }
-            console.log(setOb);
             win[nn] = setOb;
             newWin = [];
             for(i=0;i<this.length;i++){
@@ -315,9 +316,10 @@ let w = {
                         style_width: 'width:20px',
                         style_height: 'height:20px',
                         style_BtitleBack_backgroundColor: `background-color:#${wB.BwinBack}`,
-                        className_BbtnClassName: `winTitle_plsBtn:#${wB.BbtnHover}:#${wB.BwinBack}`,
+                        className_BtitleBtnClassName: `winTitle_plsBtn:#${wB.BbtnHover}:#${wB.BwinBack}`,
                         event_out: 'mouseoverEvent:mouseover',
                         event_in: 'mouseoutEvent:mouseout',
+                        style_BwinFontColor_color : '',
                     },
                 },
                 td_titleBtn: td = {
@@ -389,7 +391,7 @@ let w = {
                     td8: td = newTapBtn('랜덤'),
                     td9: td = {
                         type: 'td',
-                        style_BrowLine: `${wB.BrowLine}`,
+                        style_BrowLine_borderBottom: `${wB.BrowLine}`,
                         style_border: 'borderCollapse:collapse',
                         className: 'row',
                     },
@@ -793,6 +795,10 @@ function editWin(event) {
         let line = `${winName}_btn:${btnColor[1]}:${inputValue}:${btnColor[3]}:${btnColor[4]}`;
         let select = document.querySelectorAll(`.${winName} select`);
         
+        const titleColorInput =  document.querySelector(`.${winName} .wTitleBackColor`);
+        titleColorInput.value = inputValue;
+        console.log(titleColorInput);
+
         style(btn,'backgroundColor',inputValue);
         className(btn, line);
 
@@ -812,7 +818,7 @@ function editWin(event) {
         let pre = document.querySelectorAll(`.${winName} pre`);
         let btn = document.querySelectorAll(`.${winName} button`);
         let select = document.querySelectorAll(`.${winName} select`);
-        const btnColor = btn[0].className.split(':');
+        const btnColor = btn[1].className.split(':');
         let line = `${winName}_btn:${btnColor[1]}:${btnColor[2]}:${btnColor[3]}:${inputValue}`;
         style(pre, 'color', inputValue);
 
@@ -871,7 +877,7 @@ function editWin(event) {
     } else if (inputOption == 'wBtnHoverBackColor') {
         let text2 = document.querySelectorAll(`.${winName} button`);
         let text3 = document.querySelectorAll(`.${winName} select`);
-        const btnColor = text2[0].className.split(':');
+        const btnColor = text2[3].className.split(':');
         let line = `${winName}_btn:${inputValue}:${btnColor[2]}:${btnColor[3]}:${btnColor[4]}`;
 
         for (i = 0; i < text2.length; i++) {
@@ -884,9 +890,9 @@ function editWin(event) {
     } else if (inputOption == 'wBtnHoverFontColor') {
         let text2 = document.querySelectorAll(`.${winName} button`);
         let text3 = document.querySelectorAll(`.${winName} select`);
-        const btnColor = text2[0].className.split(':');
+        const btnColor = text2[3].className.split(':');
         let line = `${winName}_btn:${btnColor[1]}:${btnColor[2]}:${inputValue}:${btnColor[4]}`;
-
+        
         className(text2, line);
         className(text3, line);
 
@@ -1197,7 +1203,6 @@ function makeHtml(ob, set) {
             }
             child = makeHtml(ob[key], set);
             newOb = makeAppend(newOb, child);
-
         } else if (target == 'string' && keyy == 'type') {
             newOb = makeOb(ob[key]);
         }else if (target == 'string' && keyy == 'kind') {
@@ -1230,6 +1235,9 @@ function makeHtml(ob, set) {
 
         } else {
             if (sett != null && sett.charAt(0) == 'B') {
+                if(keyy == 'className'){
+                    console.log(keyy, sett, set[sett])
+                }
                 newOb = makeFunction(newOb, keyy, set[sett]);
             } else {
                 newOb = makeFunction(newOb, keyy, ob[key]);
