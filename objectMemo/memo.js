@@ -1,44 +1,3 @@
-let memo = {
-    num: 0,
-    text: "",
-    check: false,
-    save: function () {
-
-    },
-    make: function () {
-
-    },
-    edit: function () {
-
-    },
-    copy: function () {
-
-    }
-}
-
-let basicTap = {
-    pk: null,
-    tapSelect: true,
-
-    withSize: 456,
-    heightSize: 123,
-
-    titel: 'tapTitel',
-
-    buttonColor: 'blue',
-    save: function () {
-
-    },
-    make: function () {
-
-    },
-    edit: function () {
-
-    },
-    copy: function () {
-
-    }
-}
 //basic option ===============================
 //font option
 let fontFamily = ['serif', 'sans-serif', 'monospace', 'cursive', 'fantasy', 'system-ui', 'ui-serif', 'ui-sans-serif', 'ui-monospace', 'ui-rounded', 'emoji', 'math', 'fangsong']
@@ -66,86 +25,95 @@ let wB = {
     BbtnHoverfontColor: '000000',
 
     //size & line
-    BwinWidth: 456,
+    BwinWidth: '456',
     BwinHeight: null,
 
-    BlineRowWeight: 1.5,
-    BlineColWeight: 1.5,
+    BlineRowWeight: '1.5',
+    BlineColWeight: '1.5',
 
     //tap & title font
-    BwinFontSize: 1,
-    BwinFontWeight: 100,
-    BwinFontFamily: 'serif',
-    BwinFontStyle: 'normal',
+    BwinFontSize: '13',
+    BwinFontWeight: 0,
+    BwinFontFamily: 1,
+    BwinFontStyle: 0,
 
-    BtitleFontSize: 1,
-    BtitleFontWeight: 100,
-    BtitleFontFamily: 'serif',
-    BtitleFontStyle: 'normal',
+    BtitleFontSize: '13',
+    BtitleFontWeight: 0,
+    BtitleFontFamily: 1,
+    BtitleFontStyle: 0,
+
+    BtapArray: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+    ],
 
     //line
     //`${winName}_btn:${hover}:${back}:{hoverFont}:{basicFont}`
 }
-wB.BrowLine = `borderBottom:${wB.BlineRowWeight}px solid #${wB.BlineRowColor}`;
-wB.BcolLine = `borderRight:${wB.BlineColWeight}px solid #${wB.BlineColColor}`;
-wB.BbtnClassName = `${wB.BclassName}_btn:#${wB.BbtnHover}:#${wB.BwinBack}:#${wB.BbtnHoverfontColor}:#${wB.BwinFontColor}`;
-
-
-function checkValue(ob){
+function checkValue(ob) {
     let color = [
-        'BwinBack','BwinFontColor','BhtmlBack',
-        'BlineRowColor','BlineColColor',
+        'BwinBack', 'BwinFontColor', 'BhtmlBack',
+        'BlineRowColor', 'BlineColColor',
         'BtitleBack', 'BtitleFontColor',
-        'BbtnHover','BbtnHoverfontColor'
+        'BbtnHover', 'BbtnHoverfontColor'
     ]
     let number = [
-        'BwinWidth','BwinHeight',
-        'BlineRowWeight','BlineColWeight',
-        'BwinFontSize','BwinFontWeight',
-        'BtitleFontSize','BtitleFontWeight'
+        'BwinWidth', 'BwinHeight',
+        'BlineRowWeight', 'BlineColWeight',
+        'BwinFontSize', 'BwinFontWeight',
+        'BtitleFontSize', 'BtitleFontWeight'
     ]
-    for(i=0;i<color.length;i++){
-        if(ob[`${color[i]}`].charAt(0)!='#'){
+
+    for (i = 0; i < color.length; i++) {
+        if (ob[`${color[i]}`].charAt(0) != '#') {
             ob[`${color[i]}`] = `#${ob[`${color[i]}`]}`
         }
     }
 
-    for(i=0;i<number.length;i++){
-        if(isNaN(ob[`${number[i]}`]) == false){
+    for (i = 0; i < number.length; i++) {
+        if (isNaN(ob[`${number[i]}`]) == false) {
             ob[`${number[i]}`] = `${ob[`${number[i]}`]}px`
         }
     }
-    
+
+    ob.BwinFontWeight = fontWeight[ob.BwinFontWeight];
+    ob.BwinFontFamily = fontFamily[ob.BwinFontFamily];
+    ob.BwinFontStyle = fontStyle[ob.BwinFontStyle];
+
+    ob.BtitleFontWeight = fontWeight[ob.BtitleFontWeight];
+    ob.BtitleFontFamily = fontFamily[ob.BtitleFontFamily];
+    ob.BtitleFontStyle = fontStyle[ob.BtitleFontStyle];
+
     ob.BrowLine = `${ob.BlineRowWeight} solid ${ob.BlineRowColor}`;
     ob.BcolLine = `${ob.BlineColWeight} solid ${ob.BlineColColor}`;
     ob.BbtnClassName = `${ob.BclassName}_btn:${ob.BbtnHover}:${ob.BwinBack}:${ob.BbtnHoverfontColor}:${ob.BwinFontColor}`;
-    ob.BtitleBtnClassName = `${ob.BclassName}_btn:${ob.BbtnHover}:${ob.BtitleBack}:${ob.BbtnHoverfontColor}:${ob.BtitleFontColor}`;       
-
-    
+    ob.BtitleBtnClassName = `${ob.BclassName}_btn:${ob.BbtnHover}:${ob.BtitleBack}:${ob.BbtnHoverfontColor}:${ob.BtitleFontColor}`;
     return ob;
 }
 
 function wBmatchWinArray(option, array) {
     if (option == 'makeSetToArray') {
-        if(array == null){
+        if (array == null) {
             return null;
         }
         let wArray = [];
-        for(key in array){
-            wArray.push(array[key]);
+        for (key in array) {
+            if (key != 'BrowLine' && key != 'BcolLine' && key != 'BbtnClassName') {
+                wArray.push(array[key]);
+            }
         }
         return wArray;
-    } else if(option =='makeArrayToSet') {
+    } else if (option == 'makeArrayToSet') {
 
         set = copyReturn();
-        let ii=0;
-        for(key in set){
+        let ii = 0;
+        for (key in set) {
             set[key] = array[ii];
             ii++;
         }
         set.BrowLine = `borderBottom:${set.BlineRowWeight}px solid #${set.BlineRowColor}`;
         set.BcolLine = `borderRight:${set.BlineColWeight}px solid #${set.BlineColColor}`;
-        set.BbtnClassName = `${set.BclassName}_btn:#${set.BbtnHover}:#${set.BwinBack}:#${set.BbtnHoverfontColor}:#${set.BwinFontColor}`;       
+        set.BbtnClassName = `${set.BclassName}_btn:#${set.BbtnHover}:#${set.BwinBack}:#${set.BbtnHoverfontColor}:#${set.BwinFontColor}`;
         return set;
     }
 }
@@ -153,7 +121,7 @@ function wBmatchWinArray(option, array) {
 //배경색 #FEF896, 가로선 #B8D993, 세로선 #FFDD8D
 function copyReturn() { //윈도우 기본 객체
     let clone = {};                                //tap [class,name] array
-    for(let key in wB){
+    for (let key in wB) {
         clone[key] = wB[key];
     }
     return clone;
@@ -162,9 +130,7 @@ function copyReturn() { //윈도우 기본 객체
 //=============================== basic option 
 
 let Mwindow = {
-    pk: null,
-    length:10,
-
+    length: 10,
     winArray: {
         0: copyReturn(),
         1: null, 2: null, 3: null, 4: null, 5: null, 6: null, 7: null, 8: null, 9: null
@@ -181,9 +147,9 @@ let Mwindow = {
                 return newWinArray;
             } else {
                 getSave = JSON.parse(getSave);
-                for(i=0;i<this.length;i++){
-                    if(getSave[i]!=null){
-                        getSave[i] = wBmatchWinArray('makeArrayToSet',getSave[i]);
+                for (i = 0; i < this.length; i++) {
+                    if (getSave[i] != null) {
+                        getSave[i] = wBmatchWinArray('makeArrayToSet', getSave[i]);
                         getSave[i].BclassName = `w${i}`;
                     }
                 }
@@ -193,8 +159,8 @@ let Mwindow = {
             let copy1 = copyReturn();
             let newWin = this.save('new');
             let num;
-            for(i=0;i<this.length;i++){
-                if(newWin[i]==null){
+            for (i = 0; i < this.length; i++) {
+                if (newWin[i] == null) {
                     copy1.Btitle = `w${i}`;
                     copy1.BclassName = `w${i}`;
                     num = i;
@@ -202,7 +168,7 @@ let Mwindow = {
                 }
             }
             newWin[num] = copy1;
-            for(k=0;k<this.length;k++){
+            for (k = 0; k < this.length; k++) {
                 newWin[k] = wBmatchWinArray('makeSetToArray', newWin[k]);
             }
             localStorage.setItem('winArray', JSON.stringify(newWin));
@@ -210,42 +176,59 @@ let Mwindow = {
 
         } else if (option == 'editSave') {
             let win = this.save('new');
-            
             let nn = set.target;
             let setOb = win[nn];
-
             for (let key in set) {
                 if (setOb[key] != null && key != 'target') {
-                    console.log(key, setOb[key],set[key]);
                     setOb[key] = set[key];
                 }
             }
             win[nn] = setOb;
             newWin = [];
-            for(i=0;i<this.length;i++){
+            for (i = 0; i < this.length; i++) {
+                win[i] = wBmatchWinArray('makeSetToArray', win[i]);
+            }
+            localStorage.setItem('winArray', JSON.stringify(win));
+        } else if (option == 'newTap') {//newnewnew
+            let win = this.save('new');
+            let nn = set.target;
+            let tapAraay = win[nn].BtapArray;
+            let lastN = null;
+            for (i = 0; i < tapAraay.length; i++) {
+                if (tapAraay[i] != null) {
+                    if (lastN <= tapAraay[i][2]) {
+                        lastN = tapAraay[i][2];
+                    }
+                }
+            }
+            if (lastN == null) {
+                lastN = 0;
+            } else {
+                lastN += 1;
+            }
+            for (i = 0; i < tapAraay.length; i++) {
+                if (tapAraay[i] == null) {
+                    tapAraay[i] = [
+                        `w${set.target}_${i}_${set.tapType}`,
+                        `${set.name}`,
+                        lastN
+                    ];
+                    break;
+                }
+            }
+            for (i = 0; i < this.length; i++) {
                 win[i] = wBmatchWinArray('makeSetToArray', win[i]);
             }
             localStorage.setItem('winArray', JSON.stringify(win));
         }
-
     },
-
-    make: function (option, winArray) {
-
-    },
-    edit: function () {
-
-    },
-    copy: function () {
-
-    }
 }
 
 function re(value) {
     return value;
 }
 //window table =======================
-function newTapBtn(text) {
+function newTapBtn(text, option) {
     td = {
         type: 'td',
         style_BrowLine_borderBottom: `${wB.BrowLine}`,
@@ -255,14 +238,22 @@ function newTapBtn(text) {
         btn1: btn = {
             type: 'button',
             innerText: `${text}`,
-            event: 'newWindow:click',
             style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
             style_textAlign: 'textAlign:left',
             style_width: 'width:100%',
             style_height: 'height:20px',
+            style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+            style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+            style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+            style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
             className_BbtnClassName: `${wB.BbtnClassName}`,
             event_out: 'mouseoverEvent:mouseover',
             event_in: 'mouseoutEvent:mouseout',
+        }
+    }
+    if (option != null) {
+        for (const key in option) {
+            td.btn1[key] = option[key];
         }
     }
     return td;
@@ -270,7 +261,14 @@ function newTapBtn(text) {
 
 //style:'fontSize:1em', style_2:'border:0', style_3:'appearance:none',
 function returnSelectOb(array, option) {
-    let select = { type: 'select' };
+    let select = {
+        type: 'select',
+        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+        className_BbtnClassName: `${wB.BbtnClassName}`,
+    };
     if (option != null) {
         for (const key in option) {
             select[key] = option[key];
@@ -319,7 +317,12 @@ let w = {
                         className_BtitleBtnClassName: `winTitle_plsBtn:#${wB.BbtnHover}:#${wB.BwinBack}`,
                         event_out: 'mouseoverEvent:mouseover',
                         event_in: 'mouseoutEvent:mouseout',
-                        style_BwinFontColor_color : '',
+                        style_BwinFontColor_color: '',
+                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+                        className_BbtnClassName: `${wB.BbtnClassName}`,
                     },
                 },
                 td_titleBtn: td = {
@@ -337,6 +340,11 @@ let w = {
                         style_BtitleBack_backgroundColor: `background-color:#${wB.BtitleBack}`,
                         style_textAlign: 'textAlign:left',
                         className: 'winTitle_titleBtn',
+                        style_BtitleFontSize_fontSize: `${wB.BwinFontSize}`,
+                        style_BtitleFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                        style_BtitleFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                        style_BtitleFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+                        className_BbtnClassName: `${wB.BbtnClassName}`,
                     },
                     titleEditForm: form1 = {
                         type: 'form',
@@ -345,6 +353,10 @@ let w = {
                         event: 'titleNameChange:submit',
                         input: input_1 = {
                             type: 'input',
+                            style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                            style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                            style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                            style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                         }
                     },
                 }
@@ -379,10 +391,15 @@ let w = {
                             className_BbtnClassName: `${wB.BbtnClassName}`,
                             event_out: 'mouseoverEvent:mouseover',
                             event_in: 'mouseoutEvent:mouseout',
+                            style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                            style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                            style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                            style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+                            className_BbtnClassName: `${wB.BbtnClassName}`,
                         },
                     },
-                    td1: td = newTapBtn('윈도'),
-                    td2: td = newTapBtn('메모'),
+                    td1: td = newTapBtn('윈도', { event: 'newWindow:click', }),
+                    td2: td = newTapBtn('메모', { event: 'newTapEvent:click', value: 's1' }),//newenw
                     td3: td = newTapBtn('계산'),
                     td4: td = newTapBtn('링크'),
                     td5: td = newTapBtn('달력'),
@@ -422,6 +439,10 @@ let w = {
                                 event_2: 'selectBeforAfterBtn:click',
                                 style_width: 'width:20px',
                                 style_height: 'height:20px',
+                                style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                             },
                         },
                         td2: td = {
@@ -437,6 +458,10 @@ let w = {
                                 className_BbtnClassName: `${wB.BbtnClassName}`,
                                 event_out: 'mouseoverEvent:mouseover',
                                 event_in: 'mouseoutEvent:mouseout',
+                                style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                             }),
                             nextBtn: button = {
                                 type: 'button',
@@ -448,7 +473,11 @@ let w = {
                                 className_BbtnClassName: `${wB.BbtnClassName}`,
                                 event: 'mouseoverEvent:mouseover',
                                 event_1: 'mouseoutEvent:mouseout',
-                                event_2: 'selectBeforAfterBtn:click'
+                                event_2: 'selectBeforAfterBtn:click',
+                                style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                             },
                         },
                     },
@@ -472,72 +501,131 @@ let w = {
                                     className: 'wForm1',
                                     event: 'editWin:submit',
 
-                                    pre1: winBackColor = { type: 'pre', innerText: 'background color : ', style: 'display:inline-block' },
+                                    pre1: winBackColor = {
+                                        type: 'pre', innerText: 'background color : ',
+                                        style: 'display:inline-block',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+                                    },
                                     input1: winBackColor = {
                                         type: 'input',
                                         kind: 'color',
                                         style: 'display:inline-block',
                                         event_1: 'editWin:input',
                                         className: 'wBackColor',
-                                        value_BwinBack:`#${wB.BwinBack}`,
+                                        value_BwinBack: `#${wB.BwinBack}`,
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
 
                                     br33: br = { type: 'span', innerText: '\n' },
-                                    pre33: fontColor = { type: 'pre', innerText: 'font color : ', style: 'display:inline-block' },
+                                    pre33: fontColor = {
+                                        type: 'pre', innerText: 'font color : ',
+                                        style: 'display:inline-block',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+                                    },
                                     input33: input = {
                                         type: 'input',
                                         kind: 'color',
                                         className: 'wFontColor',
                                         event_1: 'editWin:input',
-                                        value_BwinFontColor:`#${wB.BwinFontColor}`,
-
+                                        value_BwinFontColor: `#${wB.BwinFontColor}`,
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
 
                                     br_htmlBack: br = { type: 'span', innerText: '\n' },
                                     pre_htmlBack: pre = {
                                         type: 'pre',
-                                        innerText: 'html background color : ', style: 'display:inline-block'
+                                        innerText: 'html background color : ',
+                                        style: 'display:inline-block',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
                                     input_htmlBack: input = {
                                         type: 'input',
                                         kind: 'color',
                                         className: 'htmlBackColor',
                                         event_1: 'editWin:input',
-                                        value_BhtmlBack:`#${wB.BhtmlBack}`,
-
+                                        value_BhtmlBack: `#${wB.BhtmlBack}`,
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
 
                                     br_rowLine: br = { type: 'span', innerText: '\n' },
-                                    pre_rowLine: rowLineColor = { type: 'pre', innerText: 'row line color : ', style: 'display:inline-block', },
+                                    pre_rowLine: rowLineColor = {
+                                        type: 'pre', innerText: 'row line color : ',
+                                        style: 'display:inline-block',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+                                    },
                                     input_rowLine: input = {
                                         type: 'input',
                                         kind: 'color',
                                         className: 'wRowLineColor',
                                         event_1: 'editWin:input',
-                                        value_BlineRowColor:`#${wB.BlineRowColor}`,
+                                        value_BlineRowColor: `#${wB.BlineRowColor}`,
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
 
                                     br_colLineLine: br = { type: 'span', innerText: '\n' },
-                                    pre_colLine: rowLineColor = { type: 'pre', innerText: 'col line color : ', style: 'display:inline-block' },
+                                    pre_colLine: rowLineColor = {
+                                        type: 'pre', innerText: 'col line color : ',
+                                        style: 'display:inline-block',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+                                    },
                                     input_colLine: input = {
                                         type: 'input',
                                         kind: 'color',
                                         className: 'wColLineColor',
                                         event_1: 'editWin:input',
-                                        value_BlineColColor:`#${wB.BhtmlBack}`,
+                                        value_BlineColColor: `#${wB.BhtmlBack}`,
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
 
                                     br2: br = { type: 'span', innerText: '\n' },
                                     pre3: titleBack = {
                                         type: 'pre',
                                         innerText: 'title background color : ', style: 'display:inline-block',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
                                     input3: titleback = {
                                         type: 'input',
                                         kind: 'color',
                                         className: 'wTitleBackColor',
                                         event_1: 'editWin:input',
-                                        value_BtitleBack:`#${wB.BtitleBack}`,
+                                        value_BtitleBack: `#${wB.BtitleBack}`,
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
 
                                     br_title: br = { type: 'span', innerText: '\n' },
@@ -545,59 +633,109 @@ let w = {
                                         type: 'pre',
                                         innerText: 'title font color : ',
                                         style: 'display:inline-block',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
                                     input_title: titleFontColor = {
                                         type: 'input', kind: 'color',
                                         className: 'wTitleFontColor',
                                         event_1: 'editWin:input',
-                                        value_BtitleFontColor:`#${wB.BtitleFontColor}`,
+                                        value_BtitleFontColor: `#${wB.BtitleFontColor}`,
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
 
                                     br11: br = { type: 'span', innerText: '\n' },
                                     pre22: btnHoverColor = {
                                         type: 'pre',
                                         innerText: 'button hover color : ', style: 'display:inline-block',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
                                     input22: HoverBackColor = {
                                         type: 'input', kind: 'color',
                                         event_1: 'editWin:input',
                                         className: 'wBtnHoverBackColor',
-                                        value_BbtnHover:`#${wB.BbtnHover}`,
+                                        value_BbtnHover: `#${wB.BbtnHover}`,
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
 
                                     br1: br = { type: 'span', innerText: '\n' },
                                     pre2: btnHoverFontColor = {
                                         type: 'pre',
-                                        innerText: 'button hover font color : ', style: 'display:inline-block'
+                                        innerText: 'button hover font color : ', style: 'display:inline-block',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
                                     input2: input = {
                                         type: 'input', kind: 'color',
                                         className: 'wBtnHoverFontColor',
                                         event_1: 'editWin:input',
-                                        value_BbtnHoverfontColor:`#${wB.BbtnHoverfontColor}`,
+                                        value_BbtnHoverfontColor: `#${wB.BbtnHoverfontColor}`,
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
 
                                     br4: br = { type: 'span', innerText: '\n' },
-                                    pre4: basicColor = { type: 'pre', innerText: 'basic design : ', style: 'display:inline-block' },
+                                    pre4: basicColor = {
+                                        type: 'pre', innerText: 'basic design : ',
+                                        style: 'display:inline-block',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+                                    },
                                     basicColor1: select = {
                                         type: 'select',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                         option1: op = { type: 'option', innerText: 'right mode' },
                                         option2: op = { type: 'option', innerText: 'dark mode' },
                                         option3: op = { type: 'option', innerText: 'other window color' },
                                     },
                                     basicColor2: select = {
                                         type: 'select',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                         option1: op = { type: 'option', innerText: 'yellow memo' },
                                         option2: op = { type: 'option', innerText: 'blue memo' },
                                     },
                                     basicColor3: select = {
                                         type: 'select',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                         option1: op = { type: 'option', innerText: 'w0' },
                                         option2: op = { type: 'option', innerText: 'w1' },
                                     },
 
                                     br3: br = { type: 'span', innerText: '\n' },
-                                    sub1: saveBtn = { type: 'input', kind: 'submit', value: 'save option' },
+                                    sub1: saveBtn = {
+                                        type: 'input', kind: 'submit',
+                                        value: 'save option',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+                                    },
                                 },
                                 form2: sizeAndLine = {
                                     type: 'form', style: 'display:none',
@@ -607,7 +745,10 @@ let w = {
                                         type: 'pre',
                                         innerText: 'basic width size : ',
                                         style: 'display:inline-block',
-
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
                                     input1: width = {
                                         type: 'input',
@@ -615,7 +756,11 @@ let w = {
                                         style_width: 'width:40px',
                                         event: 'editWin:input',
                                         className: 'wWidthSize',
-                                        value_BwinWidth:`${wB.BwinWidth}`,
+                                        value_BwinWidth: `${wB.BwinWidth}`,
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
                                     br1: br = { type: 'span', innerText: '\n' },
 
@@ -623,7 +768,10 @@ let w = {
                                         type: 'pre',
                                         innerText: 'basic height size : ',
                                         style: 'display:inline-block',
-
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
                                     input2: height = {
                                         type: 'input',
@@ -631,118 +779,230 @@ let w = {
                                         style_width: 'width:40px',
                                         event: 'editWin:input',
                                         className: 'wHeightSize',
-                                        value_BwinHeight:`${wB.BwinHeight}`,
+                                        value_BwinHeight: `${wB.BwinHeight}`,
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
                                     br2: br = { type: 'span', innerText: '\n' },
 
-                                    pre3: basicRow = { type: 'pre', innerText: 'basic row line Thickness : ', style: 'display:inline-block' },
+                                    pre3: basicRow = {
+                                        type: 'pre', innerText: 'basic row line Thickness : ',
+                                        style: 'display:inline-block',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+                                    },
                                     input4: rowLine = {
                                         type: 'input',
                                         kind: 'number',
                                         style_width: 'width:40px',
                                         event: 'editWin:input',
-                                        className: 'wRowLineThik',
-                                        value_BlineRowWeight:`${wB.BlineRowWeight}`,
+                                        className: 'wRowLineThik', step: '0.1',
+                                        value_BlineRowWeight: `${wB.BlineRowWeight}`,
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
                                     br3: br = { type: 'span', innerText: '\n' },
 
-                                    pre4: basicCol = { type: 'pre', innerText: 'basic col line Thickness : ', style: 'display:inline-block' },
+                                    pre4: basicCol = {
+                                        type: 'pre', innerText: 'basic col line Thickness : ',
+                                        style: 'display:inline-block',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+                                    },
                                     input6: colLine = {
                                         type: 'input',
                                         kind: 'number',
                                         style_width: 'width:40px',
                                         event: 'editWin:input',
-                                        className: 'wColLineThik',
-                                        value_BlineColWeight:`${wB.BlineColWeight}`,
+                                        className: 'wColLineThik', step: '0.1',
+                                        value_BlineColWeight: `${wB.BlineColWeight}`,
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
                                     br4: br = { type: 'span', innerText: '\n' },
 
-                                    sub1: sub = { type: 'input', kind: 'submit', value: 'save option' },
+                                    sub1: sub = {
+                                        type: 'input', kind: 'submit',
+                                        value: 'save option',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+                                    },
                                 },
+                                //3333
                                 form3: textSize = {
                                     type: 'form', style: 'display:none',
                                     className: 'wForm3',
                                     event: 'editWin:submit',
-
-
-                                    pre1: basicSizeWeight = { 
-                                        type: 'pre', 
-                                        innerText: 'basic text size & weight : ', 
-                                        style: 'display:inline-block' 
+                                    pre1: basicSizeWeight = {
+                                        type: 'pre',
+                                        innerText: 'basic text size & weight : ',
+                                        style: 'display:inline-block',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
                                     input1: size = {
-                                            type: 'input',
-                                            kind: 'number',
+                                        type: 'input',
+                                        kind: 'number',
                                         style_width: 'width:40px',
                                         className: 'wTextSize',
                                         event: 'editWin:input',
-                                        value_BwinFontSize:`${wB.BwinFontSize}`,
-
+                                        value_BwinFontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
                                     input11: weight = returnSelectOb(fontWeight, {
                                         className: 'wTextWeight',
                                         event: 'editWin:input',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     }),
                                     br1: br = { type: 'span', innerText: '\n' },
 
                                     pre2: basicFontStyle = {
                                         type: 'pre',
                                         innerText: 'basic font family & style : ',
-                                        style: 'display:inline-block'
+                                        style: 'display:inline-block',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
+
                                     select2: family = returnSelectOb(fontFamily, {
                                         className: 'wFontType',
                                         event: 'editWin:input',
+                                        selectedIndex_BwinFontFamily: '',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     }),
                                     select22: style = returnSelectOb(fontStyle, {
                                         className: 'wFontKind',
                                         event: 'editWin:input',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     }),
                                     br2: br = { type: 'span', innerText: '\n' },
 
-                                    pre3: titleFontSizeWeight = { 
-                                        type: 'pre', 
+                                    pre3: titleFontSizeWeight = {
+                                        type: 'pre',
                                         innerText: 'title text size & weight : ',
-                                        style: 'display:inline-block' },
-                                    input3: fitleFontSize = { 
-                                        type: 'input', kind: 'number', 
-                                        style_width: 'width:40px' ,
-                                        value_BtitleFontSize:`${wB.BtitleFontSize}`,
+                                        style: 'display:inline-block',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
-                                    input33: weight = returnSelectOb(fontWeight),
+                                    input3: titleFontSize = {
+                                        type: 'input', kind: 'number',
+                                        style_width: 'width:40px',
+                                        className: 'tFontSize',
+                                        event: 'editWin:input',
+                                        value_BtitleFontSize: `${wB.BtitleFontSize}`,
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+                                    },
+                                    input33: weight = returnSelectOb(fontWeight, {
+                                        className: 'tFontWeight',
+                                        event: 'editWin:input',
+                                    }),
                                     br3: br = { type: 'span', innerText: '\n' },
 
-                                    pre4: titleFontKind = { 
-                                        type: 'pre', 
-                                        innerText: 'title font type & kind : ', 
-                                        style: 'display:inline-block' 
+                                    pre4: titleFontKind = {
+                                        type: 'pre',
+                                        innerText: 'title font type & kind : ',
+                                        style: 'display:inline-block',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
-                                    select4: family = returnSelectOb(fontFamily),
-                                    select44: style = returnSelectOb(fontStyle),
+                                    select4: family = returnSelectOb(fontFamily, {
+                                        className: 'tFontFamily',
+                                        event: 'editWin:change',
+                                    }),
+                                    select44: style = returnSelectOb(fontStyle, {
+                                        className: 'tFontStyle',
+                                        event: 'editWin:change',
+                                    }),
                                     br4: br = { type: 'span', innerText: '\n' },
 
-                                    sub1: sub = { 
-                                        type: 'input', 
-                                        kind: 'submit', 
+                                    sub1: sub = {
+                                        type: 'input',
+                                        kind: 'submit',
                                         value: 'save option',
                                         className: 'wForm3_submit',
                                         event: 'editWin:submit',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
                                     },
 
                                 },
                                 form4: delWin = {
                                     type: 'form', style: 'display:none',
                                     className: 'wForm4',
-                                    pre1: tapText = { type: 'pre', innerText: 'del this window', style: 'display:inline-block' },
+                                    pre1: tapText = {
+                                        type: 'pre', innerText: 'del this window',
+                                        style: 'display:inline-block',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+                                    },
                                     br4: br = { type: 'span', innerText: '\n' },
-                                    sub1: sub = { type: 'input', kind: 'submit', value: 'del this window' },
+                                    sub1: sub = {
+                                        type: 'input', kind: 'submit',
+                                        value: 'del this window',
+                                        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+                                        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+                                        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+                                        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+                                    },
                                 }
-                            }
-
+                            },
                         },
                     }
                 }
             }
+        }
+    },
+    div : tapPlace = {
+        type: 'div',
+        table : tapBtnTable = {
+            type: 'table',
+            tr : tapBtnTr = {
+                type: 'tr',
+                className :'tapBtnTr',
+            }
+        },
+        div : tapDiv = {
+            type: 'div',
+            className:'tapDiv',
         }
     }
 }
@@ -750,17 +1010,35 @@ let w = {
 //pluss function =======================
 function newWindow(event) {
     let newWin = Mwindow.save('plusNew');
-    wB.BclassName = newWin.BclassName;
-    wB.Btitle = newWin.Btitle; 
-    let aaaa = makeHtml(w, newWin);
+
+    let set = copyReturn();
+
+    for (key in set) {
+        if (set[key] != null && newWin[key] != null) {
+            set[key] = newWin[key];
+        }
+    }
+    set = checkValue(set);
+    let aaaa = makeHtml(w, set);
+
     main.appendChild(aaaa);
+}
+
+function newTapEvent(event) {
+    let winName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className
+    let set = {};
+    let n = winName.charAt(1);
+    set.target = Number(n);
+    set.tapType = event.target.value;
+    set.name = event.target.innerText;
+    Mwindow.save('newTap', set);
 }
 
 function editWin(event) {
     const inputValue = event.target.value;
     const inputOption = event.target.className;
     const winName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className;
-    
+
     event.preventDefault();
     let form = document.querySelector(`.${winName} .${inputOption}`);
     let Bw = {};
@@ -768,17 +1046,17 @@ function editWin(event) {
     let regex = /[^0-9]/g;
     let winN = wName.replace(regex, "");
 
-    function style(obArray, key, value,){
-        for(i = 0; i < obArray.length; i++){
+    function style(obArray, key, value,) {
+        for (i = 0; i < obArray.length; i++) {
             obArray[i].style[`${key}`] = value;
         }
     }
-    function className(obArray, value){
-        for(i = 0; i < obArray.length; i++){
+    function className(obArray, value) {
+        for (i = 0; i < obArray.length; i++) {
             obArray[i].className = value;
         }
     }
-    function colorValue(value){
+    function colorValue(value) {
         let regex = /#/g;
         let change = value.replace(regex, "");
         console.log(change);
@@ -789,22 +1067,21 @@ function editWin(event) {
     if (inputOption == 'wBackColor') {
         let table = document.querySelectorAll(`.${winName} table`);
         style(table, 'backgroundColor', inputValue);
-        
+
         let btn = document.querySelectorAll(`.${winName} button`);
         const btnColor = btn[0].className.split(':');
         let line = `${winName}_btn:${btnColor[1]}:${inputValue}:${btnColor[3]}:${btnColor[4]}`;
         let select = document.querySelectorAll(`.${winName} select`);
-        
-        const titleColorInput =  document.querySelector(`.${winName} .wTitleBackColor`);
-        titleColorInput.value = inputValue;
-        console.log(titleColorInput);
 
-        style(btn,'backgroundColor',inputValue);
+        const titleColorInput = document.querySelector(`.${winName} .wTitleBackColor`);
+        titleColorInput.value = inputValue;
+
+        style(btn, 'backgroundColor', inputValue);
         className(btn, line);
 
-        style(select,'backgroundColor',inputValue);
+        style(select, 'backgroundColor', inputValue);
         className(select, line);
-        
+
         let title_rowCol = document.querySelector(`.${winName} .title_rowCol`);
         let title_plsBtn = title_rowCol.childNodes[0];
         let title_row = document.querySelector(`.${winName} .title_row`);
@@ -822,10 +1099,10 @@ function editWin(event) {
         let line = `${winName}_btn:${btnColor[1]}:${btnColor[2]}:${btnColor[3]}:${inputValue}`;
         style(pre, 'color', inputValue);
 
-        style(btn,'color',inputValue);
+        style(btn, 'color', inputValue);
         className(btn, line);
 
-        style(select,'color',inputValue);
+        style(select, 'color', inputValue);
         className(select, line);
 
     } else if (inputOption == 'htmlBackColor') {
@@ -881,7 +1158,7 @@ function editWin(event) {
         let line = `${winName}_btn:${inputValue}:${btnColor[2]}:${btnColor[3]}:${btnColor[4]}`;
 
         for (i = 0; i < text2.length; i++) {
-            text2[i].className = line;            
+            text2[i].className = line;
         }
         for (i = 0; i < text3.length; i++) {
             text3[i].className = line;
@@ -892,7 +1169,7 @@ function editWin(event) {
         let text3 = document.querySelectorAll(`.${winName} select`);
         const btnColor = text2[3].className.split(':');
         let line = `${winName}_btn:${btnColor[1]}:${btnColor[2]}:${inputValue}:${btnColor[4]}`;
-        
+
         className(text2, line);
         className(text3, line);
 
@@ -924,7 +1201,7 @@ function editWin(event) {
         let beforeSet = before.split(' ');
         let line = `${inputValue}px solid ${beforeSet[2]} ${beforeSet[3]} ${beforeSet[4]}`;
 
-        style(row, 'borderBottom',line);
+        style(row, 'borderBottom', line);
         style(rowCol, 'borderBottom', line);
 
         let title_rowCol = document.querySelector(`.${winName} .title_rowCol`);
@@ -967,10 +1244,10 @@ function editWin(event) {
         let btn = document.querySelectorAll(`.${winName} button`);
         let select = document.querySelectorAll(`.${winName} select`);
         let input = document.querySelectorAll(`.${winName} input`);
+        let tt = [pre, btn, select, input];
 
-        let target = [pre, btn, select, input];
-        for(j=0;j<target.length;j++){
-            style(target[i], 'fontWeight', inputValue);
+        for (j = 0; j < tt.length; j++) {
+            style(tt[j], 'fontWeight', inputValue);
         }
 
     } else if (inputOption == 'wFontType') {
@@ -978,10 +1255,10 @@ function editWin(event) {
         let btn = document.querySelectorAll(`.${winName} button`);
         let select = document.querySelectorAll(`.${winName} select`);
         let input = document.querySelectorAll(`.${winName} input`);
-        
+
         let target = [pre, btn, select, input];
-        for(j=0;j<target.length;j++){
-            style(target[i], 'fontFamily', inputValue);
+        for (j = 0; j < target.length; j++) {
+            style(target[j], 'fontFamily', inputValue);
         }
 
     } else if (inputOption == 'wFontKind') {
@@ -991,35 +1268,64 @@ function editWin(event) {
         let input = document.querySelectorAll(`.${winName} input`);
 
         let target = [pre, btn, select, input];
-        for(j=0;j<target.length;j++){
-            style(target[i], 'fontStyle', inputValue);
+        for (j = 0; j < target.length; j++) {
+            style(target[j], 'fontStyle', inputValue);
         }
 
-    } else if(inputOption == 'wForm1'){
+    } else if (inputOption == 'tFontSize') {
+        let btn = document.querySelectorAll(`.${winName} button`);
+        let value;
+        if (inputValue.length >= 0 && inputValue >= 5) {
+            value = inputValue;
+        } else {
+            value = 10
+        }
+        btn[0].style.fontSize = `${value}px`;
+        btn[1].style.fontSize = `${value}px`;
+    } else if (inputOption == 'tFontWeight') {
+        let btn = document.querySelectorAll(`.${winName} button`);
+        btn[0].style.fontFamily = inputValue;
+        btn[1].style.fontFamily = inputValue;
+    } else if (inputOption == 'tFontFamily') {
+        let btn = document.querySelectorAll(`.${winName} button`);
+        btn[0].style.fontFamily = inputValue;
+        btn[1].style.fontFamily = inputValue;
+    } else if (inputOption == 'tFontStyle') {
+        let btn = document.querySelectorAll(`.${winName} button`);
+        btn[0].style.fontStyle = inputValue;
+        btn[1].style.fontStyle = inputValue;
+
+    } else if (inputOption == 'wForm1') {
         Bw.target = Number(winN);
-        Bw.BwinBack           = colorValue(form.elements[0].value);
-        Bw.BwinFontColor      = colorValue(form.elements[1].value);
+        Bw.BwinBack = colorValue(form.elements[0].value);
+        Bw.BwinFontColor = colorValue(form.elements[1].value);
         //Bw.BhtmlBack        = colorValue(form.elements[2].value);
-        Bw.BlineRowColor      = colorValue(form.elements[3].value);
-        Bw.BlineColColor      = colorValue(form.elements[4].value);
-        Bw.BtitleBack         = colorValue(form.elements[5].value);
-        Bw.BtitleFontColor    = colorValue(form.elements[6].value);
-        Bw.BbtnHover          = colorValue(form.elements[7].value);
+        Bw.BlineRowColor = colorValue(form.elements[3].value);
+        Bw.BlineColColor = colorValue(form.elements[4].value);
+        Bw.BtitleBack = colorValue(form.elements[5].value);
+        Bw.BtitleFontColor = colorValue(form.elements[6].value);
+        Bw.BbtnHover = colorValue(form.elements[7].value);
         Bw.BbtnHoverfontColor = colorValue(form.elements[8].value);
         Mwindow.save('editSave', Bw);
-    } else if(inputOption =='wForm2'){
+    } else if (inputOption == 'wForm2') {
         Bw.target = Number(winN);
-        Bw.BwinWidth      = form.elements[0].value;
-        Bw.BwinHeight     = form.elements[1].value;
+        Bw.BwinWidth = form.elements[0].value;
+        Bw.BwinHeight = form.elements[1].value;
         Bw.BlineRowWeight = form.elements[2].value;
         Bw.BlineColWeight = form.elements[3].value;
         Mwindow.save('editSave', Bw);
-    } else if(inputOption == 'wForm3'){
+    } else if (inputOption == 'wForm3') {
         Bw.target = Number(winN);
         Bw.BwinFontSize = form.elements[0].value;
-        Bw.BwinFontWeight = form.elements[1].value;
-        Bw.BwinFontFamily = form.elements[2].value;
-        Bw.BwinFontStyle = form.elements[3].value;
+        Bw.BwinFontWeight = form.elements[1].selectedIndex;
+        Bw.BwinFontFamily = form.elements[2].selectedIndex;
+        Bw.BwinFontStyle = form.elements[3].selectedIndex;
+
+        Bw.BtitleFontSize = form.elements[4].value;
+        Bw.BtitleFontWeight = form.elements[5].selectedIndex;
+        Bw.BtitleFontFamily = form.elements[6].selectedIndex;
+        Bw.BtitleFontStyle = form.elements[7].selectedIndex;
+
         Mwindow.save('editSave', Bw);
     }
     //wRowLineColor
@@ -1032,7 +1338,7 @@ function editWin(event) {
     //wBtnHoverFontColor
 }
 
-function titleNameChange(event){
+function titleNameChange(event) {
     event.preventDefault();
     let wName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.className;
 
@@ -1146,8 +1452,10 @@ function makeEvent(ob, option) {
         ob.addEventListener(`${clickOption}`, selectBeforAfterBtn);
     } else if (option1 == 'editWin') {
         ob.addEventListener(`${clickOption}`, editWin);
-    } else if(option1 == 'titleNameChange'){
+    } else if (option1 == 'titleNameChange') {
         ob.addEventListener(`${clickOption}`, titleNameChange);
+    } else if (option1 == 'newTapEvent') {
+        ob.addEventListener(`${clickOption}`, newTapEvent);
     }
     return ob;
 }
@@ -1178,7 +1486,7 @@ function makeInnerText(ob, text) {
     ob.innerText = text;
     return ob;
 }
-function makeFunction(ob, option, value){
+function makeFunction(ob, option, value) {
     ob[`${option}`] = value;
     return ob;
 }
@@ -1205,16 +1513,20 @@ function makeHtml(ob, set) {
             newOb = makeAppend(newOb, child);
         } else if (target == 'string' && keyy == 'type') {
             newOb = makeOb(ob[key]);
-        }else if (target == 'string' && keyy == 'kind') {
+        } else if (target == 'string' && keyy == 'kind') {
             newOb = makeFunction(newOb, 'type', ob[key]);
         } else if (target == 'string' && keyy == 'value') {
             if (sett != null && sett.charAt(0) == 'B') {
-                if(newOb.type == 'number'){
+                if (newOb.type == 'number') {
                     let val = set[sett];
-                    let regex = /[^0-9]/g;
-                    let va = val.replace(regex, "");
+                    let regex = /[^0-9.]/g; let va;
+                    if (val != null) {
+                        va = val.replace(regex, "");
+                    } else {
+                        va = set[sett];
+                    }
                     newOb = makeFunction(newOb, keyy, va);
-                }else{
+                } else {
                     newOb = makeFunction(newOb, keyy, set[sett]);
                 }
             } else {
@@ -1223,21 +1535,18 @@ function makeHtml(ob, set) {
         } else if (target == 'string' && keyy == 'event') {
             newOb = makeEvent(newOb, ob[key]);
         } else if (target == 'string' && keyy == 'style') {
-            
-            if(sett!=null && sett.charAt(0) == 'B'){
+
+            if (sett != null && sett.charAt(0) == 'B') {
                 let setOp = keySorce.split('_')[2];
                 newOb = makeStyle(newOb, setOp, set[sett]);
-            }else{
+            } else {
                 let op = ob[key].split(':')[0];
                 let va = ob[key].split(':')[1];
-                newOb = makeStyle(newOb, op , va);
+                newOb = makeStyle(newOb, op, va);
             }
 
         } else {
             if (sett != null && sett.charAt(0) == 'B') {
-                if(keyy == 'className'){
-                    console.log(keyy, sett, set[sett])
-                }
                 newOb = makeFunction(newOb, keyy, set[sett]);
             } else {
                 newOb = makeFunction(newOb, keyy, ob[key]);
@@ -1258,13 +1567,178 @@ for (let i = 0; i < 10; i++) {
     if (array2[i] != null) {
         let set = copyReturn();
 
-        for(key in set){
-            if(set[key]!=null && array2[i][key]!=null){
+        for (key in set) {
+            if (set[key] != null && array2[i][key] != null) {
                 set[key] = array2[i][key];
             }
         }
         set = checkValue(set);
         let aaaa = makeHtml(w, set);
         main.appendChild(aaaa);
+
+        
+        let q = document.querySelector(`.${set.BclassName} .tapBtnTr`);
+        let tapTable = tapBtnMake(set);
+        let tapReal = makeHtml(tapTable, set);
+        q.appendChild(tapReal);
+
+        let tapEdit = {
+            type:'table',
+            tr:tr ={
+                type:'tr',
+                td : td= {
+                    type:'td',
+                    input:inputName={
+                        type:'input',
+                    }
+                }
+            }
+        }
+        let tapReal2 = makeHtml(tapEdit);
+        q.appendChild(tapReal2);
+
     }
+}
+function tapBtnMake(set){
+    let table = {
+        type:'table',
+        tr : tr = {
+            type:'tr',
+            td : tapEdit ={
+                type:'td',
+                button1:beforeBtn = {
+                    type:'button',
+                    innerText:'d'
+                },
+            },
+        },
+        tr2 : tapNameEdit = {
+            type:'tr',
+        }
+    }
+    for(j=0;j<set.BtapArray.length;j++){
+        if(set.BtapArray[j]!=null){
+            let td = {
+                type:'td',
+                button1:beforeBtn = {
+                    type:'button',
+                    innerText:'<'
+                },
+                radio : tapRadio = {
+                    type:'input',
+                    kind:'radio',
+                    id:set.BtapArray[j][0],
+                    name:`${set.BclassName}_tapBtn`,
+                    value:`${set.BtapArray[j][0]}`,
+                    style:'display:none',
+                },
+                label : tapLabel = {
+                    type:'label',
+                    htmlFor:set.BtapArray[j][0],
+                    innerText:set.BtapArray[j][1]
+                },
+                button2:nextBtn = {
+                    type:'button',
+                    innerText:'>'
+                },
+                button3:delBtn = {
+                    type:'button',
+                    innerText:'x',
+                    style:'display:none'
+                },
+            }
+            table.tr[`td${j}`] = td;
+        }
+    }
+    return table;
+}
+
+
+//tap-memo
+let TmemoOb = {
+    Btitle: 'w0',
+    BclassName: 'w0',
+    Bshow: true,
+
+    //color
+    BwinBack: 'FEF896',
+    BwinFontColor: '000000',
+    BhtmlBack: 'FFFFFF',
+
+    BlineRowColor: 'B8D993',
+    BlineColColor: 'ff8c82',
+
+    BtitleBack: 'FEF896',
+    BtitleFontColor: '000000',
+
+    BbtnHover: '999999',
+    BbtnHoverfontColor: '000000',
+
+    //size & line
+    BwinWidth: '456',
+    BwinHeight: null,
+
+    BlineRowWeight: '1.5',
+    BlineColWeight: '1.5',
+
+    //tap & title font
+    BwinFontSize: '13',
+    BwinFontWeight: 0,
+    BwinFontFamily: 1,
+    BwinFontStyle: 0,
+
+    BtitleFontSize: '13',
+    BtitleFontWeight: 0,
+    BtitleFontFamily: 1,
+    BtitleFontStyle: 0,
+}
+
+let Tmemo = {
+    save: function (option, set) {
+        if (option == 'pluss') {
+            //let getSave = localStorage.getItem('winArray');
+            //localStorage.setItem('winArray', JSON.stringify(newWinArray));
+            //getSave = JSON.parse(getSave);
+
+        } else if (option == '') {
+
+        } else if (option == 'plusNew') {
+            let copy1 = copyReturn();
+            let newWin = this.save('new');
+            let num;
+            for (i = 0; i < this.length; i++) {
+                if (newWin[i] == null) {
+                    copy1.Btitle = `w${i}`;
+                    copy1.BclassName = `w${i}`;
+                    num = i;
+                    break
+                }
+            }
+            newWin[num] = copy1;
+            for (k = 0; k < this.length; k++) {
+                newWin[k] = wBmatchWinArray('makeSetToArray', newWin[k]);
+            }
+            localStorage.setItem('winArray', JSON.stringify(newWin));
+            return copy1;
+
+        } else if (option == 'editSave') {
+            let win = this.save('new');
+
+            let nn = set.target;
+            let setOb = win[nn];
+
+            for (let key in set) {
+                if (setOb[key] != null && key != 'target') {
+                    console.log(key, setOb[key], set[key]);
+                    setOb[key] = set[key];
+                }
+            }
+            win[nn] = setOb;
+            newWin = [];
+            for (i = 0; i < this.length; i++) {
+                win[i] = wBmatchWinArray('makeSetToArray', win[i]);
+            }
+            localStorage.setItem('winArray', JSON.stringify(win));
+        }
+    },
 }
