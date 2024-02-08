@@ -206,6 +206,7 @@ let Mwindow = {
             } else {
                 lastN += 1;
             }
+            let tap;
             for (i = 0; i < tapAraay.length; i++) {
                 if (tapAraay[i] == null) {
                     tapAraay[i] = [
@@ -213,6 +214,7 @@ let Mwindow = {
                         `${set.name}`,
                         lastN
                     ];
+                    tap=tapAraay[i];
                     break;
                 }
             }
@@ -220,6 +222,7 @@ let Mwindow = {
                 win[i] = wBmatchWinArray('makeSetToArray', win[i]);
             }
             localStorage.setItem('winArray', JSON.stringify(win));
+            return tap; //ddd
         }
     },
 }
@@ -307,6 +310,8 @@ function titleBtn(option) {
 function input(option) {
     let input = {
         type: 'input',
+        style_border:'border:none',
+        placeholder:'text input',
         style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
         style_BwinFontColor_color: '',
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
@@ -360,6 +365,25 @@ function button(option) {
     }
     return button;
 }
+function radio(option){
+    let radio = {
+        type: 'button',
+        className_BbtnClassName: ``,
+        event_out: 'mouseoverEvent:mouseover',
+        event_in: 'mouseoutEvent:mouseout',
+        style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
+        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+    }
+    if (option != null) {
+        for (const key in option) {
+            radio[key] = option[key];
+        }
+    }
+    return radio;
+}
 
 let w = {
     type: 'div', className_BclassName: `${wB.BclassName}`,
@@ -399,7 +423,6 @@ let w = {
                         style_width: 'width:100%',
                         style_height: 'heigth:20px',
                         style_textAlign: 'textAlign:left',
-                        //className: 'winTitle_titleBtn',
                     }),
                     titleEditForm: form1 = {
                         type: 'form',
@@ -704,7 +727,7 @@ let w = {
 
                                 form4: delWin = {
                                     type: 'form', style: 'display:none',
-                                    className: 'wForm4',
+                                    className: 'wForm4', 
 
                                     pre_delWin: pre({ innerText: 'del this window', }),
                                     br_delWin: br = { type: 'span', innerText: '\n' },
@@ -722,7 +745,8 @@ let w = {
     div: tapPlace = {
         type: 'div',
         table: tapBtnTable = {
-            type: 'table',
+            type: 'table', style_border: 'borderCollapse:collapse', style_1: 'width:100%',
+            style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
             tr: tapBtnTr = {
                 type: 'tr',
                 className: 'tapBtnTr',
@@ -752,14 +776,14 @@ function newWindow(event) {
     main.appendChild(aaaa);
 }
 
-function newTapEvent(event) {
+function newTapEvent(event) {//ddd
     let winName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className
     let set = {};
     let n = winName.charAt(1);
     set.target = Number(n);
     set.tapType = event.target.value;
     set.name = event.target.innerText;
-    Mwindow.save('newTap', set);
+    let tap = Mwindow.save('newTap', set);
 }
 
 function editWin(event) {
@@ -1158,6 +1182,54 @@ function mouseoutEvent(event) {
     let fontColor = className.split(':')[4];
     target.style.color = fontColor;
 }
+
+function tapNameInputShow(event){
+    if(event.target.innerText == 'x'){
+        let nameTr = event.target.parentNode.parentNode.parentNode.previousSibling.childNodes[0];
+        
+        for(i=1;i<nameTr.childNodes.length-1;i++){
+            let display;
+            if(nameTr.childNodes[i].childNodes[4].style.display == 'none'){
+                nameTr.childNodes[i].childNodes[4].style.display = "inline-block";
+            }else{
+                nameTr.childNodes[i].childNodes[4].style.display = "none";
+            }            
+        }
+        return;
+    }
+    let nameTable;
+    let trNextBeforeBtns;
+    let innerValue;
+    nameTable = event.target.parentNode.parentNode.parentNode.nextSibling;
+    trNextBeforeBtns =  event.target.parentNode.parentNode;
+    if(nameTable.style.display == "none"){
+        nameTable.style.display = "block";
+
+        for(i=1;i<trNextBeforeBtns.childNodes.length-1;i++){
+            if(trNextBeforeBtns.childNodes[i].childNodes[1].checked == true){
+                innerValue = trNextBeforeBtns.childNodes[i].childNodes[2].innerText;
+            }
+            trNextBeforeBtns.childNodes[i].childNodes[0].style.display = "inline-block";
+            trNextBeforeBtns.childNodes[i].childNodes[3].style.display = "inline-block";
+            
+        }
+        nameTable.childNodes[0].childNodes[1].childNodes[0].childNodes[0].value = innerValue;
+    }else{
+        nameTable.style.display = "none";
+        for(i=1;i<trNextBeforeBtns.childNodes.length-1;i++){
+            trNextBeforeBtns.childNodes[i].childNodes[0].style.display = "none";
+            trNextBeforeBtns.childNodes[i].childNodes[3].style.display = "none";
+            trNextBeforeBtns.childNodes[i].childNodes[4].style.display = "none";
+        }
+    }
+}
+function tapMouseInEvent(event){
+    const beforeBtn = event.target.childNodes[0]
+    const nextBtn = event.target.childNodes[3]
+    beforeBtn.style.display = 'inline-block';
+    nextBtn.style.display = 'inline-block';
+    mouseoverEvent(event);
+}
 //make html function =======================
 function makeEvent(ob, option) {
     let option1 = option.split(':')[0];
@@ -1184,6 +1256,10 @@ function makeEvent(ob, option) {
         ob.addEventListener(`${clickOption}`, titleNameChange);
     } else if (option1 == 'newTapEvent') {
         ob.addEventListener(`${clickOption}`, newTapEvent);
+    }else if (option1 == 'tapNameInputShow') {
+        ob.addEventListener(`${clickOption}`, tapNameInputShow);
+    }else if (option1 == 'tapMouseInEvent') {
+        ob.addEventListener(`${clickOption}`, tapMouseInEvent);
     }
     return ob;
 }
@@ -1310,34 +1386,57 @@ for (let i = 0; i < 10; i++) {
         let tapReal = makeHtml(tapTable, set);
         q.appendChild(tapReal);
 
-        let tapEdit = {
-            type: 'table',
-            tr: tr = {
-                type: 'tr',
-                td: td = {
-                    type: 'td',
-                    input: inputName = {
-                        type: 'input',
-                    }
-                }
-            }
-        }
-        let tapReal2 = makeHtml(tapEdit);
+
+        let tapEdit = tapNameEditTable();
+        let tapReal2 = makeHtml(tapEdit, set);
         q.appendChild(tapReal2);
 
     }
 }
+//tap btn ===========================================================
+function tapNameEditTable(){
+    let tapEdit = {
+        type: 'table',style:'width:100%',style_display:'display:none',
+        tr: tr = {
+            type: 'tr',
+            td: td = {
+                type: 'td',
+                style_border: 'borderCollapse:collapse',
+                style_BrowLine_borderBottom: `${wB.BrowLine}`,
+                style_BcolLine_borderRight: `${wB.BcolLine}`,
+                btn : button({
+                    innerText:'x', style_width:'width:20px', 
+                    style_height: 'height:20px',
+                    event_tapclick:'tapNameInputShow:click',
+                }),
+            },
+            td2:td ={
+                type: 'td',style_width:'width:100%',
+                style_BrowLine_borderBottom: `${wB.BrowLine}`,
+                form:form = {
+                    type:'form',
+                    input:input({className:'tapNameInput', style_width:'width:89%'}),
+                    sub:input({kind:'submit', value:'sub'}),
+                }
+                
+            }
+        }
+    }
+    return tapEdit;
+}
+
+//ddd
 function tapBtnMake(set) {
     let table = {
-        type: 'table',
+        type: 'table',style_border: 'borderCollapse:collapse',style:'width:100%',
+        
         tr: tr = {
             type: 'tr',
             td: tapEdit = {
-                type: 'td',
-                button1: beforeBtn = {
-                    type: 'button',
-                    innerText: 'd'
-                },
+                type: 'td', style_border: 'borderCollapse:collapse',style_width: 'width:20px',
+                style_BrowLine_borderBottom: `${wB.BrowLine}`,
+                style_BcolLine_borderRight: `${wB.BcolLine}`,
+                button_showEditTap: button({innerText:' ', event:'tapNameInputShow:click'}),
             },
         },
         tr2: tapNameEdit = {
@@ -1348,10 +1447,10 @@ function tapBtnMake(set) {
         if (set.BtapArray[j] != null) {
             let td = {
                 type: 'td',
-                button1: beforeBtn = {
-                    type: 'button',
-                    innerText: '<'
-                },
+                button_before: button({
+                    innerText:'<',style: 'display:none',
+                    style_width:'width:15px',style_height:'height:20px',
+                }),
                 radio: tapRadio = {
                     type: 'input',
                     kind: 'radio',
@@ -1360,27 +1459,40 @@ function tapBtnMake(set) {
                     value: `${set.BtapArray[j][0]}`,
                     style: 'display:none',
                 },
-                label: tapLabel = {
+                label: radio({
                     type: 'label',
                     htmlFor: set.BtapArray[j][0],
-                    innerText: set.BtapArray[j][1]
-                },
-                button2: nextBtn = {
-                    type: 'button',
-                    innerText: '>'
-                },
-                button3: delBtn = {
-                    type: 'button',
-                    innerText: 'x',
-                    style: 'display:none'
-                },
+                    innerText: set.BtapArray[j][1],
+                    event_tapclick:'tapNameInputShow:dblclick',
+                    style_paddingLeft:'paddingLeft:5px'
+                }),
+                button_next: button({
+                    innerText:'>',style: 'display:none',
+                    style_width:'width:15px',style_height:'height:20px',
+                }),
+                button_x: button({innerText:'x', style: 'display:none'}),
+            }
+            if(j==0){
+                //td.style_BrowLine_borderBottom= `${wB.BrowLine}`;
+                td.style_BcolLine_borderRight= `${wB.BcolLine}`;
+                td.style_BcolLine_borderLeft= `${wB.BcolLine}`;
+                td.radio.checked = 'true';
+            }else{
+                td.style_BrowLine_borderBottom= `${wB.BrowLine}`;
             }
             table.tr[`td${j}`] = td;
+            
         }
+    }
+    table.tr.tdLast = {
+        type: 'td', //style_width: 'width:10px',
+        //style_width:'width:100%',
+        style_BrowLine_borderBottom: `${wB.BrowLine}`,
     }
     return table;
 }
 
+//tap btn ===========================================================
 
 //tap-memo
 let TmemoOb = {
