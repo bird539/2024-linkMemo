@@ -206,7 +206,7 @@ let Mwindow = {
             } else {
                 lastN += 1;
             }
-            let tap;
+            let tap = {};
             for (i = 0; i < tapAraay.length; i++) {
                 if (tapAraay[i] == null) {
                     tapAraay[i] = [
@@ -214,7 +214,7 @@ let Mwindow = {
                         `${set.name}`,
                         lastN
                     ];
-                    tap=tapAraay[i];
+                    tap.tapArray=tapAraay[i];
                     break;
                 }
             }
@@ -222,6 +222,7 @@ let Mwindow = {
                 win[i] = wBmatchWinArray('makeSetToArray', win[i]);
             }
             localStorage.setItem('winArray', JSON.stringify(win));
+            tap.set = wBmatchWinArray('makeArrayToSet', win[nn]);
             return tap; //ddd
         }
     },
@@ -743,19 +744,7 @@ let w = {
         }
     },
     div: tapPlace = {
-        type: 'div',
-        table: tapBtnTable = {
-            type: 'table', style_border: 'borderCollapse:collapse', style_1: 'width:100%',
-            style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
-            tr: tapBtnTr = {
-                type: 'tr',
-                className: 'tapBtnTr',
-            }
-        },
-        div: tapDiv = {
-            type: 'div',
-            className: 'tapDiv',
-        }
+        type: 'div',className: 'tapBtnTr',
     }
 }
 
@@ -784,6 +773,45 @@ function newTapEvent(event) {//ddd
     set.tapType = event.target.value;
     set.name = event.target.innerText;
     let tap = Mwindow.save('newTap', set);
+    
+    let tapBtn = tapBtnTd(tap.tapArray, 'checked');
+    console.log(tap.set);
+
+    tap.set = checkValue(tap.set);
+    let tdLast = {
+        type: 'td',
+        style_BrowLine_borderBottom: `${wB.BrowLine}`,
+    }
+    let tdLastHtml = makeHtml(tdLast, tap.set);
+    let tapBtnDiv = document.querySelector(`.${winName} .tapBtnTr`);
+    for(i=1;i<tapBtnDiv.childNodes[0].childNodes[0].childNodes.length;i++){
+        console.log(tapBtnDiv.childNodes[0].childNodes[0].childNodes[i]);
+        tapBtnDiv.childNodes[0].childNodes[0].childNodes[i].remove();
+    }
+    for(i=0;i<tap.set.BtapArray.length;i++){
+        if(tap.set.BtapArray[i]!=null){
+            let td;
+            let tdHtml;
+            if(tap.tapArray[2] == i){
+                td = tapBtnTd(tap.set.BtapArray[i],'checked');
+            }else{
+                td = tapBtnTd(tap.set.BtapArray[i],'not checked');
+            }
+            tdHtml = makeHtml(td, tap.set);
+            tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdHtml);
+        }
+    }
+    tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdLastHtml);
+    /*
+    let tapBtns = tapBtnDiv.childNodes[0].childNodes[0].childNodes;
+    tapBtns[tapBtns.length-1].remove();
+    for(i=0;i<tapBtns.length; i++){
+        tapBtns[i].childNodes[]
+    }
+    tapBtnDiv.childNodes[0].childNodes[0].appendChild(aaaa);
+    tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdLastHtml);
+    //tapBtnDiv.childNodes[0].childNodes[0].appendChild(aaaa);
+    */
 }
 
 function editWin(event) {
@@ -1394,9 +1422,82 @@ for (let i = 0; i < 10; i++) {
     }
 }
 //tap btn ===========================================================
+
+//ddd
+function tapBtnMake(set) {
+    let table = {
+        type: 'table',style_border: 'borderCollapse:collapse',style:'width:100%',
+        style_BwinBack_backgroundColor :'',
+        
+        tr: tr = {
+            type: 'tr',
+            td: tapEdit = {
+                type: 'td', style_border: 'borderCollapse:collapse',style_width: 'width:20px',
+                style_BrowLine_borderBottom: `${wB.BrowLine}`,
+                style_BcolLine_borderRight: `${wB.BcolLine}`,
+                button_showEditTap: button({innerText:' ', event:'tapNameInputShow:click'}),
+            },
+        },
+    }
+    for (j = 0; j < set.BtapArray.length; j++) {
+        if (set.BtapArray[j] != null) {//set.BtapArray[j]
+            let td;
+            if(j==0){
+                td = tapBtnTd(set.BtapArray[j],'checked');
+            }else{
+                td = tapBtnTd(set.BtapArray[j],'not checked');
+            }
+            table.tr[`td${j}`] = td;
+        }
+    }
+        table.tr.tdLast = {
+            type: 'td',
+            style_BrowLine_borderBottom: `${wB.BrowLine}`,
+        }
+    return table;
+}
+function tapBtnTd(array, check){
+    let td = {
+        type: 'td',
+        button_before: button({
+            innerText:'<',style: 'display:none',
+            style_width:'width:15px',style_height:'height:20px',
+        }),
+        radio: tapRadio = {
+            type: 'input',
+            kind: 'radio',
+            id: array[0],
+            name: `${set.BclassName}_tapBtn`,
+            value: `${array[0]}`,
+            style: 'display:none',
+        },
+        label: radio({
+            type: 'label',
+            htmlFor: array[0],
+            innerText: array[1],
+            event_tapclick:'tapNameInputShow:dblclick',
+            style_paddingLeft:'paddingLeft:5px'
+        }),
+        button_next: button({
+            innerText:'>',style: 'display:none',
+            style_width:'width:15px',style_height:'height:20px',
+        }),
+        button_x: button({innerText:'x', style: 'display:none'}),
+    }
+    if(check=='checked'){
+        //td.style_BrowLine_borderBottom= `${wB.BrowLine}`;
+        td.style_BcolLine_borderRight= `${wB.BcolLine}`;
+        td.style_BcolLine_borderLeft= `${wB.BcolLine}`;
+        td.radio.checked = 'true';
+    }else{
+        td.style_BrowLine_borderBottom= `${wB.BrowLine}`;
+    }
+    return td;
+}
+
 function tapNameEditTable(){
     let tapEdit = {
-        type: 'table',style:'width:100%',style_display:'display:none',
+        type: 'table',style:'width:100%',style_display:'display:none',style_BwinBack_backgroundColor :'',
         tr: tr = {
             type: 'tr',
             td: td = {
@@ -1425,72 +1526,6 @@ function tapNameEditTable(){
     return tapEdit;
 }
 
-//ddd
-function tapBtnMake(set) {
-    let table = {
-        type: 'table',style_border: 'borderCollapse:collapse',style:'width:100%',
-        
-        tr: tr = {
-            type: 'tr',
-            td: tapEdit = {
-                type: 'td', style_border: 'borderCollapse:collapse',style_width: 'width:20px',
-                style_BrowLine_borderBottom: `${wB.BrowLine}`,
-                style_BcolLine_borderRight: `${wB.BcolLine}`,
-                button_showEditTap: button({innerText:' ', event:'tapNameInputShow:click'}),
-            },
-        },
-        tr2: tapNameEdit = {
-            type: 'tr',
-        }
-    }
-    for (j = 0; j < set.BtapArray.length; j++) {
-        if (set.BtapArray[j] != null) {
-            let td = {
-                type: 'td',
-                button_before: button({
-                    innerText:'<',style: 'display:none',
-                    style_width:'width:15px',style_height:'height:20px',
-                }),
-                radio: tapRadio = {
-                    type: 'input',
-                    kind: 'radio',
-                    id: set.BtapArray[j][0],
-                    name: `${set.BclassName}_tapBtn`,
-                    value: `${set.BtapArray[j][0]}`,
-                    style: 'display:none',
-                },
-                label: radio({
-                    type: 'label',
-                    htmlFor: set.BtapArray[j][0],
-                    innerText: set.BtapArray[j][1],
-                    event_tapclick:'tapNameInputShow:dblclick',
-                    style_paddingLeft:'paddingLeft:5px'
-                }),
-                button_next: button({
-                    innerText:'>',style: 'display:none',
-                    style_width:'width:15px',style_height:'height:20px',
-                }),
-                button_x: button({innerText:'x', style: 'display:none'}),
-            }
-            if(j==0){
-                //td.style_BrowLine_borderBottom= `${wB.BrowLine}`;
-                td.style_BcolLine_borderRight= `${wB.BcolLine}`;
-                td.style_BcolLine_borderLeft= `${wB.BcolLine}`;
-                td.radio.checked = 'true';
-            }else{
-                td.style_BrowLine_borderBottom= `${wB.BrowLine}`;
-            }
-            table.tr[`td${j}`] = td;
-            
-        }
-    }
-    table.tr.tdLast = {
-        type: 'td', //style_width: 'width:10px',
-        //style_width:'width:100%',
-        style_BrowLine_borderBottom: `${wB.BrowLine}`,
-    }
-    return table;
-}
 
 //tap btn ===========================================================
 
