@@ -224,6 +224,26 @@ let Mwindow = {
             localStorage.setItem('winArray', JSON.stringify(win));
             tap.set = wBmatchWinArray('makeArrayToSet', win[nn]);
             return tap; //ddd
+        }else if (option == 'editTap'){
+            let win = this.save('new');
+            let setOb = win[set.target];
+            for (i=0;setOb.BtapArray.length;i++) {
+                if (setOb.BtapArray[i]!=null && setOb.BtapArray[i][3] != null) {
+                    setOb.BtapArray[i].pop()
+                }
+            }
+            for (i=0;setOb.BtapArray.length;i++) {
+                if (setOb.BtapArray[i]!=null && setOb.BtapArray[i][0] == set.tapName ) {
+                    setOb.BtapArray[i].push('checked');
+                }
+            }
+            win[nn] = setOb;
+            newWin = [];
+            for (i = 0; i < this.length; i++) {
+                win[i] = wBmatchWinArray('makeSetToArray', win[i]);
+            }
+            localStorage.setItem('winArray', JSON.stringify(win));
+            return setOb;
         }
     },
 }
@@ -768,7 +788,9 @@ function newWindow(event) {
 function newTapEvent(event) {//ddd
     let winName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className
     let set = {};
-    let n = winName.charAt(1);
+    //let n = winName.charAt(1);
+    let regex = /[^0-9]/g;
+    let n = winName.replace(regex, "");
     set.target = Number(n);
     set.tapType = event.target.value;
     set.name = event.target.innerText;
@@ -1288,6 +1310,8 @@ function makeEvent(ob, option) {
         ob.addEventListener(`${clickOption}`, tapNameInputShow);
     }else if (option1 == 'tapMouseInEvent') {
         ob.addEventListener(`${clickOption}`, tapMouseInEvent);
+    }else if (option1 == 'tapRadioChangeEvent') {
+        ob.addEventListener(`${clickOption}`, tapRadioChangeEvent);
     }
     return ob;
 }
@@ -1442,7 +1466,7 @@ function tapBtnMake(set) {
     for (j = 0; j < set.BtapArray.length; j++) {
         if (set.BtapArray[j] != null) {//set.BtapArray[j]
             let td;
-            if(j==0){
+            if(set.BtapArray[j][3]!=null){
                 td = tapBtnTd(set.BtapArray[j],'checked');
             }else{
                 td = tapBtnTd(set.BtapArray[j],'not checked');
@@ -1467,16 +1491,18 @@ function tapBtnTd(array, check){
             type: 'input',
             kind: 'radio',
             id: array[0],
-            name: `${set.BclassName}_tapBtn`,
+            name_BclassName: `${set.BclassName}_tapBtn`,
             value: `${array[0]}`,
             style: 'display:none',
+            event:'tapRadioChangeEvent:change'
         },
         label: radio({
             type: 'label',
             htmlFor: array[0],
             innerText: array[1],
             event_tapclick:'tapNameInputShow:dblclick',
-            style_paddingLeft:'paddingLeft:5px'
+            style_paddingLeft:'paddingLeft:5px',
+            //event:'tapRadioChangeEvent:click'
         }),
         button_next: button({
             innerText:'>',style: 'display:none',
@@ -1525,7 +1551,36 @@ function tapNameEditTable(){
     }
     return tapEdit;
 }
+function tapRadioChangeEvent(event){
+    let input = event.target;
+    let radio = document.querySelector(`input[name=${input.name}]:checked`);
+    let radioAll = document.querySelectorAll(`input[name=${input.name}]`);
+    console.log(radio, `input[name=${input.name}]:checked`, radioAll);
 
+    let regex = /[^0-9]/g;
+    let winName = input.name;
+    let n = winName.replace(regex, "");
+    set.target = n;
+    set.tapName = input.id;
+
+    let setOb = Mwindow.save('editTap', set);
+    setOb = checkValue(setOb);
+
+    for(i=0;i<radioAll.length;i++){
+        let td = radioAll[i].parentNode;
+        console.log(td);
+        if(radioAll[i].checked == true){
+            td.style.borderRight = setOb.BcolLine;
+            td.style.borderLeft = setOb.BcolLine;
+            td.style.borderBottom = 'none';
+        }else{
+            td.style.borderRight = 'none';
+            td.style.borderLeft ='none';
+            td.style.borderBottom = setOb.BrowLine;
+        }
+    }
+
+}
 
 //tap btn ===========================================================
 
