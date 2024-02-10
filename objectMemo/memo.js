@@ -192,16 +192,16 @@ let Mwindow = {
         } else if (option == 'newTap') {//newnewnew
             let win = this.save('new');
             let nn = set.target;
-            let tapAraay = win[nn].BtapArray;
+            let tapArray = win[nn].BtapArray;
             let lastN = null;
-            for (i = 0; i < tapAraay.length; i++) {
-                if (tapAraay[i] != null) {
-                    if (lastN <= tapAraay[i][2]) {
-                        lastN = tapAraay[i][2];
+            for (i = 0; i < tapArray.length; i++) {
+                if (tapArray[i] != null) {
+                    if (lastN <= tapArray[i][2]) {
+                        lastN = tapArray[i][2];
                     }
                 }
-                if(tapAraay[i]!=null){
-                    tapAraay[i][3] = 0;
+                if (tapArray[i] != null) {
+                    tapArray[i][3] = 0;
                 }
             }
             if (lastN == null) {
@@ -210,15 +210,15 @@ let Mwindow = {
                 lastN += 1;
             }
             let tap = {};
-            for (i = 0; i < tapAraay.length; i++) {
-                if (tapAraay[i] == null) {
-                    tapAraay[i] = [
+            for (i = 0; i < tapArray.length; i++) {
+                if (tapArray[i] == null) {
+                    tapArray[i] = [
                         `w${set.target}_${i}_${set.tapType}`,
                         `${set.name}`,
                         lastN,
                         1 //checked
                     ];
-                    tap.tapArray=tapAraay[i];
+                    tap.tapArray = tapArray[i];
                     break;
                 }
             }
@@ -227,27 +227,82 @@ let Mwindow = {
             }
             localStorage.setItem('winArray', JSON.stringify(win));
             tap.set = wBmatchWinArray('makeArrayToSet', win[nn]);
-            return tap; //ddd
-        }else if (option == 'editTap'){
+            return tap;
+
+        } else if (option == 'editTap') {
             let win = this.save('new');
             let setOb = win[set.target];
-            
-            for (i=0;i< setOb.BtapArray.length;i++) {
-                if (setOb.BtapArray[i]!=null && setOb.BtapArray[i][0] == set.tapName) {
-                    setOb.BtapArray[i][3] = 1;
-                }else if(setOb.BtapArray[i]!=null&& setOb.BtapArray[i][0] != set.tapName){
-                    setOb.BtapArray[i][3] = 0;
+
+            if (set.option == 'tapChecked') {
+                for (i = 0; i < setOb.BtapArray.length; i++) {
+                    if (setOb.BtapArray[i] != null && setOb.BtapArray[i][0] == set.tapName) {
+                        setOb.BtapArray[i][3] = 1;
+                    } else if (setOb.BtapArray[i] != null && setOb.BtapArray[i][0] != set.tapName) {
+                        setOb.BtapArray[i][3] = 0;
+                    }
                 }
+            } else if (set.option == 'tapChange') {//ddd
+
+                let tapIndex; let targetIndex; let poorIndex; let newTapIndex;
+                for (i = 0; i < setOb.BtapArray.length; i++) {
+                    if (setOb.BtapArray[i] != null && setOb.BtapArray[i][0] == set.tapName) {
+                        tapIndex = setOb.BtapArray[i][2];
+                        targetIndex = i;
+                    }
+                }
+                if (set.beforeOrNext == '<') {
+                    newTapIndex = tapIndex - 1;
+                    poorIndex = targetIndex - 1
+                    if (tapIndex < 0) { tapIndex = setOb.BtapArray.length };
+                    if (poorIndex < 0) { poorIndex = setOb.BtapArray.length };
+
+                } else if (set.beforeOrNext == '>') {
+                    newTapIndex = tapIndex + 1;
+                    poorIndex = targetIndex + 1
+                    if (tapIndex > setOb.BtapArray.length) { tapIndex = 0 };
+                    if (poorIndex > setOb.BtapArray.length) { poorIndex = 0 };
+                }
+                setOb.BtapArray[targetIndex][2] = newTapIndex;
+                if (setOb.BtapArray[poorIndex] != null) {
+                    setOb.BtapArray[poorIndex][2] = tapIndex;
+                }
+                //console.log(setOb.BtapArray);
+                setOb.BtapArray = tapArraySort(setOb.BtapArray, 'reIndex');
+                //console.log(setOb.BtapArray);
             }
             win[set.target] = setOb;
             for (i = 0; i < this.length; i++) {
                 win[i] = wBmatchWinArray('makeSetToArray', win[i]);
             }
+
             localStorage.setItem('winArray', JSON.stringify(win));
             return setOb;
-    
+
         }
     },
+
+    tapToArrayOrOb: function (option, array) {
+        if (array == null) {
+            return null;
+        }
+        if (option == 'makeToOb') {
+            let ob = {
+                tapClassName: array[0],
+                tapName: array[1],
+                tapIndex: array[2],
+                tapChecked: array[3],
+            }
+            return ob;
+        } else if (option == 'makeToArray') {
+            let ob = [
+                array.tapClassName,
+                array.tapName,
+                array.tapIndex,
+                array.tapChecked,
+            ]
+            return ob;
+        }
+    }
 }
 
 function re(value) {
@@ -333,8 +388,8 @@ function titleBtn(option) {
 function input(option) {
     let input = {
         type: 'input',
-        style_border:'border:none',
-        placeholder:'text input',
+        style_border: 'border:none',
+        placeholder: 'text input',
         style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
         style_BwinFontColor_color: '',
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
@@ -388,7 +443,7 @@ function button(option) {
     }
     return button;
 }
-function radio(option){
+function radio(option) {
     let radio = {
         type: 'button',
         className_BbtnClassName: ``,
@@ -750,7 +805,7 @@ let w = {
 
                                 form4: delWin = {
                                     type: 'form', style: 'display:none',
-                                    className: 'wForm4', 
+                                    className: 'wForm4',
 
                                     pre_delWin: pre({ innerText: 'del this window', }),
                                     br_delWin: br = { type: 'span', innerText: '\n' },
@@ -766,7 +821,7 @@ let w = {
         }
     },
     div: tapPlace = {
-        type: 'div',className: 'tapBtnTr',
+        type: 'div', className: 'tapBtnTr',
     }
 }
 
@@ -787,7 +842,7 @@ function newWindow(event) {
     main.appendChild(aaaa);
 }
 
-function newTapEvent(event) {//ddd
+function newTapEvent(event) {
     let winName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className
     let set = {};
     //let n = winName.charAt(1);
@@ -798,22 +853,34 @@ function newTapEvent(event) {//ddd
     set.name = event.target.innerText;
     let tap = Mwindow.save('newTap', set);
     tap.set = checkValue(tap.set);
-    
+
     let tapBtnDiv = document.querySelector(`.${winName} .tapBtnTr`);
-    let btnLength = tapBtnDiv.childNodes[0].childNodes[0].childNodes.length;
-    for(i=1;i<btnLength;i++){
-        let idinput = tapBtnDiv.childNodes[0].childNodes[0].childNodes[i][1];
-        let inputStyle = tapBtnDiv.childNodes[0].childNodes[0].childNodes[i].style;
-        if(idinput!=null&&idinput.id == tap.tapArray[0]){
-            inputStyle.borderBottom = 'none';
-            inputStyle.borderLeft = set.BcolLine;
-            inputStyle.borderRight = set.BcolLine;
-        }else{
-            inputStyle.borderRight = 'none';
-            inputStyle.borderLeft = 'none';
-            inputStyle.borderBottom = set.BrowLine;
+
+    let len = tapBtnDiv.childNodes[0].childNodes[0].childNodes.length;
+    for (i = 1; i < len; i++) {
+        tapBtnDiv.childNodes[0].childNodes[0].childNodes[1].remove();
+    }
+    for (i = 0; i < tap.set.BtapArray.length; i++) {
+        if (tap.set.BtapArray[i] != null) {
+            let td;
+            let tdHtml;
+            if (tap.tapArray[2] == i) {
+                td = tapBtnTd(tap.set.BtapArray[i], 'checked');
+            } else {
+                td = tapBtnTd(tap.set.BtapArray[i], 'not checked');
+            }
+            tdHtml = makeHtml(td, tap.set);
+            tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdHtml);
         }
     }
+
+    let tdLast = {
+        type: 'td',
+        style_BrowLine_borderBottom: `${wB.BrowLine}`,
+    }
+    tdLast = makeHtml(tdLast, tap.set);
+    tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdLast);
+
 }
 
 function editWin(event) {
@@ -1212,17 +1279,17 @@ function mouseoutEvent(event) {
     target.style.color = fontColor;
 }
 
-function tapNameInputShow(event){
-    if(event.target.innerText == 'x'){
+function tapNameInputShow(event) {
+    if (event.target.innerText == 'x') {
         let nameTr = event.target.parentNode.parentNode.parentNode.previousSibling.childNodes[0];
-        
-        for(i=1;i<nameTr.childNodes.length-1;i++){
+
+        for (i = 1; i < nameTr.childNodes.length - 1; i++) {
             let display;
-            if(nameTr.childNodes[i].childNodes[4].style.display == 'none'){
+            if (nameTr.childNodes[i].childNodes[4].style.display == 'none') {
                 nameTr.childNodes[i].childNodes[4].style.display = "inline-block";
-            }else{
+            } else {
                 nameTr.childNodes[i].childNodes[4].style.display = "none";
-            }            
+            }
         }
         return;
     }
@@ -1230,29 +1297,29 @@ function tapNameInputShow(event){
     let trNextBeforeBtns;
     let innerValue;
     nameTable = event.target.parentNode.parentNode.parentNode.nextSibling;
-    trNextBeforeBtns =  event.target.parentNode.parentNode;
-    if(nameTable.style.display == "none"){
+    trNextBeforeBtns = event.target.parentNode.parentNode;
+    if (nameTable.style.display == "none") {
         nameTable.style.display = "block";
 
-        for(i=1;i<trNextBeforeBtns.childNodes.length-1;i++){
-            if(trNextBeforeBtns.childNodes[i].childNodes[1].checked == true){
+        for (i = 1; i < trNextBeforeBtns.childNodes.length - 1; i++) {
+            if (trNextBeforeBtns.childNodes[i].childNodes[1].checked == true) {
                 innerValue = trNextBeforeBtns.childNodes[i].childNodes[2].innerText;
             }
             trNextBeforeBtns.childNodes[i].childNodes[0].style.display = "inline-block";
             trNextBeforeBtns.childNodes[i].childNodes[3].style.display = "inline-block";
-            
+
         }
         nameTable.childNodes[0].childNodes[1].childNodes[0].childNodes[0].value = innerValue;
-    }else{
+    } else {
         nameTable.style.display = "none";
-        for(i=1;i<trNextBeforeBtns.childNodes.length-1;i++){
+        for (i = 1; i < trNextBeforeBtns.childNodes.length - 1; i++) {
             trNextBeforeBtns.childNodes[i].childNodes[0].style.display = "none";
             trNextBeforeBtns.childNodes[i].childNodes[3].style.display = "none";
             trNextBeforeBtns.childNodes[i].childNodes[4].style.display = "none";
         }
     }
 }
-function tapMouseInEvent(event){
+function tapMouseInEvent(event) {
     const beforeBtn = event.target.childNodes[0]
     const nextBtn = event.target.childNodes[3]
     beforeBtn.style.display = 'inline-block';
@@ -1285,11 +1352,11 @@ function makeEvent(ob, option) {
         ob.addEventListener(`${clickOption}`, titleNameChange);
     } else if (option1 == 'newTapEvent') {
         ob.addEventListener(`${clickOption}`, newTapEvent);
-    }else if (option1 == 'tapNameInputShow') {
+    } else if (option1 == 'tapNameInputShow') {
         ob.addEventListener(`${clickOption}`, tapNameInputShow);
-    }else if (option1 == 'tapMouseInEvent') {
+    } else if (option1 == 'tapMouseInEvent') {
         ob.addEventListener(`${clickOption}`, tapMouseInEvent);
-    }else if (option1 == 'tapRadioChangeEvent') {
+    } else if (option1 == 'tapRadioChangeEvent') {
         ob.addEventListener(`${clickOption}`, tapRadioChangeEvent);
     }
     return ob;
@@ -1429,42 +1496,43 @@ for (let i = 0; i < 10; i++) {
 //ddd
 function tapBtnMake(set) {
     let table = {
-        type: 'table',style_border: 'borderCollapse:collapse',style:'width:100%',
-        style_BwinBack_backgroundColor :'',
-        
+        type: 'table', style_border: 'borderCollapse:collapse', style: 'width:100%',
+        style_BwinBack_backgroundColor: '',
+
         tr: tr = {
             type: 'tr',
             td: tapEdit = {
-                type: 'td', style_border: 'borderCollapse:collapse',style_width: 'width:20px',
+                type: 'td', style_border: 'borderCollapse:collapse', style_width: 'width:20px',
                 style_BrowLine_borderBottom: `${wB.BrowLine}`,
                 style_BcolLine_borderRight: `${wB.BcolLine}`,
-                button_showEditTap: button({innerText:' ', event:'tapNameInputShow:click'}),
+                button_showEditTap: button({ innerText: ' ', event: 'tapNameInputShow:click' }),
             },
         },
     }
     for (j = 0; j < set.BtapArray.length; j++) {
         if (set.BtapArray[j] != null) {//set.BtapArray[j]
             let td;
-            if(set.BtapArray[j][3] == 1){
-                td = tapBtnTd(set.BtapArray[j],'checked');
-            }else{
-                td = tapBtnTd(set.BtapArray[j],'not checked');
+            if (set.BtapArray[j][3] == 1) {
+                td = tapBtnTd(set.BtapArray[j], 'checked');
+            } else {
+                td = tapBtnTd(set.BtapArray[j], 'not checked');
             }
             table.tr[`td${j}`] = td;
         }
     }
-        table.tr.tdLast = {
-            type: 'td',
-            style_BrowLine_borderBottom: `${wB.BrowLine}`,
-        }
+    table.tr.tdLast = {
+        type: 'td',
+        style_BrowLine_borderBottom: `${wB.BrowLine}`,
+    }
     return table;
 }
-function tapBtnTd(array, check){
+function tapBtnTd(array, check, buttonShow) {
     let td = {
         type: 'td',
         button_before: button({
-            innerText:'<',style: 'display:none',
-            style_width:'width:15px',style_height:'height:20px',
+            innerText: '<', style: 'display:none',//tapRadioChangeEvent
+            style_width: 'width:15px', style_height: 'height:20px',
+            event: 'tapRadioChangeEvent:click',
         }),
         radio: tapRadio = {
             type: 'input',
@@ -1473,36 +1541,45 @@ function tapBtnTd(array, check){
             name_BclassName: `${set.BclassName}_tapBtn`,
             value: `${array[0]}`,
             style: 'display:none',
-            event:'tapRadioChangeEvent:change'
+            event: 'tapRadioChangeEvent:change'
         },
         label: radio({
             type: 'label',
             htmlFor: array[0],
             innerText: array[1],
-            event_tapclick:'tapNameInputShow:dblclick',
-            style_paddingLeft:'paddingLeft:5px',
+            event_tapclick: 'tapNameInputShow:dblclick',
+            style_paddingLeft: 'paddingLeft:5px',
             //event:'tapRadioChangeEvent:click'
         }),
         button_next: button({
-            innerText:'>',style: 'display:none',
-            style_width:'width:15px',style_height:'height:20px',
+            innerText: '>', style: 'display:none',
+            style_width: 'width:15px', style_height: 'height:20px',
+            event: 'tapRadioChangeEvent:click',
         }),
-        button_x: button({innerText:'x', style: 'display:none'}),
+        button_x: button({ innerText: 'x', style: 'display:none' }),
     }
-    if(check=='checked'){
+    if (check == 'checked') {
         //td.style_BrowLine_borderBottom= `${wB.BrowLine}`;
-        td.style_BcolLine_borderRight= `${wB.BcolLine}`;
-        td.style_BcolLine_borderLeft= `${wB.BcolLine}`;
+        td.style_BcolLine_borderRight = `${wB.BcolLine}`;
+        td.style_BcolLine_borderLeft = `${wB.BcolLine}`;
         td.radio.checked = 'true';
-    }else{
-        td.style_BrowLine_borderBottom= `${wB.BrowLine}`;
+    } else {
+        td.style_BrowLine_borderBottom = `${wB.BrowLine}`;
     }
+    if (buttonShow != null && buttonShow[0] == '<' && buttonShow[1] == '>') {
+        td.button_before.style = 'inline-block';
+        td.button_next.style = 'inline-block';
+        if (buttonShow[2] == 'x') {
+            td.button_x.style = 'inline-block';
+        }
+    }
+
     return td;
 }
 
-function tapNameEditTable(){
+function tapNameEditTable() {
     let tapEdit = {
-        type: 'table',style:'width:100%',style_display:'display:none',style_BwinBack_backgroundColor :'',
+        type: 'table', style: 'width:100%', style_display: 'display:none', style_BwinBack_backgroundColor: '',
         tr: tr = {
             type: 'tr',
             td: td = {
@@ -1510,54 +1587,142 @@ function tapNameEditTable(){
                 style_border: 'borderCollapse:collapse',
                 style_BrowLine_borderBottom: `${wB.BrowLine}`,
                 style_BcolLine_borderRight: `${wB.BcolLine}`,
-                btn : button({
-                    innerText:'x', style_width:'width:20px', 
+                btn: button({
+                    innerText: 'x', style_width: 'width:20px',
                     style_height: 'height:20px',
-                    event_tapclick:'tapNameInputShow:click',
+                    event_tapclick: 'tapNameInputShow:click',
                 }),
             },
-            td2:td ={
-                type: 'td',style_width:'width:100%',
+            td2: td = {
+                type: 'td', style_width: 'width:100%',
                 style_BrowLine_borderBottom: `${wB.BrowLine}`,
-                form:form = {
-                    type:'form',
-                    input:input({className:'tapNameInput', style_width:'width:89%'}),
-                    sub:input({kind:'submit', value:'sub'}),
+                form: form = {
+                    type: 'form',
+                    input: input({ className: 'tapNameInput', style_width: 'width:89%' }),
+                    sub: input({ kind: 'submit', value: 'sub' }),
                 }
-                
+
             }
         }
     }
     return tapEdit;
 }
-function tapRadioChangeEvent(event){
+function tapRadioChangeEvent(event) {//ddd
     let input = event.target;
-    let radioAll = document.querySelectorAll(`input[name=${input.name}]`);
 
     let regex = /[^0-9]/g;
     let winName = input.name;
     let n = winName.replace(regex, "");
     let set = {};
-    set.target = n;
+    set.target = Number(n);
     set.tapName = input.id;
 
-    let setOb = Mwindow.save('editTap', set);
-    setOb = checkValue(setOb);
 
-    
-    for(i=0;i<radioAll.length;i++){
-        let td = radioAll[i].parentNode;
-        if(radioAll[i].checked == true){
-            td.style.borderRight = setOb.BcolLine;
-            td.style.borderLeft = setOb.BcolLine;
-            td.style.borderBottom = 'none';
-        }else{
-            td.style.borderRight = 'none';
-            td.style.borderLeft ='none';
-            td.style.borderBottom = setOb.BrowLine;
+    if (event.target.innerText.length <= 0) {
+        let radioAll = document.querySelectorAll(`input[name=${input.name}]`);
+
+        set.option = 'tapChecked';
+        let setOb = Mwindow.save('editTap', set);
+        setOb = checkValue(setOb);
+
+        for (i = 0; i < radioAll.length; i++) {
+            let td = radioAll[i].parentNode;
+            if (radioAll[i].checked == true) {
+                td.style.borderRight = setOb.BcolLine;
+                td.style.borderLeft = setOb.BcolLine;
+                td.style.borderBottom = 'none';
+            } else {
+                td.style.borderRight = 'none';
+                td.style.borderLeft = 'none';
+                td.style.borderBottom = setOb.BrowLine;
+            }
+        }
+    } else {
+        let winName = event.target.parentNode.childNodes[1].name;
+        let n = winName.replace(regex, "");
+        let set2 = {};
+        set2.target = Number(n);
+        set2.tapName = event.target.parentNode.childNodes[1].id;
+        set2.option = 'tapChange'
+
+        if (event.target.innerText == '<') {
+            set2.beforeOrNext = '<';
+        } else {
+            set2.beforeOrNext = '>';
+        }
+
+        let setOb = Mwindow.save('editTap', set2);
+        setOb = checkValue(setOb);
+        setOb.BtapArray = tapArraySort(setOb.BtapArray);
+        console.log('sort', setOb.BtapArray)
+
+
+        let tapBtnDiv = document.querySelector(`.${winName} .tapBtnTr`);
+
+        let len = tapBtnDiv.childNodes[0].childNodes[0].childNodes.length;
+        for (i = 1; i < len; i++) {
+            tapBtnDiv.childNodes[0].childNodes[0].childNodes[1].remove();
+        }
+
+        for (i = 0; i < setOb.BtapArray.length; i++) {
+            if (setOb.BtapArray[i] != null) {
+                let td;
+                let tdHtml;
+                if (setOb.BtapArray[i][3] == 1) {
+                    td = tapBtnTd(setOb.BtapArray[i], 'checked', ['<', '>']);
+                } else {
+                    td = tapBtnTd(setOb.BtapArray[i], 'not checked', ['<', '>']);
+                }
+                console.log(setOb.BtapArray[i]);
+                tdHtml = makeHtml(td, setOb);
+                tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdHtml);
+            }
+        }
+
+        let tdLast = {
+            type: 'td',
+            style_BrowLine_borderBottom: `${wB.BrowLine}`,
+        }
+        tdLast = makeHtml(tdLast, setOb);
+        tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdLast);
+    }
+}
+
+function tapArraySort(array, option) {//ddd
+    let n = [];
+    let newArray = [];
+    for (i = 0; i < array.length; i++) {
+        if (array[i] != null) {
+            n.push(array[i][2]);
+        } else {
+            n.push(null);
         }
     }
-//*/
+    for (i = 0; i < n.length; i++) {
+        if (n[i] != null) {
+            let nn = n[i]
+            newArray.push(array[nn]);
+        }
+    }
+    //[2[1], 1[2], 4[3], null[4], 6[5], 5[6]] //n
+    //[1[2], 2[1], 4[3], 5[6], 6[5]] //new
+
+    //[1[2], 2[1], 3[3], 4[6], 5[5]] //new
+    //[2[1], 1[2], 3[3], null[4], 5[5], 4[6]] //make
+
+    if (option == 'reIndex') {
+        for (i = 0; i < array.length; i++) {
+            if (newArray[i] != null) {
+                newArray[i][2] = i;/*
+                let b = newArray[i][0].split('_')[1];
+                b = Number(b);
+                array[b] = newArray[i]*/
+            }
+        }
+        console.log(22, array);
+        return array;
+    }
+    return newArray;
 }
 
 //tap btn ===========================================================
@@ -1637,7 +1802,6 @@ let Tmemo = {
 
             for (let key in set) {
                 if (setOb[key] != null && key != 'target') {
-                    console.log(key, setOb[key], set[key]);
                     setOb[key] = set[key];
                 }
             }
