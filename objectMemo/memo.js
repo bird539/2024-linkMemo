@@ -200,6 +200,9 @@ let Mwindow = {
                         lastN = tapAraay[i][2];
                     }
                 }
+                if(tapAraay[i]!=null){
+                    tapAraay[i][3] = 0;
+                }
             }
             if (lastN == null) {
                 lastN = 0;
@@ -212,7 +215,8 @@ let Mwindow = {
                     tapAraay[i] = [
                         `w${set.target}_${i}_${set.tapType}`,
                         `${set.name}`,
-                        lastN
+                        lastN,
+                        1 //checked
                     ];
                     tap.tapArray=tapAraay[i];
                     break;
@@ -227,23 +231,21 @@ let Mwindow = {
         }else if (option == 'editTap'){
             let win = this.save('new');
             let setOb = win[set.target];
-            for (i=0;setOb.BtapArray.length;i++) {
-                if (setOb.BtapArray[i]!=null && setOb.BtapArray[i][3] != null) {
-                    setOb.BtapArray[i].pop()
+            
+            for (i=0;i< setOb.BtapArray.length;i++) {
+                if (setOb.BtapArray[i]!=null && setOb.BtapArray[i][0] == set.tapName) {
+                    setOb.BtapArray[i][3] = 1;
+                }else if(setOb.BtapArray[i]!=null&& setOb.BtapArray[i][0] != set.tapName){
+                    setOb.BtapArray[i][3] = 0;
                 }
             }
-            for (i=0;setOb.BtapArray.length;i++) {
-                if (setOb.BtapArray[i]!=null && setOb.BtapArray[i][0] == set.tapName ) {
-                    setOb.BtapArray[i].push('checked');
-                }
-            }
-            win[nn] = setOb;
-            newWin = [];
+            win[set.target] = setOb;
             for (i = 0; i < this.length; i++) {
                 win[i] = wBmatchWinArray('makeSetToArray', win[i]);
             }
             localStorage.setItem('winArray', JSON.stringify(win));
             return setOb;
+    
         }
     },
 }
@@ -795,45 +797,23 @@ function newTapEvent(event) {//ddd
     set.tapType = event.target.value;
     set.name = event.target.innerText;
     let tap = Mwindow.save('newTap', set);
-    
-    let tapBtn = tapBtnTd(tap.tapArray, 'checked');
-    console.log(tap.set);
-
     tap.set = checkValue(tap.set);
-    let tdLast = {
-        type: 'td',
-        style_BrowLine_borderBottom: `${wB.BrowLine}`,
-    }
-    let tdLastHtml = makeHtml(tdLast, tap.set);
+    
     let tapBtnDiv = document.querySelector(`.${winName} .tapBtnTr`);
-    for(i=1;i<tapBtnDiv.childNodes[0].childNodes[0].childNodes.length;i++){
-        console.log(tapBtnDiv.childNodes[0].childNodes[0].childNodes[i]);
-        tapBtnDiv.childNodes[0].childNodes[0].childNodes[i].remove();
-    }
-    for(i=0;i<tap.set.BtapArray.length;i++){
-        if(tap.set.BtapArray[i]!=null){
-            let td;
-            let tdHtml;
-            if(tap.tapArray[2] == i){
-                td = tapBtnTd(tap.set.BtapArray[i],'checked');
-            }else{
-                td = tapBtnTd(tap.set.BtapArray[i],'not checked');
-            }
-            tdHtml = makeHtml(td, tap.set);
-            tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdHtml);
+    let btnLength = tapBtnDiv.childNodes[0].childNodes[0].childNodes.length;
+    for(i=1;i<btnLength;i++){
+        let idinput = tapBtnDiv.childNodes[0].childNodes[0].childNodes[i][1];
+        let inputStyle = tapBtnDiv.childNodes[0].childNodes[0].childNodes[i].style;
+        if(idinput!=null&&idinput.id == tap.tapArray[0]){
+            inputStyle.borderBottom = 'none';
+            inputStyle.borderLeft = set.BcolLine;
+            inputStyle.borderRight = set.BcolLine;
+        }else{
+            inputStyle.borderRight = 'none';
+            inputStyle.borderLeft = 'none';
+            inputStyle.borderBottom = set.BrowLine;
         }
     }
-    tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdLastHtml);
-    /*
-    let tapBtns = tapBtnDiv.childNodes[0].childNodes[0].childNodes;
-    tapBtns[tapBtns.length-1].remove();
-    for(i=0;i<tapBtns.length; i++){
-        tapBtns[i].childNodes[]
-    }
-    tapBtnDiv.childNodes[0].childNodes[0].appendChild(aaaa);
-    tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdLastHtml);
-    //tapBtnDiv.childNodes[0].childNodes[0].appendChild(aaaa);
-    */
 }
 
 function editWin(event) {
@@ -861,7 +841,6 @@ function editWin(event) {
     function colorValue(value) {
         let regex = /#/g;
         let change = value.replace(regex, "");
-        console.log(change);
         return change;
     }
 
@@ -1466,7 +1445,7 @@ function tapBtnMake(set) {
     for (j = 0; j < set.BtapArray.length; j++) {
         if (set.BtapArray[j] != null) {//set.BtapArray[j]
             let td;
-            if(set.BtapArray[j][3]!=null){
+            if(set.BtapArray[j][3] == 1){
                 td = tapBtnTd(set.BtapArray[j],'checked');
             }else{
                 td = tapBtnTd(set.BtapArray[j],'not checked');
@@ -1553,22 +1532,21 @@ function tapNameEditTable(){
 }
 function tapRadioChangeEvent(event){
     let input = event.target;
-    let radio = document.querySelector(`input[name=${input.name}]:checked`);
     let radioAll = document.querySelectorAll(`input[name=${input.name}]`);
-    console.log(radio, `input[name=${input.name}]:checked`, radioAll);
 
     let regex = /[^0-9]/g;
     let winName = input.name;
     let n = winName.replace(regex, "");
+    let set = {};
     set.target = n;
     set.tapName = input.id;
 
     let setOb = Mwindow.save('editTap', set);
     setOb = checkValue(setOb);
 
+    
     for(i=0;i<radioAll.length;i++){
         let td = radioAll[i].parentNode;
-        console.log(td);
         if(radioAll[i].checked == true){
             td.style.borderRight = setOb.BcolLine;
             td.style.borderLeft = setOb.BcolLine;
@@ -1579,7 +1557,7 @@ function tapRadioChangeEvent(event){
             td.style.borderBottom = setOb.BrowLine;
         }
     }
-
+//*/
 }
 
 //tap btn ===========================================================
