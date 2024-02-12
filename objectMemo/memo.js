@@ -216,7 +216,8 @@ let Mwindow = {
                         `w${set.target}_${i}_${set.tapType}`,
                         `${set.name}`,
                         lastN,
-                        1 //checked
+                        1, //checked,
+                        i,
                     ];
                     tap.tapArray = tapArray[i];
                     break;
@@ -241,40 +242,40 @@ let Mwindow = {
                         setOb.BtapArray[i][3] = 0;
                     }
                 }
-            } else if (set.option == 'tapChange') {//ddd
-
-                let tapIndex; let targetIndex; let poorIndex; let newTapIndex;
-                for (i = 0; i < setOb.BtapArray.length; i++) {
-                    if (setOb.BtapArray[i] != null && setOb.BtapArray[i][0] == set.tapName) {
-                        tapIndex = setOb.BtapArray[i][2];
-                        targetIndex = i;
+            } else if (set.option == 'tapChange') {
+                let tapIndex; let realIndex; let newTapIndex; let basicArray=new Array(setOb.BtapArray.length);
+                let array2 = tapArraySort(setOb.BtapArray, 'fakeInex');
+                for (i = 0; i < array2.length; i++) {
+                    if (array2[i] != null && array2[i][0] == set.tapName) {
+                        tapIndex = array2[i][2];
                     }
                 }
                 if (set.beforeOrNext == '<') {
                     newTapIndex = tapIndex - 1;
-                    poorIndex = targetIndex - 1
-                    if (tapIndex < 0) { tapIndex = setOb.BtapArray.length };
-                    if (poorIndex < 0) { poorIndex = setOb.BtapArray.length };
-
+                    if (newTapIndex < 0) { newTapIndex = array2.length-1 };
                 } else if (set.beforeOrNext == '>') {
                     newTapIndex = tapIndex + 1;
-                    poorIndex = targetIndex + 1
-                    if (tapIndex > setOb.BtapArray.length) { tapIndex = 0 };
-                    if (poorIndex > setOb.BtapArray.length) { poorIndex = 0 };
+                    if (newTapIndex > array2.length-1) { newTapIndex = 0 };
                 }
-                setOb.BtapArray[targetIndex][2] = newTapIndex;
-                if (setOb.BtapArray[poorIndex] != null) {
-                    setOb.BtapArray[poorIndex][2] = tapIndex;
+                array2[tapIndex][2] = newTapIndex;
+                array2[newTapIndex][2] = tapIndex;
+                let sortArray = array2.sort((a, b) => a[2] - b[2]);
+                for (i = 0; i < sortArray.length; i++) {
+                    sortArray[i][2] = i;
+                    basicArray[sortArray[i][4]] = sortArray[i];
                 }
-                //console.log(setOb.BtapArray);
-                setOb.BtapArray = tapArraySort(setOb.BtapArray, 'reIndex');
-                //console.log(setOb.BtapArray);
+                setOb.BtapArray = basicArray;
+            }if (set.option == 'tapNameEdit') {//ddd
+                for (i = 0; i < setOb.BtapArray.length; i++) {
+                    if (setOb.BtapArray[i] != null && setOb.BtapArray[i][0] == set.tapName) {
+                        setOb.BtapArray[i][1] = set.newTapName;
+                    }
+                }
             }
             win[set.target] = setOb;
             for (i = 0; i < this.length; i++) {
                 win[i] = wBmatchWinArray('makeSetToArray', win[i]);
             }
-
             localStorage.setItem('winArray', JSON.stringify(win));
             return setOb;
 
@@ -1358,6 +1359,8 @@ function makeEvent(ob, option) {
         ob.addEventListener(`${clickOption}`, tapMouseInEvent);
     } else if (option1 == 'tapRadioChangeEvent') {
         ob.addEventListener(`${clickOption}`, tapRadioChangeEvent);
+    } else if(option1 == 'tapNameEditEvent'){
+        ob.addEventListener(`${clickOption}`,tapNameEditEvent);
     }
     return ob;
 }
@@ -1509,13 +1512,14 @@ function tapBtnMake(set) {
             },
         },
     }
-    for (j = 0; j < set.BtapArray.length; j++) {
-        if (set.BtapArray[j] != null) {//set.BtapArray[j]
+    let fakeArray = tapArraySort(set.BtapArray, 'fakeInex');
+    for (j = 0; j < fakeArray.length; j++) {
+        if (fakeArray[j] != null) {//set.BtapArray[j]
             let td;
-            if (set.BtapArray[j][3] == 1) {
-                td = tapBtnTd(set.BtapArray[j], 'checked');
+            if (fakeArray[j][3] == 1) {
+                td = tapBtnTd(fakeArray[j], 'checked');
             } else {
-                td = tapBtnTd(set.BtapArray[j], 'not checked');
+                td = tapBtnTd(fakeArray[j], 'not checked');
             }
             table.tr[`td${j}`] = td;
         }
@@ -1528,7 +1532,7 @@ function tapBtnMake(set) {
 }
 function tapBtnTd(array, check, buttonShow) {
     let td = {
-        type: 'td',
+        type: 'td', event:'tapRadioChangeEvent:click',
         button_before: button({
             innerText: '<', style: 'display:none',//tapRadioChangeEvent
             style_width: 'width:15px', style_height: 'height:20px',
@@ -1597,7 +1601,7 @@ function tapNameEditTable() {
                 type: 'td', style_width: 'width:100%',
                 style_BrowLine_borderBottom: `${wB.BrowLine}`,
                 form: form = {
-                    type: 'form',
+                    type: 'form', event:'tapNameEditEvent:submit',
                     input: input({ className: 'tapNameInput', style_width: 'width:89%' }),
                     sub: input({ kind: 'submit', value: 'sub' }),
                 }
@@ -1609,16 +1613,21 @@ function tapNameEditTable() {
 }
 function tapRadioChangeEvent(event) {//ddd
     let input = event.target;
+    if(event.target.type == null){
+        input = event.target.childNodes[1];
+    }
 
     let regex = /[^0-9]/g;
+    if(input == null){
+        return;
+    }
     let winName = input.name;
     let n = winName.replace(regex, "");
     let set = {};
     set.target = Number(n);
     set.tapName = input.id;
 
-
-    if (event.target.innerText.length <= 0) {
+    if (event.target.type == 'radio' || event.target.type == null) {
         let radioAll = document.querySelectorAll(`input[name=${input.name}]`);
 
         set.option = 'tapChecked';
@@ -1627,7 +1636,7 @@ function tapRadioChangeEvent(event) {//ddd
 
         for (i = 0; i < radioAll.length; i++) {
             let td = radioAll[i].parentNode;
-            if (radioAll[i].checked == true) {
+            if (radioAll[i].id == input.id) {
                 td.style.borderRight = setOb.BcolLine;
                 td.style.borderLeft = setOb.BcolLine;
                 td.style.borderBottom = 'none';
@@ -1637,7 +1646,7 @@ function tapRadioChangeEvent(event) {//ddd
                 td.style.borderBottom = setOb.BrowLine;
             }
         }
-    } else {
+    } else if(event.target.type =='submit'){
         let winName = event.target.parentNode.childNodes[1].name;
         let n = winName.replace(regex, "");
         let set2 = {};
@@ -1653,9 +1662,6 @@ function tapRadioChangeEvent(event) {//ddd
 
         let setOb = Mwindow.save('editTap', set2);
         setOb = checkValue(setOb);
-        setOb.BtapArray = tapArraySort(setOb.BtapArray);
-        console.log('sort', setOb.BtapArray)
-
 
         let tapBtnDiv = document.querySelector(`.${winName} .tapBtnTr`);
 
@@ -1663,22 +1669,20 @@ function tapRadioChangeEvent(event) {//ddd
         for (i = 1; i < len; i++) {
             tapBtnDiv.childNodes[0].childNodes[0].childNodes[1].remove();
         }
-
-        for (i = 0; i < setOb.BtapArray.length; i++) {
-            if (setOb.BtapArray[i] != null) {
+        let fakeArray = tapArraySort(setOb.BtapArray, 'fakeInex');
+        for (i = 0; i < fakeArray.length; i++) {
+            if (fakeArray[i] != null) {
                 let td;
                 let tdHtml;
-                if (setOb.BtapArray[i][3] == 1) {
-                    td = tapBtnTd(setOb.BtapArray[i], 'checked', ['<', '>']);
+                if (fakeArray[i][3] == 1) {
+                    td = tapBtnTd(fakeArray[i], 'checked', ['<', '>']);
                 } else {
-                    td = tapBtnTd(setOb.BtapArray[i], 'not checked', ['<', '>']);
+                    td = tapBtnTd(fakeArray[i], 'not checked', ['<', '>']);
                 }
-                console.log(setOb.BtapArray[i]);
                 tdHtml = makeHtml(td, setOb);
                 tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdHtml);
             }
         }
-
         let tdLast = {
             type: 'td',
             style_BrowLine_borderBottom: `${wB.BrowLine}`,
@@ -1687,42 +1691,47 @@ function tapRadioChangeEvent(event) {//ddd
         tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdLast);
     }
 }
+function tapNameEditEvent(event){//tapNeme
+    event.preventDefault();
+    let tr = event.target.parentNode.parentNode.parentNode.previousSibling.childNodes[0];
+    let regex = /[^0-9]/g;
+    let winName = tr.childNodes[1].childNodes[1].name;
+    let n = winName.replace(regex, "");
+    let text = event.target.childNodes[0].value;
+    let set = {};
+    set.target = Number(n);
+    set.newTapName = text;
+    set.option = 'tapNameEdit';
+
+    let change;
+    let radioAll = document.querySelectorAll(`input[name=${winName}]`);
+    for(i=0;i<radioAll.length;i++){
+        if(radioAll[i].checked == true){
+            change = radioAll[i];
+        }
+    }
+    set.tapName = change.id;
+    let setOb = Mwindow.save('editTap', set);
+}
 
 function tapArraySort(array, option) {//ddd
-    let n = [];
-    let newArray = [];
+    let basicArray = [];
+    let array2 = [];
     for (i = 0; i < array.length; i++) {
         if (array[i] != null) {
-            n.push(array[i][2]);
-        } else {
-            n.push(null);
+            array2.push(array[i]);
         }
+        basicArray.push(null);
     }
-    for (i = 0; i < n.length; i++) {
-        if (n[i] != null) {
-            let nn = n[i]
-            newArray.push(array[nn]);
-        }
+    let sortArray = array2.sort((a, b) => a[2] - b[2]);
+    if(option == 'fakeInex'){
+        return sortArray;
     }
-    //[2[1], 1[2], 4[3], null[4], 6[5], 5[6]] //n
-    //[1[2], 2[1], 4[3], 5[6], 6[5]] //new
-
-    //[1[2], 2[1], 3[3], 4[6], 5[5]] //new
-    //[2[1], 1[2], 3[3], null[4], 5[5], 4[6]] //make
-
-    if (option == 'reIndex') {
-        for (i = 0; i < array.length; i++) {
-            if (newArray[i] != null) {
-                newArray[i][2] = i;/*
-                let b = newArray[i][0].split('_')[1];
-                b = Number(b);
-                array[b] = newArray[i]*/
-            }
-        }
-        console.log(22, array);
-        return array;
+    for (i = 0; i < sortArray.length; i++) {
+        sortArray[i][2] = i;
+        basicArray[sortArray[i][4]] = sortArray[i];
     }
-    return newArray;
+    return basicArray;
 }
 
 //tap btn ===========================================================
