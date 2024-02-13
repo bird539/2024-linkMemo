@@ -215,9 +215,10 @@ let Mwindow = {
                     tapArray[i] = [
                         `w${set.target}_${i}_${set.tapType}`,
                         `${set.name}`,
-                        lastN,
-                        1, //checked,
-                        i,
+                        lastN,//fakeIndex,
+                        1,    //checked,
+                        i,    //incex,
+                        //[backGround-color, text color]
                     ];
                     tap.tapArray = tapArray[i];
                     break;
@@ -1460,8 +1461,51 @@ function makeHtml(ob, set) {
     }
     return newOb;
 }
-//main make =======================
+//tapMemo ddd start
 
+let memoOb = {
+    type:'div',
+    memoHead : table1 = {
+        type:'table',
+        tr:tr = {
+            type:'td',
+            td1:td={
+                type:'td',
+                btn:btn={
+                    type:'button',
+                    innerText:'b',
+                }
+            },
+            td2:td={
+                type:'td',
+                form:txt={
+                    type:'form',
+                    textarea:txt={
+                        type:'textarea',
+                        rows:'5', cols:'50',style:'display:block',style:'display:block',
+                    },
+                    select:color={
+                        type:'select',style:'float:right',
+                        op:option={
+                            type:'option', value:'type1'
+                        },
+                        op2:option={
+                            type:'option', value:'type2'
+                        }
+                    },
+                    submit:ind={
+                        type:'input',kind:'submit',style_1:'float:right',
+                        style:'display:inline-block',
+                    }
+                }
+            }
+        }
+    },
+    //momo
+}
+//tapMemo ddd end
+
+//main make =======================
 
 const main = document.querySelector('.main');
 
@@ -1492,6 +1536,21 @@ for (let i = 0; i < 10; i++) {
         let tapReal2 = makeHtml(tapEdit, set);
         q.appendChild(tapReal2);
 
+        let win = document.querySelector(`.${set.BclassName}`);
+        let tapDiv = document.createElement('div');
+        tapDiv.className = 'tapDiv';
+        win.appendChild(tapDiv);
+
+        
+        for(j=0;j<set.BtapArray.length;j++){
+            console.log(set.BtapArray[j])
+            let tapName = set.BtapArray[j][0];
+            if(tapName!=null&&tapName.split('_')[2]=='s1'){
+                let tapMemoHtml = makeHtml(memoOb, set);
+                let tapDiv = document.querySelector(`.${set.BclassName} .tapDiv`);
+                tapDiv.appendChild(tapMemoHtml);
+            }
+        }
     }
 }
 //tap btn ===========================================================
@@ -1777,12 +1836,24 @@ let TmemoOb = {
 
 let Tmemo = {
     save: function (option, set) {
-        if (option == 'pluss') {
+        if (option == 'firstNew') {
+            let tapArray = [
+                [1,0], // [ 0:sort[1:new 0:old, 1:color], 
+                       //   1:view[0:all, 1<=:count], 
+                       //   2:highlight[0:colo1, 1:colo2, 2:colo3] ],
+
+                []     //textArray [0:check, 
+                //                  1:text, 
+                //                  2:mark 0~2-color 3-none]
+            ];
+            localStorage.setItem(`${set.tapClassName}`, JSON.stringify(tapArray));
             //let getSave = localStorage.getItem('winArray');
             //localStorage.setItem('winArray', JSON.stringify(newWinArray));
             //getSave = JSON.parse(getSave);
 
-        } else if (option == '') {
+        } else if (option == 'openNew') {
+            let getSave = localStorage.getItem(`${set.tapClassName}`);
+            getSave = JSON.parse(getSave);
 
         } else if (option == 'plusNew') {
             let copy1 = copyReturn();
