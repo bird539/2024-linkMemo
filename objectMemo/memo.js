@@ -434,7 +434,7 @@ function textarea(option) {
         rows: '5', style_width: 'width:95%',
         style_BwinBack_backgroundColor: '',
         style_display: 'display:block',
-        style_border:'border:none',
+        style_border: 'border:none',
 
 
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
@@ -1214,6 +1214,24 @@ function editWin(event) {
     //wBtnHoverFontColor
 }
 
+function targetShow(event) {
+    let name = event.target.className;
+    let target = document.querySelector(`.${name}_form`);
+    if(target.style.display == 'block'){
+        target.style.display = 'none'
+    }else{
+        target.style.display = 'block'
+    }
+}
+function hideAndTargetShow(event){
+    if(event.target.style == 'none'){
+        event.target.style.display = 'block'
+    }else{
+        event.target.style.display = 'none'
+    }
+    targetShow(event);
+}
+
 function titleNameChange(event) {
     event.preventDefault();
     let wName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.className;
@@ -1388,6 +1406,10 @@ function makeEvent(ob, option) {
         ob.addEventListener(`${clickOption}`, tapRadioChangeEvent);
     } else if (option1 == 'tapNameEditEvent') {
         ob.addEventListener(`${clickOption}`, tapNameEditEvent);
+    } else if (option1 == 'targetShow') {
+        ob.addEventListener(`${clickOption}`, targetShow);
+    }else if (option1 == 'hideAndTargetShow') {
+        ob.addEventListener(`${clickOption}`, hideAndTargetShow);
     }
     return ob;
 }
@@ -1430,7 +1452,6 @@ function makeStyle(ob, option, value) {
 function makeHtml(ob, set) {
     let newOb;
     let child;
-
     for (const key in ob) {
         let keySorce = `${key}`
         let keyy = keySorce.split('_')[0];
@@ -1487,15 +1508,18 @@ function makeHtml(ob, set) {
     }
     return newOb;
 }
+
+
 //tapMemo ddd start
+let colornn = ['transparent', '#1D9BF0', '#FE0000', '#2B6549']
 let txtarry = [[1, 1, ['red', 'blue', 'green'], 1],
 [
-    [0, 'hello wold!\nneww olrd~', 3],
-    [0, 'hello wold1', 3],
+    [0, 'hello wold!\nneww olrd~', 1],
+    [0, 'hello wold1', 0],
     [0, 'hello wold2', 3],
 ]
 ]
-function makeMemoTable(array) {
+function makeMemoTable(array, tapName) {
     let table = {
         type: 'table',
         style_BwinBack_backgroundColor: '',
@@ -1504,148 +1528,158 @@ function makeMemoTable(array) {
     }
 
     for (k = 0; k < array[1].length; k++) {
-        console.log(k);
         let tr = {
             type: 'tr',
             td1: td = {
                 type: 'td',
                 style_width: 'width:20px',
                 className: 'rowCol',
+
                 style_border: 'borderCollapse:collapse',
-                style_verticalAlign:'verticalAlign:super',
+                style_verticalAlign: 'verticalAlign:super',
 
                 style_BrowLine_borderBottom: `${wB.BrowLine}`,
                 style_BcolLine_borderRight: `${wB.BcolLine}`,
+                style_textAlign: 'textAlign:center',
 
                 checkBox: check = {
                     type: 'input', kind: 'checkbox',
-                    style_border:'border:1px solid #999',
-                    style_width:'width:20px',
-                    style_height:'height:20px',
-                    //style_padding:'padding:0',
-                    //style_outline:'outline:none',
-                    style_appearance:'appearance:none',
-                    //style_display:'display:none',
-                    //style_width: 'width:20px',
-                }
+                    style_color: 'color:red'
+                },
             },
             td2: td = {
                 type: 'td',
                 style_BrowLine_borderBottom: `${wB.BrowLine}`,
                 className: 'row',
 
-                div1:d={
-                    type:'div', style_margin:'margin:0.3em',
-                    mark2:m={
-                        type:'mark', 
-                        style:'backgroundColor:transparent',
-                        innerText:`${array[1][k][1]}`,
+                div1: d = {
+                    type: 'div', style_margin: 'margin:0.3em',
+                    className:`${tapName}_${i}_d`,
+                    event:'hideAndTargetShow:dblclick',
+                    mark2: m = {
+                        type: 'mark',
+                        className:`${tapName}_${i}_d`,
+                        style: `backgroundColor:${colornn[array[1][k][2]]}`,
+                        innerText: `${array[1][k][1]}`,
                     },
                 },
 
                 form: f = {
                     type: 'form',
+                    className:`${tapName}_${i}_d_form`,
                     style_display: 'display:none',
-                    textarea: t = { type: 'textarea', innerText: `${array[1][k][1]}`, },
-                    input_sub: input({ kind: 'submit', value: 'sub' }),
+                    textarea: textarea({ placeholder: 'edit memo...', value: `${array[1][k][1]}`, rows:'2'}),
+                    input_sub: input({ kind: 'submit', value: 'sub',style_float: 'float:right',  }),
+                    input_up: button({ innerText: 'Λ',style_float: 'float:right',}),
+                    input_dw: button({ innerText: 'V',style_float: 'float:right',}),
                 },
-                input_up: button({ innerText: 'Λ' }),
-                input_dw: button({ innerText: 'V' }),
-                input_copy: button({ innerText: 'copy', style: 'width:40px', }),
-                input_del: button({ innerText: 'dell', style: 'width:30px', }),
-                select_sort: returnSelectOb(['colo1', 'colo2', 'color3', 'none'], {
+                select_sort: returnSelectOb(['none', 'colo1', 'colo2', 'color3'], {
+                    style_float: 'float:right',
                     style_appearance: 'appearance:none',
                     style_border: 'border:none',
-                    style_textAlign: 'textAlign:center'
-                })
+                    style_textAlign: 'textAlign:center',
+                    style_width: 'width:50px',
+                }),
+                input_del: button({ innerText: 'dell', style: 'width:30px', style_float: 'float:right', }),
+                input_copy: button({ innerText: 'copy', style: 'width:40px', style_float: 'float:right', }),
             }
         }
         table[`${k}tr`] = tr;
-        console.log(table[`${k}tr`]);
     }
-    console.log(table);
-
     return table;
 }
-let memoOb = {
-    type: 'div',
-    style_BwinBack_backgroundColor: '',
 
-    memoHead: table1 = {
-        type: 'table',
+function memoMake(tapName) {
+
+    let memoOb = {
+        type: 'div',
         style_BwinBack_backgroundColor: '',
-        tr: tr = {
-            type: 'tr',
 
-            td1: td = {
-                type: 'td',
-                style_width: 'width:20px',
-                className: 'rowCol',
-                style_verticalAlign:'verticalAlign:super',
-                style_BrowLine_borderBottom: `${wB.BrowLine}`,
-                style_BcolLine_borderRight: `${wB.BcolLine}`,
+        memoHead: table1 = {
+            type: 'table',
+            style_BwinBack_backgroundColor: '',
+            tr: tr = {
+                type: 'tr',
 
-                showForm: button({
-                    innerText: 'i',
-                    style_2: 'border:0',
-                    //event: 'selectBeforAfterBtn:click',
-                }),
+                td1: td = {
+                    type: 'td',
+                    style_width: 'width:20px',
+                    className: 'rowCol',
+                    style_verticalAlign: 'verticalAlign:super',
+                    style_BrowLine_borderBottom: `${wB.BrowLine}`,
+                    style_BcolLine_borderRight: `${wB.BcolLine}`,
 
-            },
-            td2: td = {
-                type: 'td',
-                className: 'row', style_width:'width:100%',
-                style_BrowLine_borderBottom: `${wB.BrowLine}`,
-                form: txt = {
-                    type: 'form',
-                    textarea: textarea({placeholder:'input memo...'}),
-
-                    submit:input({kind: 'submit', value:'sub', style_float: 'float:right',style_display: 'display:inline-block'}),
-                    select:returnSelectOb(['none','color1','color2','color3'],{
-                        style_appearance: 'appearance:none',style_border:'border:none', style_float: 'float:right', 
+                    showForm: button({
+                        innerText: 'i',
+                        style_2: 'border:0',
+                        event:'targetShow:click',
+                        className:`${tapName}_i`,
+                        //event: 'selectBeforAfterBtn:click',
                     }),
+
                 },
-                select_sort: returnSelectOb(['new', 'old', 'color'], {
-                    style_appearance: 'appearance:none',
-                    style_border: 'border:none',
-                    style_textAlign: 'textAlign:center'
-                })
+                td2: td = {
+                    type: 'td',
+                    className: 'row', style_width: 'width:100%',
+                    style_BrowLine_borderBottom: `${wB.BrowLine}`,
+                    className:`${tapName}_i`,
+
+                    form: txt = {
+                        type: 'form',
+                        textarea: textarea({ placeholder: 'input memo...' }),
+                        className:`${tapName}_i_form`,
+                        submit: input({ kind: 'submit', value: 'sub', style_float: 'float:right', style_display: 'display:inline-block' }),
+                        select: returnSelectOb(['none', 'color1', 'color2', 'color3'], {
+                            style_appearance: 'appearance:none', style_border: 'border:none', style_float: 'float:right',
+                        }),
+                        color: input({ kind: 'color', style_float: 'float:right', style_height: 'height:20px', style_width: 'width:40px', style_display: 'display:none' }),
+                    },
+                    select_sort: returnSelectOb(['new', 'old', 'color'], {
+                        style_appearance: 'appearance:none',
+                        style_border: 'border:none',
+                        style_textAlign: 'textAlign:center'
+                    })
+                }
             }
-        }
-    },
-    memoBody: makeMemoTable(txtarry),
+        },
+        memoBody: makeMemoTable(txtarry),
 
-    memoFoot: table = {
-        type: 'table',
-        style_width: 'width:100%',
-        style_border: 'borderCollapse:collapse',
-        tr1: tr = {
-            type: 'tr',
-            td1: td = {
-                type: 'td',
-                allSelectBtn: input({ kind: 'checkBox' }),
-                className: 'rowCol',
-                style_width: 'width:20px',
-                style_BrowLine_borderBottom: `${wB.BrowLine}`,
-                style_BcolLine_borderRight: `${wB.BcolLine}`,
-            },
-            td2: td = {
-                type: 'td',
-                className: 'row',
-                style_BrowLine_borderBottom: `${wB.BrowLine}`,
-                select: returnSelectOb(['checked del', 'checked colo1 del', 'checked colo2 del', 'checked colo3 del'], {
-                    style_appearance: 'appearance:none',
-                    style_border: 'border:none',
-                    style_marginLeft: 'marginLeft:0.5em',
-                    //style_textAlign: 'textAlign:center'
-                }),
-                btn:button({innerText:'dell', style_width:'width:30px'})
+        memoFoot: table = {
+            type: 'table',
+            style_width: 'width:100%',
+            style_border: 'borderCollapse:collapse',
+            tr1: tr = {
+                type: 'tr',
+                td1: td = {
+                    type: 'td',
+                    checkBox: check = {
+                        type: 'input', kind: 'checkbox',
+                        style_color: 'color:red'
+                    },
+                    className: 'rowCol',
+                    style_width: 'width:20px',
+                    style_BrowLine_borderBottom: `${wB.BrowLine}`,
+                    style_BcolLine_borderRight: `${wB.BcolLine}`,
+                },
+                td2: td = {
+                    type: 'td',
+                    className: 'row',
+                    style_BrowLine_borderBottom: `${wB.BrowLine}`,
+                    select: returnSelectOb(['checked', 'checked colo1', 'checked colo2', 'checked colo3'], {
+                        style_appearance: 'appearance:none',
+                        style_border: 'border:none',
+                        style_marginLeft: 'marginLeft:0.5em',
+                        //style_textAlign: 'textAlign:center'
+                    }),
+                    btn: button({ innerText: 'dell', style_width: 'width:30px' })
+
+                }
 
             }
-
         }
     }
-    //momo
+
+    return memoOb;
 }
 //[ [1,1,['red','blue','green'],1], [ [0,'hello wold!', 3] ] ]
 //[1,0], // 
@@ -1661,7 +1695,7 @@ let memoOb = {
 
 //tapMemo ddd end
 
-//main make =======================
+//main make ssss =======================
 
 const main = document.querySelector('.main');
 
@@ -1704,6 +1738,7 @@ for (let i = 0; i < 10; i++) {
                 tapName = set.BtapArray[j][0];
             }
             if (tapName != null && tapName.split('_')[2] == 's1') {
+                let memoOb = memoMake(tapName);
                 let tapMemoHtml = makeHtml(memoOb, set);
                 let tapDiv = document.querySelector(`.${set.BclassName} .tapDiv`);
                 tapDiv.appendChild(tapMemoHtml);
