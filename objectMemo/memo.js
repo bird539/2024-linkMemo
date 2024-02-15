@@ -244,7 +244,7 @@ let Mwindow = {
                     }
                 }
             } else if (set.option == 'tapChange') {
-                let tapIndex; let realIndex; let newTapIndex; let basicArray=new Array(setOb.BtapArray.length);
+                let tapIndex; let newTapIndex; let basicArray = new Array(setOb.BtapArray.length);
                 let array2 = tapArraySort(setOb.BtapArray, 'fakeInex');
                 for (i = 0; i < array2.length; i++) {
                     if (array2[i] != null && array2[i][0] == set.tapName) {
@@ -253,10 +253,11 @@ let Mwindow = {
                 }
                 if (set.beforeOrNext == '<') {
                     newTapIndex = tapIndex - 1;
-                    if (newTapIndex < 0) { newTapIndex = array2.length-1 };
+                    if (newTapIndex < 0) { newTapIndex = array2.length - 1 };
                 } else if (set.beforeOrNext == '>') {
                     newTapIndex = tapIndex + 1;
-                    if (newTapIndex > array2.length-1) { newTapIndex = 0 };
+                    if (newTapIndex > array2.length - 1) { newTapIndex = 0 };
+                    console.log(tapIndex, newTapIndex)
                 }
                 array2[tapIndex][2] = newTapIndex;
                 array2[newTapIndex][2] = tapIndex;
@@ -266,7 +267,8 @@ let Mwindow = {
                     basicArray[sortArray[i][4]] = sortArray[i];
                 }
                 setOb.BtapArray = basicArray;
-            }if (set.option == 'tapNameEdit') {//ddd
+
+            } if (set.option == 'tapNameEdit') {//ddd
                 for (i = 0; i < setOb.BtapArray.length; i++) {
                     if (setOb.BtapArray[i] != null && setOb.BtapArray[i][0] == set.tapName) {
                         setOb.BtapArray[i][1] = set.newTapName;
@@ -277,6 +279,7 @@ let Mwindow = {
             for (i = 0; i < this.length; i++) {
                 win[i] = wBmatchWinArray('makeSetToArray', win[i]);
             }
+
             localStorage.setItem('winArray', JSON.stringify(win));
             return setOb;
 
@@ -424,6 +427,29 @@ function pre(option) {
     }
     return pre;
 }
+
+function textarea(option) {
+    let textarea = {
+        type: 'textarea',
+        rows: '5', style_width: 'width:95%',
+        style_BwinBack_backgroundColor: '',
+        style_display: 'display:block',
+        style_border:'border:none',
+
+
+        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+    }
+    if (option != null) {
+        for (const key in option) {
+            textarea[key] = option[key];
+        }
+    }
+    return textarea;
+}
+
 function button(option) {
     let button = {
         type: 'button',
@@ -1360,8 +1386,8 @@ function makeEvent(ob, option) {
         ob.addEventListener(`${clickOption}`, tapMouseInEvent);
     } else if (option1 == 'tapRadioChangeEvent') {
         ob.addEventListener(`${clickOption}`, tapRadioChangeEvent);
-    } else if(option1 == 'tapNameEditEvent'){
-        ob.addEventListener(`${clickOption}`,tapNameEditEvent);
+    } else if (option1 == 'tapNameEditEvent') {
+        ob.addEventListener(`${clickOption}`, tapNameEditEvent);
     }
     return ob;
 }
@@ -1462,47 +1488,177 @@ function makeHtml(ob, set) {
     return newOb;
 }
 //tapMemo ddd start
+let txtarry = [[1, 1, ['red', 'blue', 'green'], 1],
+[
+    [0, 'hello wold!\nneww olrd~', 3],
+    [0, 'hello wold1', 3],
+    [0, 'hello wold2', 3],
+]
+]
+function makeMemoTable(array) {
+    let table = {
+        type: 'table',
+        style_BwinBack_backgroundColor: '',
+        style_width: 'width:100%',
+        style_border: 'borderCollapse:collapse',
+    }
 
-let memoOb = {
-    type:'div',
-    memoHead : table1 = {
-        type:'table',
-        tr:tr = {
-            type:'td',
-            td1:td={
-                type:'td',
-                btn:btn={
-                    type:'button',
-                    innerText:'b',
+    for (k = 0; k < array[1].length; k++) {
+        console.log(k);
+        let tr = {
+            type: 'tr',
+            td1: td = {
+                type: 'td',
+                style_width: 'width:20px',
+                className: 'rowCol',
+                style_border: 'borderCollapse:collapse',
+                style_verticalAlign:'verticalAlign:super',
+
+                style_BrowLine_borderBottom: `${wB.BrowLine}`,
+                style_BcolLine_borderRight: `${wB.BcolLine}`,
+
+                checkBox: check = {
+                    type: 'input', kind: 'checkbox',
+                    style_border:'border:1px solid #999',
+                    style_width:'width:20px',
+                    style_height:'height:20px',
+                    //style_padding:'padding:0',
+                    //style_outline:'outline:none',
+                    style_appearance:'appearance:none',
+                    //style_display:'display:none',
+                    //style_width: 'width:20px',
                 }
             },
-            td2:td={
-                type:'td',
-                form:txt={
-                    type:'form',
-                    textarea:txt={
-                        type:'textarea',
-                        rows:'5', cols:'50',style:'display:block',style:'display:block',
+            td2: td = {
+                type: 'td',
+                style_BrowLine_borderBottom: `${wB.BrowLine}`,
+                className: 'row',
+
+                div1:d={
+                    type:'div', style_margin:'margin:0.3em',
+                    mark2:m={
+                        type:'mark', 
+                        style:'backgroundColor:transparent',
+                        innerText:`${array[1][k][1]}`,
                     },
-                    select:color={
-                        type:'select',style:'float:right',
-                        op:option={
-                            type:'option', value:'type1'
-                        },
-                        op2:option={
-                            type:'option', value:'type2'
-                        }
-                    },
-                    submit:ind={
-                        type:'input',kind:'submit',style_1:'float:right',
-                        style:'display:inline-block',
-                    }
-                }
+                },
+
+                form: f = {
+                    type: 'form',
+                    style_display: 'display:none',
+                    textarea: t = { type: 'textarea', innerText: `${array[1][k][1]}`, },
+                    input_sub: input({ kind: 'submit', value: 'sub' }),
+                },
+                input_up: button({ innerText: 'Λ' }),
+                input_dw: button({ innerText: 'V' }),
+                input_copy: button({ innerText: 'copy', style: 'width:40px', }),
+                input_del: button({ innerText: 'dell', style: 'width:30px', }),
+                select_sort: returnSelectOb(['colo1', 'colo2', 'color3', 'none'], {
+                    style_appearance: 'appearance:none',
+                    style_border: 'border:none',
+                    style_textAlign: 'textAlign:center'
+                })
+            }
+        }
+        table[`${k}tr`] = tr;
+        console.log(table[`${k}tr`]);
+    }
+    console.log(table);
+
+    return table;
+}
+let memoOb = {
+    type: 'div',
+    style_BwinBack_backgroundColor: '',
+
+    memoHead: table1 = {
+        type: 'table',
+        style_BwinBack_backgroundColor: '',
+        tr: tr = {
+            type: 'tr',
+
+            td1: td = {
+                type: 'td',
+                style_width: 'width:20px',
+                className: 'rowCol',
+                style_verticalAlign:'verticalAlign:super',
+                style_BrowLine_borderBottom: `${wB.BrowLine}`,
+                style_BcolLine_borderRight: `${wB.BcolLine}`,
+
+                showForm: button({
+                    innerText: 'i',
+                    style_2: 'border:0',
+                    //event: 'selectBeforAfterBtn:click',
+                }),
+
+            },
+            td2: td = {
+                type: 'td',
+                className: 'row', style_width:'width:100%',
+                style_BrowLine_borderBottom: `${wB.BrowLine}`,
+                form: txt = {
+                    type: 'form',
+                    textarea: textarea({placeholder:'input memo...'}),
+
+                    submit:input({kind: 'submit', value:'sub', style_float: 'float:right',style_display: 'display:inline-block'}),
+                    select:returnSelectOb(['none','color1','color2','color3'],{
+                        style_appearance: 'appearance:none',style_border:'border:none', style_float: 'float:right', 
+                    }),
+                },
+                select_sort: returnSelectOb(['new', 'old', 'color'], {
+                    style_appearance: 'appearance:none',
+                    style_border: 'border:none',
+                    style_textAlign: 'textAlign:center'
+                })
             }
         }
     },
+    memoBody: makeMemoTable(txtarry),
+
+    memoFoot: table = {
+        type: 'table',
+        style_width: 'width:100%',
+        style_border: 'borderCollapse:collapse',
+        tr1: tr = {
+            type: 'tr',
+            td1: td = {
+                type: 'td',
+                allSelectBtn: input({ kind: 'checkBox' }),
+                className: 'rowCol',
+                style_width: 'width:20px',
+                style_BrowLine_borderBottom: `${wB.BrowLine}`,
+                style_BcolLine_borderRight: `${wB.BcolLine}`,
+            },
+            td2: td = {
+                type: 'td',
+                className: 'row',
+                style_BrowLine_borderBottom: `${wB.BrowLine}`,
+                select: returnSelectOb(['checked del', 'checked colo1 del', 'checked colo2 del', 'checked colo3 del'], {
+                    style_appearance: 'appearance:none',
+                    style_border: 'border:none',
+                    style_marginLeft: 'marginLeft:0.5em',
+                    //style_textAlign: 'textAlign:center'
+                }),
+                btn:button({innerText:'dell', style_width:'width:30px'})
+
+            }
+
+        }
+    }
     //momo
 }
+//[ [1,1,['red','blue','green'],1], [ [0,'hello wold!', 3] ] ]
+//[1,0], // 
+//      [ 0:sort[1:new 0:old, 1:color], 
+//        1:view[0:all, 1<=:count], 
+//        2:highlight[0:colo1, 1:colo2, 2:colo3] ],
+//        4:formShow[0:none,1:show]
+
+
+//[]     //textArray [0:check, 
+//                  1:text, 
+//                  2:mark 0~2-color 3-none]
+
 //tapMemo ddd end
 
 //main make =======================
@@ -1541,11 +1697,13 @@ for (let i = 0; i < 10; i++) {
         tapDiv.className = 'tapDiv';
         win.appendChild(tapDiv);
 
-        
-        for(j=0;j<set.BtapArray.length;j++){
-            console.log(set.BtapArray[j])
-            let tapName = set.BtapArray[j][0];
-            if(tapName!=null&&tapName.split('_')[2]=='s1'){
+
+        for (j = 0; j < set.BtapArray.length; j++) {
+            let tapName = null;
+            if (set.BtapArray[j] != null) {
+                tapName = set.BtapArray[j][0];
+            }
+            if (tapName != null && tapName.split('_')[2] == 's1') {
                 let tapMemoHtml = makeHtml(memoOb, set);
                 let tapDiv = document.querySelector(`.${set.BclassName} .tapDiv`);
                 tapDiv.appendChild(tapMemoHtml);
@@ -1591,7 +1749,7 @@ function tapBtnMake(set) {
 }
 function tapBtnTd(array, check, buttonShow) {
     let td = {
-        type: 'td', event:'tapRadioChangeEvent:click',
+        type: 'td', //event:'tapRadioChangeEvent:click',
         button_before: button({
             innerText: '<', style: 'display:none',//tapRadioChangeEvent
             style_width: 'width:15px', style_height: 'height:20px',
@@ -1660,7 +1818,7 @@ function tapNameEditTable() {
                 type: 'td', style_width: 'width:100%',
                 style_BrowLine_borderBottom: `${wB.BrowLine}`,
                 form: form = {
-                    type: 'form', event:'tapNameEditEvent:submit',
+                    type: 'form', event: 'tapNameEditEvent:submit',
                     input: input({ className: 'tapNameInput', style_width: 'width:89%' }),
                     sub: input({ kind: 'submit', value: 'sub' }),
                 }
@@ -1672,14 +1830,15 @@ function tapNameEditTable() {
 }
 function tapRadioChangeEvent(event) {//ddd
     let input = event.target;
-    if(event.target.type == null){
+    if (event.target.type == null) {
         input = event.target.childNodes[1];
     }
 
     let regex = /[^0-9]/g;
-    if(input == null){
+    if (input == null) {
         return;
     }
+    console.log(event.target);
     let winName = input.name;
     let n = winName.replace(regex, "");
     let set = {};
@@ -1705,7 +1864,7 @@ function tapRadioChangeEvent(event) {//ddd
                 td.style.borderBottom = setOb.BrowLine;
             }
         }
-    } else if(event.target.type =='submit'){
+    } else if (event.target.type == 'submit') {
         let winName = event.target.parentNode.childNodes[1].name;
         let n = winName.replace(regex, "");
         let set2 = {};
@@ -1750,7 +1909,7 @@ function tapRadioChangeEvent(event) {//ddd
         tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdLast);
     }
 }
-function tapNameEditEvent(event){//tapNeme
+function tapNameEditEvent(event) {//tapNeme
     event.preventDefault();
     let tr = event.target.parentNode.parentNode.parentNode.previousSibling.childNodes[0];
     let regex = /[^0-9]/g;
@@ -1764,8 +1923,8 @@ function tapNameEditEvent(event){//tapNeme
 
     let change;
     let radioAll = document.querySelectorAll(`input[name=${winName}]`);
-    for(i=0;i<radioAll.length;i++){
-        if(radioAll[i].checked == true){
+    for (i = 0; i < radioAll.length; i++) {
+        if (radioAll[i].checked == true) {
             change = radioAll[i];
         }
     }
@@ -1783,7 +1942,7 @@ function tapArraySort(array, option) {//ddd
         basicArray.push(null);
     }
     let sortArray = array2.sort((a, b) => a[2] - b[2]);
-    if(option == 'fakeInex'){
+    if (option == 'fakeInex') {
         return sortArray;
     }
     for (i = 0; i < sortArray.length; i++) {
@@ -1838,9 +1997,9 @@ let Tmemo = {
     save: function (option, set) {
         if (option == 'firstNew') {
             let tapArray = [
-                [1,0], // [ 0:sort[1:new 0:old, 1:color], 
-                       //   1:view[0:all, 1<=:count], 
-                       //   2:highlight[0:colo1, 1:colo2, 2:colo3] ],
+                [1, 0], // [ 0:sort[1:new 0:old, 1:color], 
+                //   1:view[0:all, 1<=:count], 
+                //   2:highlight[0:colo1, 1:colo2, 2:colo3] ],
 
                 []     //textArray [0:check, 
                 //                  1:text, 
