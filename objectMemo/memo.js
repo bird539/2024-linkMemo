@@ -282,7 +282,6 @@ let Mwindow = {
 
             localStorage.setItem('winArray', JSON.stringify(win));
             return setOb;
-
         }
     },
 
@@ -309,6 +308,65 @@ let Mwindow = {
         }
     }
 }
+//win Ob end ===================
+//tap memoOb end ===============ddd
+let Tmemo = {
+    save: function (option, set) {
+        if (option == 'firstNew') {
+            let tapArray = [
+                [
+                    1, 0, ['transparent','#ea2525','#fff200','#00ffe9']
+                ], 
+                    // [ 0:sort[1:new 0:old, 1:color], 
+                    //   2:highlight[0:colo1, 1:colo2, 2:colo3] ],
+
+                    []     //textArray [0:check, 
+                //                  1:text, 
+                //                  2:mark 0none 1~3-color 3-none]
+            ];
+            localStorage.setItem(`${set.tapClassName}`, JSON.stringify(tapArray));
+            return tapArray;
+
+        } else if (option == 'openNew') {
+            let getSave = localStorage.getItem(`${set.tapClassName}`);
+            getSave = JSON.parse(getSave);
+            return getSave;
+
+        } else if (option == 'plusNew') {
+            let befoArray = this.save('openNew', set);
+            let newTrMemo = [
+                0,//check
+                set.text,
+                set.colorIndex
+            ]
+            befoArray[1].push(newTrMemo),
+            localStorage.setItem(`${set.tapClassName}`, JSON.stringify(befoArray));
+            let newTr = {inner:newTrMemo, index:befoArray.length, colorArray:befoArray[0][2]};
+
+            return newTr;
+
+        } else if (option == 'editSave') {
+            let win = this.save('new');
+
+            let nn = set.target;
+            let setOb = win[nn];
+
+            for (let key in set) {
+                if (setOb[key] != null && key != 'target') {
+                    setOb[key] = set[key];
+                }
+            }
+            win[nn] = setOb;
+            newWin = [];
+            for (i = 0; i < this.length; i++) {
+                win[i] = wBmatchWinArray('makeSetToArray', win[i]);
+            }
+            localStorage.setItem('winArray', JSON.stringify(win));
+        }
+    },
+}
+//tap memoOb end ===========
+
 
 function re(value) {
     return value;
@@ -870,7 +928,7 @@ function newWindow(event) {
     main.appendChild(aaaa);
 }
 
-function newTapEvent(event) {
+function newTapEvent(event) { //ddd
     let winName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className
     let set = {};
     //let n = winName.charAt(1);
@@ -909,6 +967,19 @@ function newTapEvent(event) {
     tdLast = makeHtml(tdLast, tap.set);
     tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdLast);
 
+    let newTapOb = newTapFirstSaveEvent(tap.tapArray);
+    let winTapDiv = document.querySelector(`.${tap.tapArray[0].split('_')[0]} .tapDiv`);
+    let newTapOb2 = makeHtml(newTapOb, tap.set);
+    winTapDiv.appendChild(newTapOb2);
+}
+
+function newTapFirstSaveEvent(array){
+    if(array[0].split('_')[2]=='s1'){
+        let set = {tapClassName:`${array[0]}`};
+        let newTapArray = Tmemo.save('firstNew', set);
+        let memoOb = memoMake(set.tapClassName, newTapArray);
+        return memoOb;
+    }
 }
 
 function editWin(event) {
@@ -1213,6 +1284,37 @@ function editWin(event) {
     //wBtnHoverBackColor
     //wBtnHoverFontColor
 }
+function memoNewSave(event){//ddd
+    event.preventDefault()
+    let name = event.target.className;
+    let tapClassName = `${name.split('_')[0]}_${name.split('_')[1]}_${name.split('_')[2]}`;
+    let text = event.target.childNodes[0].value;
+    let colorIndex = event.target.childNodes[2].selectedIndex;
+
+    //console.log(text);
+    let tapArray = Tmemo.save('plusNew', {tapClassName:tapClassName, text:text, colorIndex:colorIndex})
+    let tapMemoOb = makeMemoTr(tapClassName, text, colorIndex, tapArray.colorArray, tapArray.index)
+    let regex = /[^0-9]/g;
+    let n = name.split('_')[0].replace(regex, "");
+    n = Number(n);
+
+    let Warray = Mwindow.save('new');
+    if (Warray[n] != null) {
+        let set = copyReturn();
+        for (key in set) {
+            if (set[key] != null && Warray[n][key] != null) {
+                set[key] = Warray[n][key];
+            }
+        }
+    }
+
+    let tapMemoHtml = makeHtml(tapMemoOb, set)
+
+    let target = document.querySelector(`.${tapClassName}`);
+    console.log(tapClassName);
+    target.childNodes[1].appendChild(tapMemoHtml);
+
+}
 
 function targetShow(event) {
     let name = event.target.className;
@@ -1410,6 +1512,8 @@ function makeEvent(ob, option) {
         ob.addEventListener(`${clickOption}`, targetShow);
     }else if (option1 == 'hideAndTargetShow') {
         ob.addEventListener(`${clickOption}`, hideAndTargetShow);
+    }else if (option1 == 'memoNewSave') {
+        ob.addEventListener(`${clickOption}`, memoNewSave);
     }
     return ob;
 }
@@ -1513,86 +1617,97 @@ function makeHtml(ob, set) {
 //tapMemo ddd start
 let colornn = ['transparent', '#1D9BF0', '#FE0000', '#2B6549']
 let txtarry = [[1, 1, ['red', 'blue', 'green'], 1],
-[
-    [0, 'hello wold!\nneww olrd~', 1],
-    [0, 'hello wold1', 0],
-    [0, 'hello wold2', 3],
+    [
+        [0, 'hello wold!\nneww olrd~', 1],
+        [0, 'hello wold1', 0],
+        [0, 'hello wold2', 3],
+    ]
 ]
-]
-function makeMemoTable(array, tapName) {
+function makeMemoTr(tapName, text, colorIndex, colorArray, index){
+    let tr = {
+        type: 'tr',
+        td1: td = {
+            type: 'td',
+            style_width: 'width:20px',
+            className: 'rowCol',
+
+            style_border: 'borderCollapse:collapse',
+            style_verticalAlign: 'verticalAlign:super',
+
+            style_BrowLine_borderBottom: ``,
+            style_BcolLine_borderRight: ``,
+            style_textAlign: 'textAlign:center',
+
+            checkBox: check = {
+                type: 'input', kind: 'checkbox',
+                style_color: 'color:red'
+            },
+        },
+        td2: td = {
+            type: 'td',
+            style_BrowLine_borderBottom: ``,
+            className: 'row',
+
+            div1: d = {
+                type: 'div', style_margin: 'margin:0.3em',
+                className:`${tapName}_${index}_d`,
+                event:'hideAndTargetShow:dblclick',
+                mark2: m = {
+                    type: 'mark',
+                    className:`${tapName}_${index}_d`,
+                    style: `backgroundColor:${colorArray[colorIndex]}`,
+                    innerText: `${text}`,
+                },
+            },
+
+            form: f = {
+                type: 'form',
+                className:`${tapName}_${index}_d_form`,
+                style_display: 'display:none',
+                textarea: textarea({ placeholder: 'edit memo...', value: `${text}`, rows:'2'}),
+                input_sub: input({ kind: 'submit', value: 'sub',style_float: 'float:right',  }),
+                input_up: button({ innerText: 'Λ',style_float: 'float:right',}),
+                input_dw: button({ innerText: 'V',style_float: 'float:right',}),
+            },
+            select_sort: returnSelectOb(colorArray, {
+                style_float: 'float:right',
+                style_appearance: 'appearance:none',
+                style_border: 'border:none',
+                style_textAlign: 'textAlign:center',
+                style_width: 'width:50px',
+            }),
+            input_del: button({ innerText: 'dell', style: 'width:30px', style_float: 'float:right', }),
+            input_copy: button({ innerText: 'copy', style: 'width:40px', style_float: 'float:right', }),
+        }
+    }
+    console.log(tr);
+    return tr;
+}
+
+function makeMemoTable(tapName, array) {
     let table = {
         type: 'table',
         style_BwinBack_backgroundColor: '',
         style_width: 'width:100%',
         style_border: 'borderCollapse:collapse',
     }
-
-    for (k = 0; k < array[1].length; k++) {
-        let tr = {
-            type: 'tr',
-            td1: td = {
-                type: 'td',
-                style_width: 'width:20px',
-                className: 'rowCol',
-
-                style_border: 'borderCollapse:collapse',
-                style_verticalAlign: 'verticalAlign:super',
-
-                style_BrowLine_borderBottom: `${wB.BrowLine}`,
-                style_BcolLine_borderRight: `${wB.BcolLine}`,
-                style_textAlign: 'textAlign:center',
-
-                checkBox: check = {
-                    type: 'input', kind: 'checkbox',
-                    style_color: 'color:red'
-                },
-            },
-            td2: td = {
-                type: 'td',
-                style_BrowLine_borderBottom: `${wB.BrowLine}`,
-                className: 'row',
-
-                div1: d = {
-                    type: 'div', style_margin: 'margin:0.3em',
-                    className:`${tapName}_${i}_d`,
-                    event:'hideAndTargetShow:dblclick',
-                    mark2: m = {
-                        type: 'mark',
-                        className:`${tapName}_${i}_d`,
-                        style: `backgroundColor:${colornn[array[1][k][2]]}`,
-                        innerText: `${array[1][k][1]}`,
-                    },
-                },
-
-                form: f = {
-                    type: 'form',
-                    className:`${tapName}_${i}_d_form`,
-                    style_display: 'display:none',
-                    textarea: textarea({ placeholder: 'edit memo...', value: `${array[1][k][1]}`, rows:'2'}),
-                    input_sub: input({ kind: 'submit', value: 'sub',style_float: 'float:right',  }),
-                    input_up: button({ innerText: 'Λ',style_float: 'float:right',}),
-                    input_dw: button({ innerText: 'V',style_float: 'float:right',}),
-                },
-                select_sort: returnSelectOb(['none', 'colo1', 'colo2', 'color3'], {
-                    style_float: 'float:right',
-                    style_appearance: 'appearance:none',
-                    style_border: 'border:none',
-                    style_textAlign: 'textAlign:center',
-                    style_width: 'width:50px',
-                }),
-                input_del: button({ innerText: 'dell', style: 'width:30px', style_float: 'float:right', }),
-                input_copy: button({ innerText: 'copy', style: 'width:40px', style_float: 'float:right', }),
-            }
+    for (k = 0; k < array[1].length; k++) {//makeMemoTr(tapName, text, colorIndex, colorArray, index)
+        
+        if(array[1][k]!=null){ //array[1][k][2]
+            let tr = makeMemoTr(tapName, array[1][k][1], array[1][k][2], array[0][2], i);
+            console.log(tr);
+            table[`${k}tr`] = tr;
         }
-        table[`${k}tr`] = tr;
     }
+    console.log(table['1tr']);
     return table;
 }
 
-function memoMake(tapName) {
+function memoMake(tapName, array) {
 
     let memoOb = {
         type: 'div',
+        className:`${tapName}`,
         style_BwinBack_backgroundColor: '',
 
         memoHead: table1 = {
@@ -1627,6 +1742,7 @@ function memoMake(tapName) {
                     form: txt = {
                         type: 'form',
                         textarea: textarea({ placeholder: 'input memo...' }),
+                        event_submit:'memoNewSave:submit',
                         className:`${tapName}_i_form`,
                         submit: input({ kind: 'submit', value: 'sub', style_float: 'float:right', style_display: 'display:inline-block' }),
                         select: returnSelectOb(['none', 'color1', 'color2', 'color3'], {
@@ -1642,7 +1758,7 @@ function memoMake(tapName) {
                 }
             }
         },
-        memoBody: makeMemoTable(txtarry),
+        memoBody: makeMemoTable(tapName, array),
 
         memoFoot: table = {
             type: 'table',
@@ -1672,9 +1788,7 @@ function memoMake(tapName) {
                         //style_textAlign: 'textAlign:center'
                     }),
                     btn: button({ innerText: 'dell', style_width: 'width:30px' })
-
                 }
-
             }
         }
     }
@@ -1738,7 +1852,10 @@ for (let i = 0; i < 10; i++) {
                 tapName = set.BtapArray[j][0];
             }
             if (tapName != null && tapName.split('_')[2] == 's1') {
-                let memoOb = memoMake(tapName);
+                let set2 = {tapClassName:`${tapName}`}
+                let memoArray = Tmemo.save('openNew', set2);
+                console.log(memoArray);
+                let memoOb = memoMake(tapName, memoArray);
                 let tapMemoHtml = makeHtml(memoOb, set);
                 let tapDiv = document.querySelector(`.${set.BclassName} .tapDiv`);
                 tapDiv.appendChild(tapMemoHtml);
@@ -1967,7 +2084,7 @@ function tapNameEditEvent(event) {//tapNeme
     let setOb = Mwindow.save('editTap', set);
 }
 
-function tapArraySort(array, option) {//ddd
+function tapArraySort(array, option) {
     let basicArray = [];
     let array2 = [];
     for (i = 0; i < array.length; i++) {
@@ -1988,103 +2105,3 @@ function tapArraySort(array, option) {//ddd
 }
 
 //tap btn ===========================================================
-
-//tap-memo
-let TmemoOb = {
-    Btitle: 'w0',
-    BclassName: 'w0',
-    Bshow: true,
-
-    //color
-    BwinBack: 'FEF896',
-    BwinFontColor: '000000',
-    BhtmlBack: 'FFFFFF',
-
-    BlineRowColor: 'B8D993',
-    BlineColColor: 'ff8c82',
-
-    BtitleBack: 'FEF896',
-    BtitleFontColor: '000000',
-
-    BbtnHover: '999999',
-    BbtnHoverfontColor: '000000',
-
-    //size & line
-    BwinWidth: '456',
-    BwinHeight: null,
-
-    BlineRowWeight: '1.5',
-    BlineColWeight: '1.5',
-
-    //tap & title font
-    BwinFontSize: '13',
-    BwinFontWeight: 0,
-    BwinFontFamily: 1,
-    BwinFontStyle: 0,
-
-    BtitleFontSize: '13',
-    BtitleFontWeight: 0,
-    BtitleFontFamily: 1,
-    BtitleFontStyle: 0,
-}
-
-let Tmemo = {
-    save: function (option, set) {
-        if (option == 'firstNew') {
-            let tapArray = [
-                [1, 0], // [ 0:sort[1:new 0:old, 1:color], 
-                //   1:view[0:all, 1<=:count], 
-                //   2:highlight[0:colo1, 1:colo2, 2:colo3] ],
-
-                []     //textArray [0:check, 
-                //                  1:text, 
-                //                  2:mark 0~2-color 3-none]
-            ];
-            localStorage.setItem(`${set.tapClassName}`, JSON.stringify(tapArray));
-            //let getSave = localStorage.getItem('winArray');
-            //localStorage.setItem('winArray', JSON.stringify(newWinArray));
-            //getSave = JSON.parse(getSave);
-
-        } else if (option == 'openNew') {
-            let getSave = localStorage.getItem(`${set.tapClassName}`);
-            getSave = JSON.parse(getSave);
-
-        } else if (option == 'plusNew') {
-            let copy1 = copyReturn();
-            let newWin = this.save('new');
-            let num;
-            for (i = 0; i < this.length; i++) {
-                if (newWin[i] == null) {
-                    copy1.Btitle = `w${i}`;
-                    copy1.BclassName = `w${i}`;
-                    num = i;
-                    break
-                }
-            }
-            newWin[num] = copy1;
-            for (k = 0; k < this.length; k++) {
-                newWin[k] = wBmatchWinArray('makeSetToArray', newWin[k]);
-            }
-            localStorage.setItem('winArray', JSON.stringify(newWin));
-            return copy1;
-
-        } else if (option == 'editSave') {
-            let win = this.save('new');
-
-            let nn = set.target;
-            let setOb = win[nn];
-
-            for (let key in set) {
-                if (setOb[key] != null && key != 'target') {
-                    setOb[key] = set[key];
-                }
-            }
-            win[nn] = setOb;
-            newWin = [];
-            for (i = 0; i < this.length; i++) {
-                win[i] = wBmatchWinArray('makeSetToArray', win[i]);
-            }
-            localStorage.setItem('winArray', JSON.stringify(win));
-        }
-    },
-}
