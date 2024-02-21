@@ -369,6 +369,20 @@ let Tmemo = {
             memo[1] = newMemo;
             localStorage.setItem(`${set.tapClassName}`, JSON.stringify(memo));
             return memo;
+        } else if (option == 'changeIndex'){
+            let memo = this.save('openNew', set);
+            let memo1 = memo[1];
+            let nowI = set.nowI; 
+            let newI = set.newI; 
+
+            const now = memo1[nowI];
+            const neww = memo1[newI];
+            memo1[nowI] = neww;
+            memo1[newI] = now;
+
+            memo[1] = memo1;
+            localStorage.setItem(`${set.tapClassName}`, JSON.stringify(memo));
+            return memo;
         }
     },
 }
@@ -391,6 +405,8 @@ function newTapBtn(text, option) {
             style_textAlign: 'textAlign:left',
             style_width: 'width:100%',
             style_height: 'height:20px',
+
+            style_BwinFontColor_color: '',
             style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
             style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
             style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
@@ -414,6 +430,8 @@ function returnSelectOb(array, option) {
         event_out: 'mouseoverEvent:mouseover',
         event_in: 'mouseoutEvent:mouseout',
         className_BbtnClassName: `${wB.BbtnClassName}`,
+
+        style_BwinFontColor_color: '',
         style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
         style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
@@ -439,6 +457,7 @@ function titleBtn(option) {
         className_BtitleBtnClassName: `winTitle_plsBtn:#${wB.BbtnHover}:#${wB.BwinBack}`,
         event_out: 'mouseoverEvent:mouseover',
         event_in: 'mouseoutEvent:mouseout',
+
         style_BwinFontColor_color: '',
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
         style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
@@ -459,6 +478,7 @@ function input(option) {
         style_border: 'border:none',
         placeholder: 'text input',
         style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
+        
         style_BwinFontColor_color: '',
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
         style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
@@ -480,6 +500,8 @@ function pre(option) {
         type: 'pre',
         innerText: 'background color : ',
         style: 'display:inline-block',
+
+        style_BwinFontColor_color:'',
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
         style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
         style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
@@ -501,7 +523,7 @@ function textarea(option) {
         style_display: 'display:block',
         style_border: 'border:none',
 
-
+        style_BwinFontColor_color:'',
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
         style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
         style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
@@ -523,6 +545,8 @@ function button(option) {
         event_in: 'mouseoutEvent:mouseout',
         style_height: 'height:20px',
         style_width: 'width:20px',
+
+        style_BwinFontColor_color:'',
         style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
         style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
@@ -542,6 +566,7 @@ function radio(option) {
         className_BbtnClassName: ``,
         event_out: 'mouseoverEvent:mouseover',
         event_in: 'mouseoutEvent:mouseout',
+        style_BwinFontColor_color:'',
         style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
         style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
@@ -1462,12 +1487,75 @@ function memoDel(event){
     let winSet = checkValue(win[n])
     let memoTable = document.querySelector(`.${splitName}`).childNodes[1];
     memoTable.replaceChildren();
-    
-    for(i=0;i<newMemoArray[1].length;i++){
-        let newMemoTableOb = makeMemoTr(splitName, newMemoArray[1][i][1],newMemoArray[1][i][2],newMemoArray[0][2],i,newMemoArray[1][i][0],);
+
+    for(t=0;t<newMemoArray[1].length;t++){//makeMemoTr(tapName, text, colorIndex, colorArray, index, checkV)
+        let mmm = {
+            tapName:splitName,
+            text:newMemoArray[1][t][1],
+            colorIndex:newMemoArray[1][t][2],
+            colorArray:newMemoArray[0][2],
+            index:t, 
+            checkV:newMemoArray[1][t][0],
+        };
+        let newMemoTableOb = makeMemoTr(mmm.tapName, mmm.text, mmm.colorIndex, mmm.colorArray, mmm.index, mmm.checkV);
         newMemoTableOb = makeHtml(newMemoTableOb, winSet);
         memoTable.appendChild(newMemoTableOb);
     }
+}
+
+function memoChangeIndex(event){
+    event.preventDefault();
+    let className = event.target.parentNode.className; className = className.split('_');
+    let splitName = `${className[0]}_${className[1]}_${className[2]}`;
+    let newIndex;
+    let oldTable = event.target.parentNode.parentNode.parentNode.parentNode;
+
+    if(event.target.innerText=='Λ'){
+        newIndex = event.target.parentNode.parentNode.parentNode.previousSibling;
+        if(newIndex == null){   
+            newIndex = oldTable.childNodes[oldTable.childNodes.length-1];
+        }
+    }else if(event.target.innerText=='V'){
+        newIndex = event.target.parentNode.parentNode.parentNode.nextSibling;
+        if(newIndex == null){   
+            newIndex = oldTable.childNodes[0];
+        }
+    }
+    newIndex = newIndex.childNodes[1].childNodes[1].className.split('_')[3];
+    nowIndex = event.target.parentNode.className.split('_')[3];
+    let set = {
+        tapClassName:splitName,
+        nowI:Number(nowIndex),//check,text,color
+        newI:Number(newIndex),
+    }
+    let newMemo = Tmemo.save('changeIndex', set);
+
+    let regex = /[^0-9]/g;
+    let n = className[0].replace(regex, "");
+    let win = Mwindow.save('new');
+    let winSet = checkValue(win[n])
+    let memoTable = document.querySelector(`.${splitName}`).childNodes[1];
+    memoTable.replaceChildren();
+
+    for(t=0;t<newMemo[1].length;t++){//makeMemoTr(tapName, text, colorIndex, colorArray, index, checkV)
+        let mmm = {
+            tapName:splitName,
+            text:newMemo[1][t][1],
+            colorIndex:newMemo[1][t][2],
+            colorArray:newMemo[0][2],
+            index:t, 
+            checkV:newMemo[1][t][0],
+        };
+        let newMemoTableOb;
+        if(t==newIndex){
+            newMemoTableOb = makeMemoTr(mmm.tapName, mmm.text, mmm.colorIndex, mmm.colorArray, mmm.index, mmm.checkV, 1);
+        }else{
+            newMemoTableOb = makeMemoTr(mmm.tapName, mmm.text, mmm.colorIndex, mmm.colorArray, mmm.index, mmm.checkV);
+        }
+        newMemoTableOb = makeHtml(newMemoTableOb, winSet);
+        memoTable.appendChild(newMemoTableOb);
+    }
+
 }
 
 function memoSort(event){
@@ -1698,6 +1786,8 @@ function makeEvent(ob, option) {
         ob.addEventListener(`${clickOption}`, memoMainColorChange);
     }else if (option1 == 'memoSort') {
         ob.addEventListener(`${clickOption}`, memoSort);
+    }else if (option1 == 'memoChangeIndex') {
+        ob.addEventListener(`${clickOption}`, memoChangeIndex);
     }
     return ob;
 }
@@ -1807,7 +1897,7 @@ let txtarry = [[1, 1, ['red', 'blue', 'green'], 1],
         [0, 'hello wold2', 3],
     ]
 ]
-function makeMemoTr(tapName, text, colorIndex, colorArray, index, checkV){
+function makeMemoTr(tapName, text, colorIndex, colorArray, index, checkV, formShow){
     let tr = {
         type: 'tr',
         td1: td = {
@@ -1838,7 +1928,7 @@ function makeMemoTr(tapName, text, colorIndex, colorArray, index, checkV){
 
             div1: d = {
                 type: 'div', style_margin: 'margin:0.3em',
-                className:`${tapName}_${index}_d`,
+                className:`${tapName}_${index}_d`, style_display:`display:${formShow==null ? 'block':'none'}`,
 
                 mark2: m = {
                     type: 'mark',
@@ -1852,13 +1942,13 @@ function makeMemoTr(tapName, text, colorIndex, colorArray, index, checkV){
 
             form: f = {
                 type: 'form',
-                className:`${tapName}_${index}_d_form`,
+                className:`${tapName}_${index}_d_form`, style_display:`display:${formShow==null ? 'none':'block'}`,
                 event:'memoFormEditSub:submit',
-                style_display: 'display:none',
+                //style_display: 'display:none',
                 textarea: textarea({ placeholder: 'edit memo...', value: `${text}`, rows:'2'}),
                 input_sub: input({ kind: 'submit', value: 'sub',style_float: 'float:right',  }),
-                input_up: button({ innerText: 'Λ',style_float: 'float:right',}),
-                input_dw: button({ innerText: 'V',style_float: 'float:right',}),
+                input_up: button({ innerText: 'Λ',style_float: 'float:right', event:'memoChangeIndex:click'}),
+                input_dw: button({ innerText: 'V',style_float: 'float:right',event:'memoChangeIndex:click'}),
             },
             input_edit: button({ innerText: 'e', style: 'width:30px', style_float: 'float:right',event:'memoTdFormShow:click',}),
             input_del: button({ innerText: 'x', style: 'width:30px', style_float: 'float:right', event_del:'memoDel:click' }),
