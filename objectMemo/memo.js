@@ -581,6 +581,49 @@ function radio(option) {
     return radio;
 }
 
+function label(option){
+    let label = {
+        type: 'label',
+        className_BbtnClassName: ``,
+        event_out: 'mouseoverEvent:mouseover',
+        event_in: 'mouseoutEvent:mouseout',
+
+        style_BwinFontColor_color:'',
+        style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
+        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+    }
+    if (option != null) {
+        for (const key in option) {
+            label[key] = option[key];
+        }
+    }
+    return label;
+}
+
+function mark(option){
+    let mark = {
+        type: 'mark',
+
+        style_BwinFontColor_color:'',
+        style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
+        style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
+        style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
+        style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
+        style_BwinFontStyle_fontStyle: `${wB.BwinFontStyle}`,
+    }
+    if (option != null) {
+        for (const key in option) {
+            mark[key] = option[key];
+        }
+    }
+    return mark;
+}
+
+//www
+
 let w = {
     type: 'div', className_BclassName: `${wB.BclassName}`,
     style_display: 'display:inlie-block',
@@ -620,14 +663,18 @@ let w = {
                         style_height: 'heigth:20px',
                         style_textAlign: 'textAlign:left',
                     }),
+
                     titleEditForm: form1 = {
                         type: 'form',
                         style_display: 'display:none',
                         className: 'winTitle_titleEditForm',
                         event: 'titleNameChange:submit',
+
+                        beforeBtn:button({innerText:'<'}),
                         input: input({
                             value_Btitle: `${wB.Btitle}`,
-                        })
+                        }),
+                        nextBtn:button({innerText:'>'}),
                     },
                 }
             }
@@ -1605,7 +1652,7 @@ function titleNameChange(event) {
     let regex = /[^0-9]/g;
     let n = wName.replace(regex, "");
     Bw.target = Number(n);
-    Bw.Btitle = form.elements[0].value;
+    Bw.Btitle = form.elements[1].value;
     Mwindow.save('editSave', Bw);
 
     let title = event.target.previousSibling;
@@ -1930,14 +1977,14 @@ function makeMemoTr(tapName, text, colorIndex, colorArray, index, checkV, formSh
                 type: 'div', style_margin: 'margin:0.3em',
                 className:`${tapName}_${index}_d`, style_display:`display:${formShow==null ? 'block':'none'}`,
 
-                mark2: m = {
+                mark2:mark({
                     type: 'mark',
                     className:`${tapName}_${index}_d`,
                     style: `backgroundColor:${colorIndex>0 ? colorArray[colorIndex] : 'transparent'}`,
-                    style_color:`color:${checkV ? colorArray[4] : 'black'}`,
+                    style_color:`color:${checkV ? colorArray[4] : this.style_BwinFontColor_color}`,
                     innerText: `${text}`,
                     style_textDecorationLine:`textDecorationLine:${checkV ? 'line-through' : 'none'}`,
-                },
+                }),
             },
 
             form: f = {
@@ -2281,10 +2328,12 @@ function tapNameEditTable() {
                 style_BrowLine_borderBottom: `${wB.BrowLine}`,
                 form: form = {
                     type: 'form', event: 'tapNameEditEvent:submit',
-                    input: input({ className: 'tapNameInput', style_width: 'width:89%' }),
+                    input: input({ className: 'tapNameInput',  }),
+                    input2:input({ className:'tapBackColorInput', kind:'color'}),
+                    input3:input({ className:'tapWidthSizeInput', kind:'number', placeholder:'width size', style_width:'width:17%', min:'300'}),//ttt
+                    button1:button({ innerText:'set basic',style_width:'width:70px' }),
                     sub: input({ kind: 'submit', value: 'sub' }),
                 }
-
             }
         }
     }
@@ -2398,6 +2447,9 @@ function tapNameEditEvent(event) {//tapNeme
     }
     set.tapName = change.id;
     let setOb = Mwindow.save('editTap', set);
+
+    let targetRadio = change.nextSibling;
+    targetRadio.innerText = set.newTapName;
 }
 
 function tapArraySort(array, option) {
@@ -2418,6 +2470,10 @@ function tapArraySort(array, option) {
         basicArray[sortArray[i][4]] = sortArray[i];
     }
     return basicArray;
+}
+
+function tapSetBasicCheckBox(event){//ttt
+
 }
 
 //tap btn ===========================================================
