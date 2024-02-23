@@ -60,8 +60,7 @@ function checkValue(ob) {
     let number = [
         'BwinWidth', 'BwinHeight',
         'BlineRowWeight', 'BlineColWeight',
-        'BwinFontSize', 'BwinFontWeight',
-        'BtitleFontSize', 'BtitleFontWeight'
+        'BwinFontSize', 'BtitleFontSize',
     ]
 
     for (i = 0; i < color.length; i++) {
@@ -83,11 +82,12 @@ function checkValue(ob) {
     ob.BtitleFontWeight = fontWeight[ob.BtitleFontWeight];
     ob.BtitleFontFamily = fontFamily[ob.BtitleFontFamily];
     ob.BtitleFontStyle = fontStyle[ob.BtitleFontStyle];
-
+    
     ob.BrowLine = `${ob.BlineRowWeight} solid ${ob.BlineRowColor}`;
     ob.BcolLine = `${ob.BlineColWeight} solid ${ob.BlineColColor}`;
-    ob.BbtnClassName = `${ob.BclassName}_btn:${ob.BbtnHover}:${ob.BwinBack}:${ob.BbtnHoverfontColor}:${ob.BwinFontColor}`;
+    ob.BbtnClassName = `${ob.BclassName}_btn:${ob.BbtnHover}:transparent:${ob.BbtnHoverfontColor}:${ob.BwinFontColor}`;
     ob.BtitleBtnClassName = `${ob.BclassName}_btn:${ob.BbtnHover}:${ob.BtitleBack}:${ob.BbtnHoverfontColor}:${ob.BtitleFontColor}`;
+    
     return ob;
 }
 
@@ -180,11 +180,15 @@ let Mwindow = {
             let setOb = win[nn];
             for (let key in set) {
                 if (setOb[key] != null && key != 'target') {
+                    console.log(key, setOb[key], set[key]);
                     setOb[key] = set[key];
                 }
             }
+            if(set.BwinFontWeight!=null){
+                setOb.BwinFontWeight = set.BwinFontWeight;
+            }
+            
             win[nn] = setOb;
-            newWin = [];
             for (i = 0; i < this.length; i++) {
                 win[i] = wBmatchWinArray('makeSetToArray', win[i]);
             }
@@ -217,8 +221,10 @@ let Mwindow = {
                         `${set.name}`,
                         lastN,//fakeIndex,
                         1,    //checked,
-                        i,    //incex,
-                        //[backGround-color, text color]
+                        i,    //inedex,
+                        '#FEF896',//tap back color
+                        '#000000',//tap font color
+                        456,//tap width size
                     ];
                     tap.tapArray = tapArray[i];
                     break;
@@ -272,6 +278,9 @@ let Mwindow = {
                 for (i = 0; i < setOb.BtapArray.length; i++) {
                     if (setOb.BtapArray[i] != null && setOb.BtapArray[i][0] == set.tapName) {
                         setOb.BtapArray[i][1] = set.newTapName;
+                        setOb.BtapArray[i][5] = set.backColor;
+                        setOb.BtapArray[i][6] = set.fontColor;
+                        setOb.BtapArray[i][7] = set.width;
                     }
                 }
             }
@@ -430,9 +439,9 @@ function returnSelectOb(array, option) {
         event_out: 'mouseoverEvent:mouseover',
         event_in: 'mouseoutEvent:mouseout',
         className_BbtnClassName: `${wB.BbtnClassName}`,
+        style_back: `backgroundColor:transparent`,
 
         style_BwinFontColor_color: '',
-        style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
         style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
         style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
@@ -477,9 +486,10 @@ function input(option) {
         type: 'input',
         style_border: 'border:none',
         placeholder: 'text input',
-        style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
-        
-        style_BwinFontColor_color: '',
+        //style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
+        style_backGroundColor:'backgroundColor:transparent',
+
+        className_BbtnClassName: ``,
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
         style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
         style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
@@ -522,8 +532,8 @@ function textarea(option) {
         style_BwinBack_backgroundColor: '',
         style_display: 'display:block',
         style_border: 'border:none',
+        style_backGroundColor:'backgroundColor:transparent',
 
-        style_BwinFontColor_color:'',
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
         style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
         style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
@@ -547,7 +557,9 @@ function button(option) {
         style_width: 'width:20px',
 
         style_BwinFontColor_color:'',
-        style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
+        //style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
+        style_back: `backgroundColor:transparent`,
+
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
         style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
         style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
@@ -662,6 +674,8 @@ let w = {
                         style_width: 'width:100%',
                         style_height: 'heigth:20px',
                         style_textAlign: 'textAlign:left',
+
+                        style_BtitleFontWeight:''
                     }),
 
                     titleEditForm: form1 = {
@@ -875,7 +889,7 @@ let w = {
                                     pre_basicWidth: pre({ innerText: 'basic width size : ', }),
                                     input_basicWidth: input({
                                         value_BwinWidth: `#${wB.BhtmlBack}`,
-                                        className: 'wWidthSize', kind: 'number',
+                                        className: 'wWidthSize', kind: 'number', placeholder:'number',
                                         event_1: 'editWin:input',
                                     }),
                                     br_basicWidth: br = { type: 'span', innerText: '\n' },
@@ -883,7 +897,7 @@ let w = {
                                     pre_basicHeight: pre({ innerText: 'basic height size : ', }),
                                     input_basicHeight: input({
                                         value_BwinHeight: `#${wB.BhtmlBack}`,
-                                        className: 'wHeightSize', kind: 'number',
+                                        className: 'wHeightSize', kind: 'number', placeholder:'number',
                                         event_1: 'editWin:input',
                                     }),
                                     br_basicHeight: br = { type: 'span', innerText: '\n' },
@@ -891,7 +905,7 @@ let w = {
                                     pre_rowLine: pre({ innerText: 'basic row line Thickness : ', }),
                                     input_rowLine: input({
                                         value_BlineRowWeight: `#${wB.BhtmlBack}`,
-                                        className: 'wRowLineThik', kind: 'number', step: '0.1',
+                                        className: 'wRowLineThik', kind: 'number', step: '0.1', placeholder:'number',
                                         event_1: 'editWin:input',
                                     }),
                                     br_rowLine: br = { type: 'span', innerText: '\n' },
@@ -899,7 +913,7 @@ let w = {
                                     pre_colLine: pre({ innerText: 'basic col line Thickness : ', }),
                                     input_colLine: input({
                                         value_BlineColWeight: `#${wB.BhtmlBack}`,
-                                        className: 'wColLineThik', kind: 'number', step: '0.1',
+                                        className: 'wColLineThik', kind: 'number', step: '0.1', placeholder:'number',
                                         event_1: 'editWin:input',
                                     }),
                                     br_colLine: br = { type: 'span', innerText: '\n' },
@@ -917,13 +931,12 @@ let w = {
                                     pre_basicSizeWeight: pre({ innerText: 'basic text size & weight : ', }),
                                     input_BwinFontSize: input({
                                         value_BwinFontSize: `#${wB.BhtmlBack}`,
-                                        className: 'wTextSize', kind: 'number',
+                                        className: 'wTextSize', kind: 'number', placeholder:'number',
                                         event_1: 'editWin:input',
                                     }),
-                                    input_wTextWeight: input({
-                                        value_BwinFontWeight: `#${wB.BhtmlBack}`,
-                                        className: 'wTextWeight', kind: 'number',
-                                        event_1: 'editWin:input',
+                                    inputW_weight: returnSelectOb(fontWeight, {
+                                        className: 'wFontWeight',
+                                        event: 'editWin:input',
                                     }),
                                     br_basicSizeWeight: br = { type: 'span', innerText: '\n' },
 
@@ -943,12 +956,12 @@ let w = {
                                     pre_titleFontSize: pre({ innerText: 'title text size & weight : ', }),
                                     input_titleFontSize: input({
                                         value_BtitleFontSize: `#${wB.BhtmlBack}`,
-                                        className: 'tFontSize', kind: 'number',
+                                        className: 'tFontSize', kind: 'number', placeholder:'number',
                                         event_1: 'editWin:input',
                                     }),
                                     input_weight: returnSelectOb(fontWeight, {
                                         className: 'tFontWeight',
-                                        event: 'editWin:input',
+                                        event: 'editWin:change',
                                     }),
                                     br_titleFontSize: br = { type: 'span', innerText: '\n' },
 
@@ -964,7 +977,7 @@ let w = {
                                     br_titleFontKind: br = { type: 'span', innerText: '\n' },
 
                                     sub1: input({
-                                        kind: 'submit', value: 'save option', className: 'wForm3_submit',
+                                        kind: 'submit', value: 'save option',
                                     }),
                                 },
 
@@ -975,7 +988,7 @@ let w = {
                                     pre_delWin: pre({ innerText: 'del this window', }),
                                     br_delWin: br = { type: 'span', innerText: '\n' },
                                     sub1: input({
-                                        kind: 'submit', value: 'del this window', className: 'wForm3_submit',
+                                        kind: 'submit', value: 'del this window',
                                     }),
                                 }
                             },
@@ -1065,7 +1078,7 @@ function newTapFirstSaveEvent(array){
     if(array[0].split('_')[2]=='s1'){
         let set = {tapClassName:`${array[0]}`};
         let newTapArray = Tmemo.save('firstNew', set);
-        let memoOb = memoMake(set.tapClassName, newTapArray);
+        let memoOb = memoMake(set.tapClassName, newTapArray, array );
         return memoOb;
     }
 }
@@ -1319,8 +1332,8 @@ function editWin(event) {
         btn[1].style.fontSize = `${value}px`;
     } else if (inputOption == 'tFontWeight') {
         let btn = document.querySelectorAll(`.${winName} button`);
-        btn[0].style.fontFamily = inputValue;
-        btn[1].style.fontFamily = inputValue;
+        btn[0].style.fontWeight = inputValue;
+        btn[1].style.fontWeight = inputValue;
     } else if (inputOption == 'tFontFamily') {
         let btn = document.querySelectorAll(`.${winName} button`);
         btn[0].style.fontFamily = inputValue;
@@ -1352,7 +1365,7 @@ function editWin(event) {
     } else if (inputOption == 'wForm3') {
         Bw.target = Number(winN);
         Bw.BwinFontSize = form.elements[0].value;
-        Bw.BwinFontWeight = form.elements[1].selectedIndex;
+        Bw.BwinFontWeight = `${form.elements[1].selectedIndex}`;
         Bw.BwinFontFamily = form.elements[2].selectedIndex;
         Bw.BwinFontStyle = form.elements[3].selectedIndex;
 
@@ -1360,7 +1373,6 @@ function editWin(event) {
         Bw.BtitleFontWeight = form.elements[5].selectedIndex;
         Bw.BtitleFontFamily = form.elements[6].selectedIndex;
         Bw.BtitleFontStyle = form.elements[7].selectedIndex;
-
         Mwindow.save('editSave', Bw);
     }
     //wRowLineColor
@@ -1835,6 +1847,8 @@ function makeEvent(ob, option) {
         ob.addEventListener(`${clickOption}`, memoSort);
     }else if (option1 == 'memoChangeIndex') {
         ob.addEventListener(`${clickOption}`, memoChangeIndex);
+    }else if (option1 == 'tapEditSetBasic') {
+        ob.addEventListener(`${clickOption}`, tapEditSetBasic);
     }
     return ob;
 }
@@ -1895,7 +1909,8 @@ function makeHtml(ob, set) {
             newOb = makeFunction(newOb, 'type', ob[key]);
         } else if (target == 'string' && keyy == 'value') {
             if (sett != null && sett.charAt(0) == 'B') {
-                if (newOb.type == 'number') {
+
+                if (newOb['placeholder'] == 'number') {
                     let val = set[sett];
                     let regex = /[^0-9.]/g; let va;
                     if (val != null) {
@@ -1903,6 +1918,7 @@ function makeHtml(ob, set) {
                     } else {
                         va = set[sett];
                     }
+
                     newOb = makeFunction(newOb, keyy, va);
                 } else {
                     newOb = makeFunction(newOb, keyy, set[sett]);
@@ -1994,7 +2010,7 @@ function makeMemoTr(tapName, text, colorIndex, colorArray, index, checkV, formSh
                 //style_display: 'display:none',
                 textarea: textarea({ placeholder: 'edit memo...', value: `${text}`, rows:'2'}),
                 input_sub: input({ kind: 'submit', value: 'sub',style_float: 'float:right',  }),
-                input_up: button({ innerText: 'Λ',style_float: 'float:right', event:'memoChangeIndex:click'}),
+                input_up: button({ innerText: 'Λ',style_float: 'float:right', event:'memoChangeIndex:click' }),
                 input_dw: button({ innerText: 'V',style_float: 'float:right',event:'memoChangeIndex:click'}),
             },
             input_edit: button({ innerText: 'e', style: 'width:30px', style_float: 'float:right',event:'memoTdFormShow:click',}),
@@ -2019,7 +2035,6 @@ function makeMemoTr(tapName, text, colorIndex, colorArray, index, checkV, formSh
 function makeMemoTable(tapName, array) {
     let table = {
         type: 'table',
-        style_BwinBack_backgroundColor: '',
         style_width: 'width:100%',
         style_border: 'borderCollapse:collapse',
     }
@@ -2032,15 +2047,14 @@ function makeMemoTable(tapName, array) {
     return table;
 }
 
-function memoMake(tapName, array) {
+function memoMake(tapName, array, tapColorAlse) {
     let memoOb = {
         type: 'div',
         className:`${tapName}`,
-        style_BwinBack_backgroundColor: '',
+        style_back: `backgroundColor:${tapColorAlse[5]}`,
 
         memoHead: table1 = {
             type: 'table',
-            style_BwinBack_backgroundColor: '',
             tr: tr = {
                 type: 'tr',
 
@@ -2055,8 +2069,9 @@ function memoMake(tapName, array) {
                     showForm: button({
                         innerText: 'i',
                         style_2: 'border:0',
-                        event:'targetShow:click',
+                        event_11:'targetShow:click',
                         className:`${tapName}_i`,
+                        style_font:`color:${tapColorAlse[6]}`,
                     }),
 
                 },
@@ -2120,7 +2135,7 @@ function memoMake(tapName, array) {
                 }
             }
         },
-        memoBody: makeMemoTable(tapName, array),
+        memoBody: makeMemoTable(tapName, array, tapColorAlse),
 
         memoFoot: table = {
             type: 'table',
@@ -2171,10 +2186,9 @@ function memoMake(tapName, array) {
 
 //tapMemo ddd end
 
-//main make ssss =======================
+//main start make ssss =======================
 
 const main = document.querySelector('.main');
-
 
 let array2 = Mwindow.save('new');
 
@@ -2202,7 +2216,6 @@ for (let i = 0; i < 10; i++) {
         let tapReal2 = makeHtml(tapEdit, set);
         q.appendChild(tapReal2);
 
-
         for (j = 0; j < set.BtapArray.length; j++) {
             let tapName = null;
             if (set.BtapArray[j] != null) {
@@ -2211,12 +2224,12 @@ for (let i = 0; i < 10; i++) {
             if (tapName != null && tapName.split('_')[2] == 's1') {
                 let set2 = {tapClassName:`${tapName}`}
                 let memoArray = Tmemo.save('openNew', set2);
-                let memoOb = memoMake(tapName, memoArray);
+                let memoOb = memoMake(tapName, memoArray, set.BtapArray[j]);
                 let tapMemoHtml = makeHtml(memoOb, set);
                 if(set.BtapArray[j][3] == 1){
                     tapMemoHtml.style.display = 'block';
                 }else{tapMemoHtml.style.display = 'none';}
-                let tapDiv = document.querySelector(`.${set.BclassName} .tapDiv`);
+                let tapDiv = document.querySelector(`.${set.BclassName} .tapDiv`);//ttt
                 tapDiv.appendChild(tapMemoHtml);
             }
         }
@@ -2259,7 +2272,7 @@ function tapBtnMake(set) {
 }
 function tapBtnTd(array, check, buttonShow) {
     let td = {
-        type: 'td', event:'tapRadioChangeEvent:click',
+        type: 'td', event:'tapRadioChangeEvent:click', style_back:`backgroundColor:${array[5]}`,
         button_before: button({
             innerText: '<', style: 'display:none',//tapRadioChangeEvent
             style_width: 'width:15px', style_height: 'height:20px',
@@ -2280,6 +2293,7 @@ function tapBtnTd(array, check, buttonShow) {
             innerText: array[1],
             event_tapclick: 'tapNameInputShow:dblclick',
             style_paddingLeft: 'paddingLeft:5px',
+            style_back:'backgroundColor:transparent'
             //event:'tapRadioChangeEvent:click'
         }),
         button_next: button({
@@ -2329,10 +2343,11 @@ function tapNameEditTable() {
                 form: form = {
                     type: 'form', event: 'tapNameEditEvent:submit',
                     input: input({ className: 'tapNameInput',  }),
-                    input2:input({ className:'tapBackColorInput', kind:'color'}),
-                    input3:input({ className:'tapWidthSizeInput', kind:'number', placeholder:'width size', style_width:'width:17%', min:'300'}),//ttt
-                    button1:button({ innerText:'set basic',style_width:'width:70px' }),
-                    sub: input({ kind: 'submit', value: 'sub' }),
+                    sub: input({ kind: 'submit', value: 'sub', style_float: 'float:right', }),
+                    input_back:input({ className:'tapFont', kind:'color', style_width:'width:25px',style_float: 'float:right', value:'#000000'}),
+                    input_font:input({ className:'tapBack', kind:'color', style_width:'width:25px',style_float: 'float:right', value:'#FEF896'}),
+                    input3:input({ className:'tapWidth', kind:'number', placeholder:'width size', style_width:'width:20%', min:'300',style_float: 'float:right', }),//ttt
+                    button1:button({ innerText:'reset',style_width:'width:70px', event:'tapEditSetBasic:click', style_float: 'float:right',}),
                 }
             }
         }
@@ -2446,6 +2461,9 @@ function tapNameEditEvent(event) {//tapNeme
         }
     }
     set.tapName = change.id;
+    set.fontColor = event.target.childNodes[2].value;
+    set.backColor = event.target.childNodes[3].value;
+    set.width = event.target.childNodes[4].value!=null ? event.target.childNodes[4].value : 456;
     let setOb = Mwindow.save('editTap', set);
 
     let targetRadio = change.nextSibling;
@@ -2472,8 +2490,21 @@ function tapArraySort(array, option) {
     return basicArray;
 }
 
-function tapSetBasicCheckBox(event){//ttt
+function tapEditSetBasic(event){//ttt
+    event.preventDefault();
+    let color_back = event.target.previousSibling.previousSibling;
+    let color_font = event.target.previousSibling.previousSibling.previousSibling;
+    let width = event.target.previousSibling;
+    
+    let regex = /[^0-9]/g;
+    let winName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className;
+    let n = winName.replace(regex, "");
+    let set = {target: Number(n)};
 
+    let setOb = Mwindow.save('new');
+    color_back.value = `#${setOb[set.target].BwinBack}`;
+    color_font.value = `#${setOb[set.target].BwinFontColor}`;
+    width.value = setOb[set.target].BwinWidth;
 }
 
 //tap btn ===========================================================
