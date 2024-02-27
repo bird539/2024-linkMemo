@@ -1,4 +1,4 @@
-//basic option ===============================
+//basic option =======================
 //font option
 let fontFamily = ['serif', 'sans-serif', 'monospace', 'cursive', 'fantasy', 'system-ui', 'ui-serif', 'ui-sans-serif', 'ui-monospace', 'ui-rounded', 'emoji', 'math', 'fangsong']
 let fontStyle = ['normal', 'italic', 'oblique'];
@@ -82,12 +82,12 @@ function checkValue(ob) {
     ob.BtitleFontWeight = fontWeight[ob.BtitleFontWeight];
     ob.BtitleFontFamily = fontFamily[ob.BtitleFontFamily];
     ob.BtitleFontStyle = fontStyle[ob.BtitleFontStyle];
-    
+
     ob.BrowLine = `${ob.BlineRowWeight} solid ${ob.BlineRowColor}`;
     ob.BcolLine = `${ob.BlineColWeight} solid ${ob.BlineColColor}`;
     ob.BbtnClassName = `${ob.BclassName}_btn:${ob.BbtnHover}:transparent:${ob.BbtnHoverfontColor}:${ob.BwinFontColor}`;
     ob.BtitleBtnClassName = `${ob.BclassName}_btn:${ob.BbtnHover}:${ob.BtitleBack}:${ob.BbtnHoverfontColor}:${ob.BtitleFontColor}`;
-    
+
     return ob;
 }
 
@@ -117,7 +117,6 @@ function wBmatchWinArray(option, array) {
         return set;
     }
 }
-
 //배경색 #FEF896, 가로선 #B8D993, 세로선 #FFDD8D
 function copyReturn() { //윈도우 기본 객체
     let clone = {};                                //tap [class,name] array
@@ -126,9 +125,8 @@ function copyReturn() { //윈도우 기본 객체
     }
     return clone;
 }
-
-//=============================== basic option 
-
+//======================= basic option
+//win Ob ======================= www
 let Mwindow = {
     length: 10,
     winArray: {
@@ -184,10 +182,10 @@ let Mwindow = {
                     setOb[key] = set[key];
                 }
             }
-            if(set.BwinFontWeight!=null){
+            if (set.BwinFontWeight != null) {
                 setOb.BwinFontWeight = set.BwinFontWeight;
             }
-            
+
             win[nn] = setOb;
             for (i = 0; i < this.length; i++) {
                 win[i] = wBmatchWinArray('makeSetToArray', win[i]);
@@ -293,43 +291,21 @@ let Mwindow = {
             return setOb;
         }
     },
-
-    tapToArrayOrOb: function (option, array) {
-        if (array == null) {
-            return null;
-        }
-        if (option == 'makeToOb') {
-            let ob = {
-                tapClassName: array[0],
-                tapName: array[1],
-                tapIndex: array[2],
-                tapChecked: array[3],
-            }
-            return ob;
-        } else if (option == 'makeToArray') {
-            let ob = [
-                array.tapClassName,
-                array.tapName,
-                array.tapIndex,
-                array.tapChecked,
-            ]
-            return ob;
-        }
-    }
 }
-//win Ob end ===================
-//tap memoOb start ===============ddd
+//======================= win Ob end
+
+//tap memoOb start ======================= ttt
 let Tmemo = {
     save: function (option, set) {
         if (option == 'firstNew') {
             let tapArray = [
                 [
-                    1, 0, [null,'#ea2525','#fff200','#00ffe9','#E0E0E0','#000000','#EA2525']
-                ], 
-                    // [ 0:sort[1:new 0:old, 1:color], 
-                    //   2:highlight[0:none, 1:colo1, 2:colo2, 3:colo3, 4:doneColor, 5:textColor 6:chekColor] ],
+                    1, 0, [null, '#ea2525', '#fff200', '#00ffe9', '#E0E0E0', '#000000', '#EA2525']
+                ],
+                // [ 0:sort[1:new 0:old, 1:color], 
+                //   2:highlight[0:none, 1:colo1, 2:colo2, 3:colo3, 4:doneColor, 5:textColor 6:chekColor] ],
 
-                    []     //textArray [0:check, 
+                []     //textArray [0:check, 
                 //                  1:text, 
                 //                  2:mark 0none 1~3-color 3-none]
             ];
@@ -349,8 +325,8 @@ let Tmemo = {
                 set.colorIndex
             ]
             befoArray[1].push(newTrMemo),
-            localStorage.setItem(`${set.tapClassName}`, JSON.stringify(befoArray));
-            let newTr = {inner:newTrMemo, index:befoArray[1].length-1, colorArray:befoArray[0][2]};
+                localStorage.setItem(`${set.tapClassName}`, JSON.stringify(befoArray));
+            let newTr = { inner: newTrMemo, index: befoArray[1].length - 1, colorArray: befoArray[0][2] };
 
             return newTr;
 
@@ -359,18 +335,18 @@ let Tmemo = {
             memo[set.colorOrArray][set.target][set.edit] = set.value;
             localStorage.setItem(`${set.tapClassName}`, JSON.stringify(memo));
 
-        }else if (option == 'del') {
+        } else if (option == 'del') {
             let memo = this.save('openNew', set);
             let newMemo = [];
-            if(set.target[0] == 'checkDel'){
-                for(i=0;i<memo[1].length;i++){
-                    if(memo[1][i][set.target[1]]!=set.target[2]){
+            if (set.target[0] == 'checkDel') {
+                for (i = 0; i < memo[1].length; i++) {
+                    if (memo[1][i][set.target[1]] != set.target[2]) {
                         newMemo.push(memo[1][i]);
                     }
                 }
-            }else{
-                for(i=0;i<memo[1].length;i++){
-                    if(set.target!=i){
+            } else {
+                for (i = 0; i < memo[1].length; i++) {
+                    if (set.target != i) {
                         newMemo.push(memo[1][i]);
                     }
                 }
@@ -378,11 +354,11 @@ let Tmemo = {
             memo[1] = newMemo;
             localStorage.setItem(`${set.tapClassName}`, JSON.stringify(memo));
             return memo;
-        } else if (option == 'changeIndex'){
+        } else if (option == 'changeIndex') {
             let memo = this.save('openNew', set);
             let memo1 = memo[1];
-            let nowI = set.nowI; 
-            let newI = set.newI; 
+            let nowI = set.nowI;
+            let newI = set.newI;
 
             const now = memo1[nowI];
             const neww = memo1[newI];
@@ -395,11 +371,9 @@ let Tmemo = {
         }
     },
 }
-//tap memoOb end ===========
-function re(value) {
-    return value;
-}
-//window table ==========================================================
+//======================= tap memoOb end 
+
+//window table ======================= www
 function newTapBtn(text, option) {
     td = {
         type: 'td',
@@ -487,7 +461,7 @@ function input(option) {
         style_border: 'border:none',
         placeholder: 'text input',
         //style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
-        style_backGroundColor:'backgroundColor:transparent',
+        style_backGroundColor: 'backgroundColor:transparent',
 
         className_BbtnClassName: ``,
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
@@ -511,7 +485,7 @@ function pre(option) {
         innerText: 'background color : ',
         style: 'display:inline-block',
 
-        style_BwinFontColor_color:'',
+        style_BwinFontColor_color: '',
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
         style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
         style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
@@ -532,7 +506,7 @@ function textarea(option) {
         style_BwinBack_backgroundColor: '',
         style_display: 'display:block',
         style_border: 'border:none',
-        style_backGroundColor:'backgroundColor:transparent',
+        style_backGroundColor: 'backgroundColor:transparent',
 
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
         style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
@@ -556,7 +530,7 @@ function button(option) {
         style_height: 'height:20px',
         style_width: 'width:20px',
 
-        style_BwinFontColor_color:'',
+        style_BwinFontColor_color: '',
         //style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
         style_back: `backgroundColor:transparent`,
 
@@ -578,7 +552,7 @@ function radio(option) {
         className_BbtnClassName: ``,
         event_out: 'mouseoverEvent:mouseover',
         event_in: 'mouseoutEvent:mouseout',
-        style_BwinFontColor_color:'',
+        style_BwinFontColor_color: '',
         style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
         style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
@@ -593,14 +567,14 @@ function radio(option) {
     return radio;
 }
 
-function label(option){
+function label(option) {
     let label = {
         type: 'label',
         className_BbtnClassName: ``,
         event_out: 'mouseoverEvent:mouseover',
         event_in: 'mouseoutEvent:mouseout',
 
-        style_BwinFontColor_color:'',
+        style_BwinFontColor_color: '',
         style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
         style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
@@ -615,11 +589,11 @@ function label(option){
     return label;
 }
 
-function mark(option){
+function mark(option) {
     let mark = {
         type: 'mark',
 
-        style_BwinFontColor_color:'',
+        style_BwinFontColor_color: '',
         style_BwinBack_backgroundColor: `background-color:#${wB.BwinBack}`,
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
         style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
@@ -675,7 +649,7 @@ let w = {
                         style_height: 'heigth:20px',
                         style_textAlign: 'textAlign:left',
 
-                        style_BtitleFontWeight:''
+                        style_BtitleFontWeight: ''
                     }),
 
                     titleEditForm: form1 = {
@@ -684,16 +658,15 @@ let w = {
                         className: 'winTitle_titleEditForm',
                         event: 'titleNameChange:submit',
 
-                        beforeBtn:button({innerText:'<'}),
+                        beforeBtn: button({ innerText: '<' }),
                         input: input({
                             value_Btitle: `${wB.Btitle}`,
                         }),
-                        nextBtn:button({innerText:'>'}),
+                        nextBtn: button({ innerText: '>' }),
                     },
                 }
             }
         },
-
 
         div_plsTap: headDiv = {
             type: 'div',
@@ -889,7 +862,7 @@ let w = {
                                     pre_basicWidth: pre({ innerText: 'basic width size : ', }),
                                     input_basicWidth: input({
                                         value_BwinWidth: `#${wB.BhtmlBack}`,
-                                        className: 'wWidthSize', kind: 'number', placeholder:'number',
+                                        className: 'wWidthSize', kind: 'number', placeholder: 'number',
                                         event_1: 'editWin:input',
                                     }),
                                     br_basicWidth: br = { type: 'span', innerText: '\n' },
@@ -897,7 +870,7 @@ let w = {
                                     pre_basicHeight: pre({ innerText: 'basic height size : ', }),
                                     input_basicHeight: input({
                                         value_BwinHeight: `#${wB.BhtmlBack}`,
-                                        className: 'wHeightSize', kind: 'number', placeholder:'number',
+                                        className: 'wHeightSize', kind: 'number', placeholder: 'number',
                                         event_1: 'editWin:input',
                                     }),
                                     br_basicHeight: br = { type: 'span', innerText: '\n' },
@@ -905,7 +878,7 @@ let w = {
                                     pre_rowLine: pre({ innerText: 'basic row line Thickness : ', }),
                                     input_rowLine: input({
                                         value_BlineRowWeight: `#${wB.BhtmlBack}`,
-                                        className: 'wRowLineThik', kind: 'number', step: '0.1', placeholder:'number',
+                                        className: 'wRowLineThik', kind: 'number', step: '0.1', placeholder: 'number',
                                         event_1: 'editWin:input',
                                     }),
                                     br_rowLine: br = { type: 'span', innerText: '\n' },
@@ -913,7 +886,7 @@ let w = {
                                     pre_colLine: pre({ innerText: 'basic col line Thickness : ', }),
                                     input_colLine: input({
                                         value_BlineColWeight: `#${wB.BhtmlBack}`,
-                                        className: 'wColLineThik', kind: 'number', step: '0.1', placeholder:'number',
+                                        className: 'wColLineThik', kind: 'number', step: '0.1', placeholder: 'number',
                                         event_1: 'editWin:input',
                                     }),
                                     br_colLine: br = { type: 'span', innerText: '\n' },
@@ -931,7 +904,7 @@ let w = {
                                     pre_basicSizeWeight: pre({ innerText: 'basic text size & weight : ', }),
                                     input_BwinFontSize: input({
                                         value_BwinFontSize: `#${wB.BhtmlBack}`,
-                                        className: 'wTextSize', kind: 'number', placeholder:'number',
+                                        className: 'wTextSize', kind: 'number', placeholder: 'number',
                                         event_1: 'editWin:input',
                                     }),
                                     inputW_weight: returnSelectOb(fontWeight, {
@@ -956,7 +929,7 @@ let w = {
                                     pre_titleFontSize: pre({ innerText: 'title text size & weight : ', }),
                                     input_titleFontSize: input({
                                         value_BtitleFontSize: `#${wB.BhtmlBack}`,
-                                        className: 'tFontSize', kind: 'number', placeholder:'number',
+                                        className: 'tFontSize', kind: 'number', placeholder: 'number',
                                         event_1: 'editWin:input',
                                     }),
                                     input_weight: returnSelectOb(fontWeight, {
@@ -1001,12 +974,12 @@ let w = {
     div: tapPlace = {
         type: 'div', className: 'tapBtnTr',
     },
-    tapDiv:div={
-        type:'div', className: 'tapDiv',
+    tapDiv: div = {
+        type: 'div', className: 'tapDiv',
     }
 }
 
-//pluss function =======================
+//===== win pluss function start ======================= www
 function newWindow(event) {
     let newWin = Mwindow.save('plusNew');
 
@@ -1028,59 +1001,106 @@ function newWindow(event) {
     q.appendChild(tapReal);
 }
 
-function newTapEvent(event) { //ddd
-    let winName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className
-    let set = {};
-    //let n = winName.charAt(1);
-    let regex = /[^0-9]/g;
-    let n = winName.replace(regex, "");
-    set.target = Number(n);
-    set.tapType = event.target.value;
-    set.name = event.target.innerText;
-    let tap = Mwindow.save('newTap', set);
-    tap.set = checkValue(tap.set);
-
-    let tapBtnDiv = document.querySelector(`.${winName} .tapBtnTr`);
-
-    let len = tapBtnDiv.childNodes[0].childNodes[0].childNodes.length;
-    for (i = 1; i < len; i++) {
-        tapBtnDiv.childNodes[0].childNodes[0].childNodes[1].remove();
-    }
-    for (i = 0; i < tap.set.BtapArray.length; i++) {
-        if (tap.set.BtapArray[i] != null) {
-            let td;
-            let tdHtml;
-            if (tap.tapArray[2] == i) {
-                td = tapBtnTd(tap.set.BtapArray[i], 'checked');
-            } else {
-                td = tapBtnTd(tap.set.BtapArray[i], 'not checked');
-            }
-            tdHtml = makeHtml(td, tap.set);
-            tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdHtml);
-        }
-    }
-
-    let tdLast = {
-        type: 'td',
-        style_BrowLine_borderBottom: `${wB.BrowLine}`,
-    }
-    tdLast = makeHtml(tdLast, tap.set);
-    tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdLast);
-
-    let newTapOb = newTapFirstSaveEvent(tap.tapArray);
-    let winTapDiv = document.querySelector(`.${tap.tapArray[0].split('_')[0]} .tapDiv`);
-    for(i=0;i<winTapDiv.childNodes.length;i++){winTapDiv.childNodes[i].style.display='none'};
-    let newTapOb2 = makeHtml(newTapOb, tap.set);
-    winTapDiv.appendChild(newTapOb2);
-}
-
-function newTapFirstSaveEvent(array){
-    if(array[0].split('_')[2]=='s1'){
-        let set = {tapClassName:`${array[0]}`};
+function newTapFirstSaveEvent(array) {
+    if (array[0].split('_')[2] == 's1') {
+        let set = { tapClassName: `${array[0]}` };
         let newTapArray = Tmemo.save('firstNew', set);
-        let memoOb = memoMake(set.tapClassName, newTapArray, array );
+        let memoOb = memoMake(set.tapClassName, newTapArray, array);
         return memoOb;
     }
+}
+
+function titleNameChange(event) {
+    event.preventDefault();
+    let wName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.className;
+
+    let form = document.querySelector(`.${wName} .${event.target.className}`);
+    let Bw = {};
+    let regex = /[^0-9]/g;
+    let n = wName.replace(regex, "");
+    Bw.target = Number(n);
+    Bw.Btitle = form.elements[1].value;
+    Mwindow.save('editSave', Bw);
+
+    let title = event.target.previousSibling;
+    title.innerText = Bw.Btitle;
+    form.style.display = 'none';
+}
+
+function NextNextNextShowEvent(event) {
+    let target = event.target.parentNode.parentNode.parentNode.nextSibling;
+
+    if (target.style.display != 'none') {
+        target.style.display = 'none';
+    } else {
+        target.style.display = 'block';
+    }
+}
+
+function selectAndNextObShow(event) {
+    let index = event.target.selectedIndex;
+    let nextOb = event.target.parentNode.parentNode.nextSibling.childNodes[1].childNodes[0];
+    for (i = 0; i < nextOb.childNodes.length; i++) {
+        nextOb.childNodes[i].style.display = 'none';
+    }
+    nextOb.childNodes[index].style.display = 'block';
+}
+function selectBeforAfterBtn(event) {
+    let target = event.target;
+    let select; let nextOb; let newIndex;
+    if (target.innerText == '<') {
+        select = event.target.parentNode.nextSibling.childNodes[0];
+        nextOb = event.target.parentNode.parentNode.nextSibling.childNodes[1].childNodes[0];
+        newIndex = select.selectedIndex - 1;
+        if (newIndex < 0) { newIndex = select.childNodes.length - 1; }
+        select.selectedIndex = newIndex;
+    } else if (target.innerText == '>') {
+        select = event.target.previousSibling;
+        nextOb = event.target.parentNode.parentNode.nextSibling.childNodes[1].childNodes[0];
+        newIndex = select.selectedIndex + 1;
+        if (newIndex > select.childNodes.length - 1) { newIndex = 0; }
+        select.selectedIndex = newIndex;
+    }
+    for (i = 0; i < nextOb.childNodes.length; i++) {
+        nextOb.childNodes[i].style.display = 'none';
+    }
+    nextOb.childNodes[newIndex].style.display = 'block';
+}
+
+function NextShowEvent(event) {
+    let target = event.target.parentNode.parentNode.parentNode.nextSibling;
+    if (target.style.display != 'none') {
+        target.style.display = 'none';
+    } else {
+        target.style.display = 'block';
+    }
+}
+function NextShowEvent2(event) {
+    let target = event.target.nextSibling;
+    if (target.style.display != 'none') {
+        target.style.display = 'none';
+    } else {
+        target.style.display = 'block';
+    }
+}
+
+function mouseoverEvent(event) {
+    const target = event.target;
+    let className = target.className;
+    let color = className.split(':')[1];
+    target.style.backgroundColor = color;
+
+    let fontColor = className.split(':')[3];
+    target.style.color = fontColor;
+}
+function mouseoutEvent(event) {
+    const target = event.target;
+    let className = target.className;
+    let color = className.split(':')[2];
+    target.style.backgroundColor = color;
+
+    let fontColor = className.split(':')[4];
+    target.style.color = fontColor;
 }
 
 function editWin(event) {
@@ -1385,34 +1405,239 @@ function editWin(event) {
     //wBtnHoverFontColor
 }
 
-//ddd memo function start
-function memoNewSave(event){
+//======================= end win pluss function =====
+//======================= window table
+
+//memo function start =======================
+//===== tapMemo ddd start ======================= ttt
+function makeMemoTr(tapName, text, colorIndex, colorArray, index, checkV, formShow) {
+    let tr = {
+        type: 'tr',
+        td1: td = {
+            type: 'td',
+            style_width: 'width:20px',
+            className: 'rowCol',
+
+            style_border: 'borderCollapse:collapse',
+            style_verticalAlign: 'verticalAlign:super',
+
+            style_BrowLine_borderBottom: ``,
+            style_BcolLine_borderRight: ``,
+            style_textAlign: 'textAlign:center',
+
+            checkBox: check = {
+                type: 'input', kind: 'checkbox',
+                style_color: `color:${colorArray[6]}`,
+                className: `${tapName}_${index}_checkBox_${colorArray[4]}_${colorArray[5]}`,
+                event: 'memoFormEditSub:change',
+                checked: checkV,
+            },
+        },
+        td2: td = {
+            type: 'td',
+            style_BrowLine_borderBottom: ``,
+            className: 'row',
+            event: 'memoCheckedTd:click',
+
+            div1: d = {
+                type: 'div', style_margin: 'margin:0.3em',
+                className: `${tapName}_${index}_d`, style_display: `display:${formShow == null ? 'block' : 'none'}`,
+
+                mark2: mark({
+                    type: 'mark',
+                    className: `${tapName}_${index}_d`,
+                    style: `backgroundColor:${colorIndex > 0 ? colorArray[colorIndex] : 'transparent'}`,
+                    style_color: `color:${checkV ? colorArray[4] : this.style_BwinFontColor_color}`,
+                    innerText: `${text}`,
+                    style_textDecorationLine: `textDecorationLine:${checkV ? 'line-through' : 'none'}`,
+                }),
+            },
+
+            form: f = {
+                type: 'form',
+                className: `${tapName}_${index}_d_form`, style_display: `display:${formShow == null ? 'none' : 'block'}`,
+                event: 'memoFormEditSub:submit',
+                //style_display: 'display:none',
+                textarea: textarea({ placeholder: 'edit memo...', value: `${text}`, rows: '2' }),
+                input_sub: input({ kind: 'submit', value: 'sub', style_float: 'float:right', }),
+                input_up: button({ innerText: 'Λ', style_float: 'float:right', event: 'memoChangeIndex:click' }),
+                input_dw: button({ innerText: 'V', style_float: 'float:right', event: 'memoChangeIndex:click' }),
+            },
+            input_edit: button({ innerText: 'e', style: 'width:30px', style_float: 'float:right', event: 'memoTdFormShow:click', }),
+            input_del: button({ innerText: 'x', style: 'width:30px', style_float: 'float:right', event_del: 'memoDel:click' }),
+            input_copy: button({ innerText: 'c', style: 'width:30px', style_float: 'float:right', }),
+            select_sort: returnSelectOb(['⁙⁙⁙⁙', 'color1', 'color2', 'color3'], {
+                style_float: 'float:right',
+                style_appearance: 'appearance:none',
+                style_border: 'border:none',
+                style_marginRight: 'marginRight:5px',
+                style_textAlign: 'textAlign:right',
+                style_width: 'width:50px',
+                style_height: 'height:20px',
+                className: `${tapName}_${index}_colorSelect`,
+                event: 'memoFormEditSub:change',
+            }),
+        }
+    }
+    return tr;
+}
+
+function makeMemoTable(tapName, array) {
+    let table = {
+        type: 'table',
+        style_width: 'width:100%',
+        style_border: 'borderCollapse:collapse',
+    }
+    for (k = 0; k < array[1].length; k++) {//makeMemoTr(tapName, text, colorIndex, colorArray, index)
+        if (array[1][k] != null) { //array[1][k][2]
+            let tr = makeMemoTr(tapName, array[1][k][1], array[1][k][2], array[0][2], k, array[1][k][0]);
+            table[`${k}tr`] = tr;
+        }
+    }
+    return table;
+}
+
+function memoMake(tapName, array, tapColorAlse) {
+    let memoOb = {
+        type: 'div',
+        className: `${tapName}`,
+        style_back: `backgroundColor:${tapColorAlse[5]}`,
+
+        memoHead: table1 = {
+            type: 'table',
+            tr: tr = {
+                type: 'tr',
+
+                td1: td = {
+                    type: 'td',
+                    style_width: 'width:20px',
+                    className: 'rowCol',
+                    style_verticalAlign: 'verticalAlign:super',
+                    style_BrowLine_borderBottom: `${wB.BrowLine}`,
+                    style_BcolLine_borderRight: `${wB.BcolLine}`,
+
+                    showForm: button({
+                        innerText: 'i',
+                        style_2: 'border:0',
+                        event_11: 'targetShow:click',
+                        className: `${tapName}_i`,
+                        style_font: `color:${tapColorAlse[6]}`,
+                    }),
+
+                },
+                td2: td = {
+                    type: 'td',
+                    className: 'row', style_width: 'width:100%',
+                    style_BrowLine_borderBottom: `${wB.BrowLine}`,
+
+                    form: txt = {
+                        type: 'form',
+                        textarea: textarea({ placeholder: 'input memo...' }),
+                        event_submit: 'memoNewSave:submit',///dddd
+                        className: `${tapName}_i_form`,
+                        submit: input({ kind: 'submit', value: 'sub', style_float: 'float:right', style_display: 'display:inline-block', style_height: 'height:25px', style_width: 'width:40px' }),
+                        select: returnSelectOb(['⁙⁙⁙⁙', 'color1', 'color2', 'color3', 'done', 'text', 'chek'], {
+                            style_appearance: 'appearance:none', style_border: 'border:none',
+                            style_float: 'float:right', style_width: 'width:45px', style_height: 'height:25px',
+                            event: 'memoColorInputShow:change',
+                        }),
+                        spen: s = {
+                            type: 'span',
+                            color1: input({
+                                kind: 'color', style_float: 'float:right', style_height: 'height:25px',
+                                style_width: 'width:40px', style_display: 'display:none', value: `${array[0][2][1]}`,
+                                className: 1, event: 'memoMainColorChange:input',
+                            }),
+                            color2: input({
+                                kind: 'color', style_float: 'float:right', style_height: 'height:25px',
+                                style_width: 'width:40px', style_display: 'display:none', value: `${array[0][2][2]}`,
+                                className: 2, event: 'memoMainColorChange:input',
+                            }),
+                            color3: input({
+                                kind: 'color', style_float: 'float:right', style_height: 'height:25px',
+                                style_width: 'width:40px', style_display: 'display:none', value: `${array[0][2][3]}`,
+                                className: 3, event: 'memoMainColorChange:input',
+                            }),
+                            doneColor: input({
+                                kind: 'color', style_float: 'float:right', style_height: 'height:25px',
+                                style_width: 'width:40px', style_display: 'display:none', value: `${array[0][2][4]}`,
+                                className: 4, event: 'memoMainColorChange:input',
+                            }),
+                            textColor: input({
+                                kind: 'color', style_float: 'float:right', style_height: 'height:25px',
+                                style_width: 'width:40px', style_display: 'display:none', value: `${array[0][2][5]}`,
+                                className: 5, event: 'memoMainColorChange:input',
+                            }),
+                            chekColor: input({
+                                kind: 'color', style_float: 'float:right', style_height: 'height:25px',
+                                style_width: 'width:40px', style_display: 'display:none', value: `${array[0][2][6]}`,
+                                className: 6, event: 'memoMainColorChange:input',
+                            }),
+                        }
+
+                    },
+                    select_sort: returnSelectOb(['new', 'old', 'color'], {
+                        style_appearance: 'appearance:none',
+                        style_border: 'border:none',
+                        style_textAlign: 'textAlign:center',
+                        event: 'memoSort:change'
+                    })
+                }
+            }
+        },
+        memoBody: makeMemoTable(tapName, array, tapColorAlse),
+
+        memoFoot: table = {
+            type: 'table',
+            style_width: 'width:100%',
+            style_border: 'borderCollapse:collapse',
+            tr1: tr = {
+                type: 'tr',
+                td1: td = {
+                    type: 'td',
+                    checkBox: check = {
+                        type: 'input', kind: 'checkbox',
+                        style_color: 'color:red'
+                    },
+                    className: 'rowCol',
+                    style_width: 'width:20px',
+                    style_BrowLine_borderBottom: `${wB.BrowLine}`,
+                    style_BcolLine_borderRight: `${wB.BcolLine}`,
+                },
+                td2: td = {
+                    type: 'td',
+                    className: 'row',
+                    style_BrowLine_borderBottom: `${wB.BrowLine}`,
+                    select: returnSelectOb(['checked', 'color1', 'color2', 'color3'], {
+                        style_appearance: 'appearance:none',
+                        style_border: 'border:none',
+                        style_marginLeft: 'marginLeft:0.5em',
+                        //style_textAlign: 'textAlign:center'
+                    }),
+                    btn: button({ innerText: 'del', style_width: 'width:30px', event_del: 'memoDel:click' })
+                }
+            }
+        }
+    }
+
+    return memoOb;
+}
+//======================= tapMemo ddd end =====
+
+
+
+function memoNewSave(event) {
     event.preventDefault()
     let name = event.target.className;
     let tapClassName = `${name.split('_')[0]}_${name.split('_')[1]}_${name.split('_')[2]}`;
     let text = event.target.childNodes[0].value;
     let colorIndex = event.target.childNodes[2].selectedIndex;
 
-    //console.log(text);
-    let tapArray = Tmemo.save('plusNew', {tapClassName:tapClassName, text:text, colorIndex:colorIndex})
-    let tapMemoOb = makeMemoTr(tapClassName, text, colorIndex, tapArray.colorArray, tapArray.index)
-    let regex = /[^0-9]/g;
-    let n = name.split('_')[0].replace(regex, "");
-    n = Number(n);
+    let tapArray = Tmemo.save('plusNew', { tapClassName: tapClassName, text: text, colorIndex: colorIndex })
 
-    let Warray = Mwindow.save('new');
-    if (Warray[n] != null) {
-        let set = copyReturn();
-        for (key in set) {
-            if (set[key] != null && Warray[n][key] != null) {
-                set[key] = Warray[n][key];
-            }
-        }
-    }
-    set = checkValue(set);
-    let tapMemoHtml = makeHtml(tapMemoOb, set)
-    let target = document.querySelector(`.${tapClassName}`);
-    target.childNodes[1].appendChild(tapMemoHtml);
+    let sortIndex = event.target.nextSibling.selectedIndex;
+    let option = { index: sortIndex, op: 'new', originalName: tapClassName, };
+    mamoTableMakeNew(option);
 
     event.target.childNodes[0].value = '';
 }
@@ -1420,51 +1645,51 @@ function memoNewSave(event){
 function targetShow(event) {
     let name = event.target.className;
     let target1 = document.querySelector(`.${name}_form`);
-    
-    if(target1.style.display == 'none'){
+
+    if (target1.style.display == 'none') {
         target1.style.display = 'block'
-    }else{
+    } else {
         target1.style.display = 'none'
     }
 }
 
-function memoTdFormShow(event){
+function memoTdFormShow(event) {
     let td = event.target.parentNode;
-    let div = td.childNodes[0];       
+    let div = td.childNodes[0];
     let form = td.childNodes[1];
-    if(form.style.display == 'none'){
+    if (form.style.display == 'none') {
         div.style.display = 'none'
         form.style.display = 'block'
-    }else{
+    } else {
         div.style.display = 'block'
         form.style.display = 'none'
     }
 }
 
-function memoFormEditSub(event){//ddd edit form
+function memoFormEditSub(event) {//ddd edit form
     event.preventDefault();
     let tag = event.target.tagName;
     let value; let edit;
     let colorOrArray = 1;
-    let className = event.target.className; className = className.split('_'); 
+    let className = event.target.className; className = className.split('_');
     let splitName = `${className[0]}_${className[1]}_${className[2]}`;
 
-    if(tag=='FORM'){
+    if (tag == 'FORM') {
         value = event.target.childNodes[0].value;
         edit = 1;
         let markText = event.target.previousSibling.childNodes[0];
         markText.innerText = value;
-        event.target.style.display ='none';
+        event.target.style.display = 'none';
         event.target.previousSibling.style.display = 'block';
-    }else if(tag=='SELECT'){
+    } else if (tag == 'SELECT') {
         value = event.target.selectedIndex;
         edit = 2;
         let colorInput = document.querySelector(`.${splitName}_i_form`).childNodes[3];
         let mark = event.target.parentNode.childNodes[0].childNodes[0]
-        if(value < 1) { mark.style.backgroundColor = 'transparent' }else{
-            mark.style.backgroundColor = colorInput.childNodes[value-1].value;
+        if (value < 1) { mark.style.backgroundColor = 'transparent' } else {
+            mark.style.backgroundColor = colorInput.childNodes[value - 1].value;
         }
-    }else if(tag=='INPUT'){
+    } else if (tag == 'INPUT') {
         value = event.target.checked ? 1 : 0;
         edit = 0;
 
@@ -1472,280 +1697,235 @@ function memoFormEditSub(event){//ddd edit form
         mark.style.textDecorationLine = `${value ? 'line-through' : 'none'}`;
         mark.style.color = `${value ? className[5] : className[6]}`;
     }
-    let set ={
-        colorOrArray:colorOrArray,
-        tapClassName:splitName,
-        target:className[3],
-        edit:edit,//check,text,color
-        value:value,
+    let set = {
+        colorOrArray: colorOrArray,
+        tapClassName: splitName,
+        target: className[3],
+        edit: edit,//check,text,color
+        value: value,
     }
     Tmemo.save('editSave', set);
 }
-function memoCheckedTd(event){
+function memoCheckedTd(event) {
     let tag = event.target.tagName;
-    let checkBox ;
-    if(tag == 'TD'){
+    let checkBox;
+    if (tag == 'TD') {
         checkBox = event.target.previousSibling.childNodes[0];
-    }else if(tag == 'DIV'){
+    } else if (tag == 'DIV') {
         checkBox = event.target.parentNode.previousSibling.childNodes[0];
-    }else if(tag == 'MARK'){
+    } else if (tag == 'MARK') {
         checkBox = event.target.parentNode.parentNode.previousSibling.childNodes[0];
-    }else{
+    } else {
         return;
     }
     checkBox.click();
 }
 
-function memoColorInputShow(event){//memo function - end
+function memoColorInputShow(event) {//memo function - end
     let select = event.target;
     let input = select.nextSibling;
-    for(i=0;i<input.childNodes.length;i++){
+    for (i = 0; i < input.childNodes.length; i++) {
         input.childNodes[i].style.display = 'none';
     }
-    if(select.selectedIndex>0){
-        input.childNodes[select.selectedIndex-1].style.display = 'block';
-    }else{ input.childNodes[select.selectedIndex].style.display = 'none'; }
+    if (select.selectedIndex > 0) {
+        input.childNodes[select.selectedIndex - 1].style.display = 'block';
+    } else { input.childNodes[select.selectedIndex].style.display = 'none'; }
 }
 
-function memoMainColorChange(event){
+function memoMainColorChange(event) {
     let edit = event.target.className;
     let value = event.target.value;
     let className = event.target.parentNode.parentNode.className; className = className.split('_');
     let splitName = `${className[0]}_${className[1]}_${className[2]}`;
-    let set ={
-        colorOrArray:0,
-        target:2,
-        tapClassName:splitName,
-        edit:Number(edit),//check,text,color
-        value:value,
+    let set = {
+        colorOrArray: 0,
+        target: 2,
+        tapClassName: splitName,
+        edit: Number(edit),//check,text,color
+        value: value,
     }
     Tmemo.save('editSave', set);
 }
 
-function memoDel(event){
+function memoDel(event) {
     let className; let splitName; let index;
-    if(event.target.innerText=='x'){
+    if (event.target.innerText == 'x') {
         className = event.target.parentNode.childNodes[0].className; className = className.split('_');
         splitName = `${className[0]}_${className[1]}_${className[2]}`;
         index = className[3];
-    }else if(event.target.innerText=='del'){
+    } else if (event.target.innerText == 'del') {
         className = event.target.parentNode.parentNode.parentNode.parentNode.className; className = className.split('_');
         splitName = `${className[0]}_${className[1]}_${className[2]}`;
 
         let select = event.target.previousSibling.selectedIndex;
-        let select1 = select>0 ? 2 : 0; //check or color
-        select = select<=0 ? 1 : select;//checked or colorn(not save)
-        index = ['checkDel',select1, select];
+        let select1 = select > 0 ? 2 : 0; //check or color
+        select = select <= 0 ? 1 : select;//checked or colorn(not save)
+        index = ['checkDel', select1, select];
     }
-    let set = { target:index, tapClassName:splitName };
+    let set = { target: index, tapClassName: splitName };
     let newMemoArray = Tmemo.save('del', set);
 
-    let regex = /[^0-9]/g;
-    let n = className[0].replace(regex, "");
-    let win = Mwindow.save('new');
-    let winSet = checkValue(win[n])
-    let memoTable = document.querySelector(`.${splitName}`).childNodes[1];
-    memoTable.replaceChildren();
-
-    for(t=0;t<newMemoArray[1].length;t++){//makeMemoTr(tapName, text, colorIndex, colorArray, index, checkV)
-        let mmm = {
-            tapName:splitName,
-            text:newMemoArray[1][t][1],
-            colorIndex:newMemoArray[1][t][2],
-            colorArray:newMemoArray[0][2],
-            index:t, 
-            checkV:newMemoArray[1][t][0],
-        };
-        let newMemoTableOb = makeMemoTr(mmm.tapName, mmm.text, mmm.colorIndex, mmm.colorArray, mmm.index, mmm.checkV);
-        newMemoTableOb = makeHtml(newMemoTableOb, winSet);
-        memoTable.appendChild(newMemoTableOb);
-    }
+    let sortIndex = event.target.parentNode.parentNode.parentNode.parentNode.nextSibling.childNodes[0].childNodes[0].childNodes[1].childNodes[1].selectedIndex;
+    let option = { index: sortIndex, op: 'new', originalName: splitName, };
+    mamoTableMakeNew(option);
 }
 
-function memoChangeIndex(event){
+function memoChangeIndex(event) {
     event.preventDefault();
     let className = event.target.parentNode.className; className = className.split('_');
     let splitName = `${className[0]}_${className[1]}_${className[2]}`;
     let newIndex;
-    let oldTable = event.target.parentNode.parentNode.parentNode.parentNode;
 
-    if(event.target.innerText=='Λ'){
+    let oldTable = event.target.parentNode.parentNode.parentNode.parentNode;
+    let sortIndex = oldTable.parentNode.childNodes[0].childNodes[0].childNodes[1].childNodes[1].selectedIndex;
+
+    if (event.target.innerText == 'Λ') {
         newIndex = event.target.parentNode.parentNode.parentNode.previousSibling;
-        if(newIndex == null){   
-            newIndex = oldTable.childNodes[oldTable.childNodes.length-1];
+        if (newIndex == null) {
+            newIndex = oldTable.childNodes[oldTable.childNodes.length - 1];
         }
-    }else if(event.target.innerText=='V'){
+    } else if (event.target.innerText == 'V') {
         newIndex = event.target.parentNode.parentNode.parentNode.nextSibling;
-        if(newIndex == null){   
+        if (newIndex == null) {
             newIndex = oldTable.childNodes[0];
         }
     }
     newIndex = newIndex.childNodes[1].childNodes[1].className.split('_')[3];
     nowIndex = event.target.parentNode.className.split('_')[3];
+
     let set = {
-        tapClassName:splitName,
-        nowI:Number(nowIndex),//check,text,color
-        newI:Number(newIndex),
+        tapClassName: splitName,
+        nowI: Number(nowIndex),//check,text,color
+        newI: Number(newIndex),
     }
     let newMemo = Tmemo.save('changeIndex', set);
+    newMemo;
 
-    let regex = /[^0-9]/g;
-    let n = className[0].replace(regex, "");
-    let win = Mwindow.save('new');
-    let winSet = checkValue(win[n])
-    let memoTable = document.querySelector(`.${splitName}`).childNodes[1];
-    memoTable.replaceChildren();
-
-    for(t=0;t<newMemo[1].length;t++){//makeMemoTr(tapName, text, colorIndex, colorArray, index, checkV)
-        let mmm = {
-            tapName:splitName,
-            text:newMemo[1][t][1],
-            colorIndex:newMemo[1][t][2],
-            colorArray:newMemo[0][2],
-            index:t, 
-            checkV:newMemo[1][t][0],
-        };
-        let newMemoTableOb;
-        if(t==newIndex){
-            newMemoTableOb = makeMemoTr(mmm.tapName, mmm.text, mmm.colorIndex, mmm.colorArray, mmm.index, mmm.checkV, 1);
-        }else{
-            newMemoTableOb = makeMemoTr(mmm.tapName, mmm.text, mmm.colorIndex, mmm.colorArray, mmm.index, mmm.checkV);
-        }
-        newMemoTableOb = makeHtml(newMemoTableOb, winSet);
-        memoTable.appendChild(newMemoTableOb);
-    }
-
+    let option = { index: sortIndex, op: 'new', originalName: splitName, formShow: set.newI };
+    mamoTableMakeNew(option);
 }
 
-function memoSort(event){
+function memoSort(event) {
     let index = event.target.selectedIndex;
-    let className = event.target.parentNode.parentNode.parentNode.parentNode.className; className = className.split('_');
-    let splitName = `${className[0]}_${className[1]}_${className[2]}`;
-    let set ={tapClassName:splitName}
-    let newMemoArray = Tmemo.save('openNew', set);
+    let className = event.target.parentNode.parentNode.parentNode.parentNode.className; //className = className.split('_');
 
+    let option = { index: index, op: 'new', originalName: className, };
+    mamoTableMakeNew(option);
+}
+
+
+function mamoTableMakeNew(option) {
+    let className = option.originalName.split('_');
+    let splitName = `${className[0]}_${className[1]}_${className[2]}`;
     let regex = /[^0-9]/g;
     let n = className[0].replace(regex, "");
-    let win = Mwindow.save('new');
-    let winSet = checkValue(win[n])
-    let memoTable = document.querySelector(`.${splitName}`).childNodes[1];
-    memoTable.replaceChildren();
-    if(index==2){
-        for(k=0;k<3;k++){
-            for(h=0;h<newMemoArray[1].length;h++){
-                if(newMemoArray[1][h][2]==k){
-                    let newMemoTableOb = makeMemoTr(splitName, newMemoArray[1][h][1],newMemoArray[1][h][2],newMemoArray[0][2],h,newMemoArray[1][h][0],);
+
+    if (option.op == 'new') {
+        let memoTable = document.querySelector(`.${splitName}`).childNodes[1];
+        memoTable.replaceChildren();
+
+        let newArr = newArray();
+        sort(option, memoTable, splitName, newArr.memo, newArr.winset);
+    }
+
+    function newArray() {
+        let set = { tapClassName: splitName }
+        let newMemoArray = Tmemo.save('openNew', set);
+        let win = Mwindow.save('new');
+        let winSet = checkValue(win[n]);
+
+        let arr = {
+            memo: newMemoArray,
+            winset: winSet
+        }
+        return arr;
+    }
+
+    function sort(option, memoTable, splitName, newMemoArray, winSet) {//op={SortIndex}
+        if (option.index == 2) {
+            for (k = 1; k <= 3; k++) {
+                for (h = 0; h < newMemoArray[1].length; h++) {
+                    if (newMemoArray[1][h][2] == k) {
+                        let formShow = null;
+                        if(option.formShow != null && option.formShow==h){ formShow = 1 } else { formShow = null}
+                        let newMemoTableOb = makeMemoTr(splitName, newMemoArray[1][h][1], newMemoArray[1][h][2], newMemoArray[0][2], h, newMemoArray[1][h][0], formShow);
+                        newMemoTableOb = makeHtml(newMemoTableOb, winSet);
+                        memoTable.appendChild(newMemoTableOb);
+                    }
+                }
+            }
+            for (h = 0; h < newMemoArray[1].length; h++) {
+                if (newMemoArray[1][h][2] == 0) {
+                    let formShow = null;
+                    if(option.formShow != null && option.formShow==h){ formShow = 1 }else{ formShow = null}
+                    let newMemoTableOb = makeMemoTr(splitName, newMemoArray[1][h][1], newMemoArray[1][h][2], newMemoArray[0][2], h, newMemoArray[1][h][0], formShow);
                     newMemoTableOb = makeHtml(newMemoTableOb, winSet);
                     memoTable.appendChild(newMemoTableOb);
                 }
             }
-        }
-    }else{
-        for(j=0;j<newMemoArray[1].length;j++){
-            let newMemoTableOb = makeMemoTr(splitName, newMemoArray[1][j][1],newMemoArray[1][j][2],newMemoArray[0][2],j,newMemoArray[1][j][0],);
-            newMemoTableOb = makeHtml(newMemoTableOb, winSet);
-            if(index==0){
-                memoTable.appendChild(newMemoTableOb);
-            }else if(index==1){
-                memoTable.prepend(newMemoTableOb);
+        } else {
+            for (j = 0; j < newMemoArray[1].length; j++) {
+                let formShow = null;
+                if(option.formShow != null && option.formShow==j){ formShow = 1 }else{ formShow = null}
+                let newMemoTableOb = makeMemoTr(splitName, newMemoArray[1][j][1], newMemoArray[1][j][2], newMemoArray[0][2], j, newMemoArray[1][j][0], formShow);
+                newMemoTableOb = makeHtml(newMemoTableOb, winSet);
+                if (option.index == 0) {
+                    memoTable.appendChild(newMemoTableOb);
+                } else if (option.index == 1) {
+                    memoTable.prepend(newMemoTableOb);
+                }
             }
         }
     }
 }
 
-//memo function end
+//======================= memo function end 
 
-function titleNameChange(event) {
-    event.preventDefault();
-    let wName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.className;
-
-    let form = document.querySelector(`.${wName} .${event.target.className}`);
-    let Bw = {};
+//tap function start ======================= ttt
+function newTapEvent(event) {
+    let winName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className
+    let set = {};
+    //let n = winName.charAt(1);
     let regex = /[^0-9]/g;
-    let n = wName.replace(regex, "");
-    Bw.target = Number(n);
-    Bw.Btitle = form.elements[1].value;
-    Mwindow.save('editSave', Bw);
+    let n = winName.replace(regex, "");
+    set.target = Number(n);
+    set.tapType = event.target.value;
+    set.name = event.target.innerText;
+    let tap = Mwindow.save('newTap', set);
+    tap.set = checkValue(tap.set);
 
-    let title = event.target.previousSibling;
-    title.innerText = Bw.Btitle;
-    form.style.display = 'none';
-}
+    let tapBtnDiv = document.querySelector(`.${winName} .tapBtnTr`);
 
-function NextNextNextShowEvent(event) {
-    let target = event.target.parentNode.parentNode.parentNode.nextSibling;
-
-    if (target.style.display != 'none') {
-        target.style.display = 'none';
-    } else {
-        target.style.display = 'block';
+    let len = tapBtnDiv.childNodes[0].childNodes[0].childNodes.length;
+    for (i = 1; i < len; i++) {
+        tapBtnDiv.childNodes[0].childNodes[0].childNodes[1].remove();
     }
-}
-
-function selectAndNextObShow(event) {
-    let index = event.target.selectedIndex;
-    let nextOb = event.target.parentNode.parentNode.nextSibling.childNodes[1].childNodes[0];
-    for (i = 0; i < nextOb.childNodes.length; i++) {
-        nextOb.childNodes[i].style.display = 'none';
+    for (i = 0; i < tap.set.BtapArray.length; i++) {
+        if (tap.set.BtapArray[i] != null) {
+            let td;
+            let tdHtml;
+            if (tap.tapArray[2] == i) {
+                td = tapBtnTd(tap.set.BtapArray[i], 'checked');
+            } else {
+                td = tapBtnTd(tap.set.BtapArray[i], 'not checked');
+            }
+            tdHtml = makeHtml(td, tap.set);
+            tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdHtml);
+        }
     }
-    nextOb.childNodes[index].style.display = 'block';
-}
-function selectBeforAfterBtn(event) {
-    let target = event.target;
-    let select; let nextOb; let newIndex;
-    if (target.innerText == '<') {
-        select = event.target.parentNode.nextSibling.childNodes[0];
-        nextOb = event.target.parentNode.parentNode.nextSibling.childNodes[1].childNodes[0];
-        newIndex = select.selectedIndex - 1;
-        if (newIndex < 0) { newIndex = select.childNodes.length - 1; }
-        select.selectedIndex = newIndex;
-    } else if (target.innerText == '>') {
-        select = event.target.previousSibling;
-        nextOb = event.target.parentNode.parentNode.nextSibling.childNodes[1].childNodes[0];
-        newIndex = select.selectedIndex + 1;
-        if (newIndex > select.childNodes.length - 1) { newIndex = 0; }
-        select.selectedIndex = newIndex;
-    }
-    for (i = 0; i < nextOb.childNodes.length; i++) {
-        nextOb.childNodes[i].style.display = 'none';
-    }
-    nextOb.childNodes[newIndex].style.display = 'block';
-}
 
-function NextShowEvent(event) {
-    let target = event.target.parentNode.parentNode.parentNode.nextSibling;
-    if (target.style.display != 'none') {
-        target.style.display = 'none';
-    } else {
-        target.style.display = 'block';
+    let tdLast = {
+        type: 'td',
+        style_BrowLine_borderBottom: `${wB.BrowLine}`,
     }
-}
-function NextShowEvent2(event) {
-    let target = event.target.nextSibling;
-    if (target.style.display != 'none') {
-        target.style.display = 'none';
-    } else {
-        target.style.display = 'block';
-    }
-}
+    tdLast = makeHtml(tdLast, tap.set);
+    tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdLast);
 
-function mouseoverEvent(event) {
-    const target = event.target;
-    let className = target.className;
-    let color = className.split(':')[1];
-    target.style.backgroundColor = color;
-
-    let fontColor = className.split(':')[3];
-    target.style.color = fontColor;
-}
-function mouseoutEvent(event) {
-    const target = event.target;
-    let className = target.className;
-    let color = className.split(':')[2];
-    target.style.backgroundColor = color;
-
-    let fontColor = className.split(':')[4];
-    target.style.color = fontColor;
+    let newTapOb = newTapFirstSaveEvent(tap.tapArray);
+    let winTapDiv = document.querySelector(`.${tap.tapArray[0].split('_')[0]} .tapDiv`);
+    for (i = 0; i < winTapDiv.childNodes.length; i++) { winTapDiv.childNodes[i].style.display = 'none' };
+    let newTapOb2 = makeHtml(newTapOb, tap.set);
+    winTapDiv.appendChild(newTapOb2);
 }
 
 function tapNameInputShow(event) {
@@ -1793,449 +1973,8 @@ function tapMouseInEvent(event) {
     nextBtn.style.display = 'inline-block';
     mouseoverEvent(event);
 }
-//make html function =======================
-function makeEvent(ob, option) {
-    let option1 = option.split(':')[0];
-    let clickOption = option.split(':')[1];
-    if (option1 == 'NextShowEvent') {
-        ob.addEventListener(`${clickOption}`, NextShowEvent);
-    } else if (option1 == 'NextShowEvent2') {
-        ob.addEventListener(`${clickOption}`, NextShowEvent2);
-    } else if (option1 == 'NextNextNextShowEvent') {
-        ob.addEventListener(`${clickOption}`, NextNextNextShowEvent);
-    } else if (option1 == 'newWindow') {
-        ob.addEventListener(`${clickOption}`, newWindow);
-    } else if (option1 == 'mouseoverEvent') {
-        ob.addEventListener(`${clickOption}`, mouseoverEvent);
-    } else if (option1 == 'mouseoutEvent') {
-        ob.addEventListener(`${clickOption}`, mouseoutEvent);
-    } else if (option1 == 'selectAndNextObShow') {
-        ob.addEventListener(`${clickOption}`, selectAndNextObShow);
-    } else if (option1 == 'selectBeforAfterBtn') {
-        ob.addEventListener(`${clickOption}`, selectBeforAfterBtn);
-    } else if (option1 == 'editWin') {
-        ob.addEventListener(`${clickOption}`, editWin);
-    } else if (option1 == 'titleNameChange') {
-        ob.addEventListener(`${clickOption}`, titleNameChange);
-    } else if (option1 == 'newTapEvent') {
-        ob.addEventListener(`${clickOption}`, newTapEvent);
-    } else if (option1 == 'tapNameInputShow') {
-        ob.addEventListener(`${clickOption}`, tapNameInputShow);
-    } else if (option1 == 'tapMouseInEvent') {
-        ob.addEventListener(`${clickOption}`, tapMouseInEvent);
-    } else if (option1 == 'tapRadioChangeEvent') {
-        ob.addEventListener(`${clickOption}`, tapRadioChangeEvent);
-    } else if (option1 == 'tapNameEditEvent') {
-        ob.addEventListener(`${clickOption}`, tapNameEditEvent);
-    } else if (option1 == 'targetShow') {
-        ob.addEventListener(`${clickOption}`, targetShow);
-    }else if (option1 == 'memoNewSave') {
-        ob.addEventListener(`${clickOption}`, memoNewSave);
-    }else if (option1 == 'memoColorInputShow') {
-        ob.addEventListener(`${clickOption}`, memoColorInputShow);
-    }else if (option1 == 'memoTdFormShow') {
-        ob.addEventListener(`${clickOption}`, memoTdFormShow);
-    }else if (option1 == 'memoFormEditSub') {
-        ob.addEventListener(`${clickOption}`, memoFormEditSub);
-    }else if (option1 == 'memoDel') {
-        ob.addEventListener(`${clickOption}`, memoDel);
-    }else if (option1 == 'memoCheckedTd') {
-        ob.addEventListener(`${clickOption}`, memoCheckedTd);
-    }else if (option1 == 'memoMainColorChange') {
-        ob.addEventListener(`${clickOption}`, memoMainColorChange);
-    }else if (option1 == 'memoSort') {
-        ob.addEventListener(`${clickOption}`, memoSort);
-    }else if (option1 == 'memoChangeIndex') {
-        ob.addEventListener(`${clickOption}`, memoChangeIndex);
-    }else if (option1 == 'tapEditSetBasic') {
-        ob.addEventListener(`${clickOption}`, tapEditSetBasic);
-    }
-    return ob;
-}
 
-function makeOb(ob) {
-    let newOb = document.createElement(ob);
-    return newOb;
-}
-function makeAppend(parents, child) {
-    let dd = parents;
-    let bb = child;
-    dd.appendChild(bb);
-    return dd;
-}
-function makeClassName(ob, name) {
-    ob.className = `${name}`;
-    return ob;
-}
-function makeType(ob, kind) {
-    ob.type = kind;
-    return ob;
-}
-function makeValue(ob, key) {
-    ob.value = key;
-    return ob;
-}
-function makeInnerText(ob, text) {
-    ob.innerText = text;
-    return ob;
-}
-function makeFunction(ob, option, value) {
-    ob[`${option}`] = value;
-    return ob;
-}
-function makeStyle(ob, option, value) {
-    ob.style[option] = value;
-    return ob;
-}
-//main make html =======================
-function makeHtml(ob, set) {
-    let newOb;
-    let child;
-    for (const key in ob) {
-        let keySorce = `${key}`
-        let keyy = keySorce.split('_')[0];
-        let sett = keySorce.split('_')[1];
-        const target = typeof ob[key];
-        //makeFunction(ob, option, value)
-        if (target == 'object') {
-            if (key == 'basic') {
-                continue
-            }
-            child = makeHtml(ob[key], set);
-            newOb = makeAppend(newOb, child);
-        } else if (target == 'string' && keyy == 'type') {
-            newOb = makeOb(ob[key]);
-        } else if (target == 'string' && keyy == 'kind') {
-            newOb = makeFunction(newOb, 'type', ob[key]);
-        } else if (target == 'string' && keyy == 'value') {
-            if (sett != null && sett.charAt(0) == 'B') {
-
-                if (newOb['placeholder'] == 'number') {
-                    let val = set[sett];
-                    let regex = /[^0-9.]/g; let va;
-                    if (val != null) {
-                        va = val.replace(regex, "");
-                    } else {
-                        va = set[sett];
-                    }
-
-                    newOb = makeFunction(newOb, keyy, va);
-                } else {
-                    newOb = makeFunction(newOb, keyy, set[sett]);
-                }
-            } else {
-                newOb = makeFunction(newOb, keyy, ob[key]);
-            }
-        } else if (target == 'string' && keyy == 'event') {
-            newOb = makeEvent(newOb, ob[key]);
-        } else if (target == 'string' && keyy == 'style') {
-
-            if (sett != null && sett.charAt(0) == 'B') {
-                let setOp = keySorce.split('_')[2];
-                newOb = makeStyle(newOb, setOp, set[sett]);
-            } else {
-                let op = ob[key].split(':')[0];
-                let va = ob[key].split(':')[1];
-                newOb = makeStyle(newOb, op, va);
-            }
-
-        } else {
-            if (sett != null && sett.charAt(0) == 'B') {
-                newOb = makeFunction(newOb, keyy, set[sett]);
-            } else {
-                newOb = makeFunction(newOb, keyy, ob[key]);
-            }
-        }
-    }
-    return newOb;
-}
-
-
-//tapMemo ddd start
-let colornn = ['transparent', '#1D9BF0', '#FE0000', '#2B6549']
-let txtarry = [[1, 1, ['red', 'blue', 'green'], 1],
-    [
-        [0, 'hello wold!\nneww olrd~', 1],
-        [0, 'hello wold1', 0],
-        [0, 'hello wold2', 3],
-    ]
-]
-function makeMemoTr(tapName, text, colorIndex, colorArray, index, checkV, formShow){
-    let tr = {
-        type: 'tr',
-        td1: td = {
-            type: 'td',
-            style_width: 'width:20px',
-            className: 'rowCol',
-
-            style_border: 'borderCollapse:collapse',
-            style_verticalAlign: 'verticalAlign:super',
-
-            style_BrowLine_borderBottom: ``,
-            style_BcolLine_borderRight: ``,
-            style_textAlign: 'textAlign:center',
-
-            checkBox: check = {
-                type: 'input', kind: 'checkbox',
-                style_color: `color:${colorArray[6]}`,
-                className:`${tapName}_${index}_checkBox_${colorArray[4]}_${colorArray[5]}`,
-                event:'memoFormEditSub:change',
-                checked:checkV,
-            },
-        },
-        td2: td = {
-            type: 'td',
-            style_BrowLine_borderBottom: ``,
-            className: 'row',
-            event:'memoCheckedTd:click',
-
-            div1: d = {
-                type: 'div', style_margin: 'margin:0.3em',
-                className:`${tapName}_${index}_d`, style_display:`display:${formShow==null ? 'block':'none'}`,
-
-                mark2:mark({
-                    type: 'mark',
-                    className:`${tapName}_${index}_d`,
-                    style: `backgroundColor:${colorIndex>0 ? colorArray[colorIndex] : 'transparent'}`,
-                    style_color:`color:${checkV ? colorArray[4] : this.style_BwinFontColor_color}`,
-                    innerText: `${text}`,
-                    style_textDecorationLine:`textDecorationLine:${checkV ? 'line-through' : 'none'}`,
-                }),
-            },
-
-            form: f = {
-                type: 'form',
-                className:`${tapName}_${index}_d_form`, style_display:`display:${formShow==null ? 'none':'block'}`,
-                event:'memoFormEditSub:submit',
-                //style_display: 'display:none',
-                textarea: textarea({ placeholder: 'edit memo...', value: `${text}`, rows:'2'}),
-                input_sub: input({ kind: 'submit', value: 'sub',style_float: 'float:right',  }),
-                input_up: button({ innerText: 'Λ',style_float: 'float:right', event:'memoChangeIndex:click' }),
-                input_dw: button({ innerText: 'V',style_float: 'float:right',event:'memoChangeIndex:click'}),
-            },
-            input_edit: button({ innerText: 'e', style: 'width:30px', style_float: 'float:right',event:'memoTdFormShow:click',}),
-            input_del: button({ innerText: 'x', style: 'width:30px', style_float: 'float:right', event_del:'memoDel:click' }),
-            input_copy: button({ innerText: 'c', style: 'width:30px', style_float: 'float:right', }),
-            select_sort: returnSelectOb([' ','color1','color2','color3'], {
-                style_float: 'float:right',
-                style_appearance: 'appearance:none',
-                style_border: 'border:none',
-                style_marginRight: 'marginRight:5px',
-                style_textAlign: 'textAlign:right',
-                style_width: 'width:50px',
-                style_height: 'height:20px',
-                className:`${tapName}_${index}_colorSelect`,
-                event:'memoFormEditSub:change',
-            }),
-        }
-    }
-    return tr;
-}
-
-function makeMemoTable(tapName, array) {
-    let table = {
-        type: 'table',
-        style_width: 'width:100%',
-        style_border: 'borderCollapse:collapse',
-    }
-    for (k = 0; k < array[1].length; k++) {//makeMemoTr(tapName, text, colorIndex, colorArray, index)
-        if(array[1][k]!=null){ //array[1][k][2]
-            let tr = makeMemoTr(tapName, array[1][k][1], array[1][k][2], array[0][2], k, array[1][k][0]);
-            table[`${k}tr`] = tr;
-        }
-    }
-    return table;
-}
-
-function memoMake(tapName, array, tapColorAlse) {
-    let memoOb = {
-        type: 'div',
-        className:`${tapName}`,
-        style_back: `backgroundColor:${tapColorAlse[5]}`,
-
-        memoHead: table1 = {
-            type: 'table',
-            tr: tr = {
-                type: 'tr',
-
-                td1: td = {
-                    type: 'td',
-                    style_width: 'width:20px',
-                    className: 'rowCol',
-                    style_verticalAlign: 'verticalAlign:super',
-                    style_BrowLine_borderBottom: `${wB.BrowLine}`,
-                    style_BcolLine_borderRight: `${wB.BcolLine}`,
-
-                    showForm: button({
-                        innerText: 'i',
-                        style_2: 'border:0',
-                        event_11:'targetShow:click',
-                        className:`${tapName}_i`,
-                        style_font:`color:${tapColorAlse[6]}`,
-                    }),
-
-                },
-                td2: td = {
-                    type: 'td',
-                    className: 'row', style_width: 'width:100%',
-                    style_BrowLine_borderBottom: `${wB.BrowLine}`,
-
-                    form: txt = {
-                        type: 'form',
-                        textarea: textarea({ placeholder: 'input memo...' }),
-                        event_submit:'memoNewSave:submit',///dddd
-                        className:`${tapName}_i_form`,
-                        submit: input({ kind: 'submit', value: 'sub', style_float: 'float:right', style_display: 'display:inline-block',style_height: 'height:25px',style_width: 'width:40px' }),
-                        select: returnSelectOb([' ','color1','color2','color3','done','text','chek'], {
-                            style_appearance: 'appearance:none', style_border: 'border:none', 
-                            style_float: 'float:right', style_width:'width:45px', style_height:'height:25px',
-                            event:'memoColorInputShow:change',
-                        }),
-                        spen:s={
-                            type:'span',
-                            color1: input({
-                                kind: 'color', style_float: 'float:right', style_height: 'height:25px', 
-                                style_width: 'width:40px', style_display: 'display:none', value:`${array[0][2][1]}`,
-                                className:1,event:'memoMainColorChange:input',
-                            }),
-                            color2: input({
-                                kind: 'color', style_float: 'float:right', style_height: 'height:25px', 
-                                style_width: 'width:40px', style_display: 'display:none', value:`${array[0][2][2]}`,
-                                className:2,event:'memoMainColorChange:input',
-                            }),
-                            color3: input({
-                                kind: 'color', style_float: 'float:right', style_height: 'height:25px', 
-                                style_width: 'width:40px', style_display: 'display:none', value:`${array[0][2][3]}`,
-                                className:3,event:'memoMainColorChange:input',
-                            }),
-                            doneColor: input({
-                                kind: 'color', style_float: 'float:right', style_height: 'height:25px', 
-                                style_width: 'width:40px', style_display: 'display:none', value:`${array[0][2][4]}`,
-                                className:4,event:'memoMainColorChange:input',
-                            }),
-                            textColor: input({
-                                kind: 'color', style_float: 'float:right', style_height: 'height:25px', 
-                                style_width: 'width:40px', style_display: 'display:none', value:`${array[0][2][5]}`,
-                                className:5,event:'memoMainColorChange:input',
-                            }),
-                            chekColor: input({
-                                kind: 'color', style_float: 'float:right', style_height: 'height:25px', 
-                                style_width: 'width:40px', style_display: 'display:none', value:`${array[0][2][6]}`,
-                                className:6,event:'memoMainColorChange:input',
-                            }),
-                        }
-
-                    },
-                    select_sort: returnSelectOb(['new', 'old', 'color'], {
-                        style_appearance: 'appearance:none',
-                        style_border: 'border:none',
-                        style_textAlign: 'textAlign:center',
-                        event:'memoSort:change'
-                    })
-                }
-            }
-        },
-        memoBody: makeMemoTable(tapName, array, tapColorAlse),
-
-        memoFoot: table = {
-            type: 'table',
-            style_width: 'width:100%',
-            style_border: 'borderCollapse:collapse',
-            tr1: tr = {
-                type: 'tr',
-                td1: td = {
-                    type: 'td',
-                    checkBox: check = {
-                        type: 'input', kind: 'checkbox',
-                        style_color: 'color:red'
-                    },
-                    className: 'rowCol',
-                    style_width: 'width:20px',
-                    style_BrowLine_borderBottom: `${wB.BrowLine}`,
-                    style_BcolLine_borderRight: `${wB.BcolLine}`,
-                },
-                td2: td = {
-                    type: 'td',
-                    className: 'row',
-                    style_BrowLine_borderBottom: `${wB.BrowLine}`,
-                    select: returnSelectOb(['checked', 'color1', 'color2', 'color3'], {
-                        style_appearance: 'appearance:none',
-                        style_border: 'border:none',
-                        style_marginLeft: 'marginLeft:0.5em',
-                        //style_textAlign: 'textAlign:center'
-                    }),
-                    btn: button({ innerText: 'del', style_width: 'width:30px' , event_del:'memoDel:click'})
-                }
-            }
-        }
-    }
-
-    return memoOb;
-}
-//[ [1,1,['red','blue','green'],1], [ [0,'hello wold!', 3] ] ]
-//[1,0], // 
-//      [ 0:sort[1:new 0:old, 1:color], 
-//        1:view[0:all, 1<=:count], 
-//        2:highlight[0:colo1, 1:colo2, 2:colo3] ],
-//        4:formShow[0:none,1:show]
-
-
-//[]     //textArray [0:check, 
-//                  1:text, 
-//                  2:mark 0~2-color 3-none]
-
-//tapMemo ddd end
-
-//main start make ssss =======================
-
-const main = document.querySelector('.main');
-
-let array2 = Mwindow.save('new');
-
-for (let i = 0; i < 10; i++) {
-    if (array2[i] != null) {
-        let set = copyReturn();
-
-        for (key in set) {
-            if (set[key] != null && array2[i][key] != null) {
-                set[key] = array2[i][key];
-            }
-        }
-        set = checkValue(set);
-        let aaaa = makeHtml(w, set);
-        main.appendChild(aaaa);
-
-
-        let q = document.querySelector(`.${set.BclassName} .tapBtnTr`);
-        let tapTable = tapBtnMake(set);
-        let tapReal = makeHtml(tapTable, set);
-        q.appendChild(tapReal);
-
-
-        let tapEdit = tapNameEditTable();
-        let tapReal2 = makeHtml(tapEdit, set);
-        q.appendChild(tapReal2);
-
-        for (j = 0; j < set.BtapArray.length; j++) {
-            let tapName = null;
-            if (set.BtapArray[j] != null) {
-                tapName = set.BtapArray[j][0];
-            }
-            if (tapName != null && tapName.split('_')[2] == 's1') {
-                let set2 = {tapClassName:`${tapName}`}
-                let memoArray = Tmemo.save('openNew', set2);
-                let memoOb = memoMake(tapName, memoArray, set.BtapArray[j]);
-                let tapMemoHtml = makeHtml(memoOb, set);
-                if(set.BtapArray[j][3] == 1){
-                    tapMemoHtml.style.display = 'block';
-                }else{tapMemoHtml.style.display = 'none';}
-                let tapDiv = document.querySelector(`.${set.BclassName} .tapDiv`);//ttt
-                tapDiv.appendChild(tapMemoHtml);
-            }
-        }
-    }
-}
-//tap btn ===========================================================
+//==== tap btn ======================= 
 
 function tapBtnMake(set) {
     let table = {
@@ -2272,7 +2011,7 @@ function tapBtnMake(set) {
 }
 function tapBtnTd(array, check, buttonShow) {
     let td = {
-        type: 'td', event:'tapRadioChangeEvent:click', style_back:`backgroundColor:${array[5]}`,
+        type: 'td', event: 'tapRadioChangeEvent:click', style_back: `backgroundColor:${array[5]}`,
         button_before: button({
             innerText: '<', style: 'display:none',//tapRadioChangeEvent
             style_width: 'width:15px', style_height: 'height:20px',
@@ -2293,7 +2032,7 @@ function tapBtnTd(array, check, buttonShow) {
             innerText: array[1],
             event_tapclick: 'tapNameInputShow:dblclick',
             style_paddingLeft: 'paddingLeft:5px',
-            style_back:'backgroundColor:transparent'
+            style_back: 'backgroundColor:transparent'
             //event:'tapRadioChangeEvent:click'
         }),
         button_next: button({
@@ -2342,12 +2081,12 @@ function tapNameEditTable() {
                 style_BrowLine_borderBottom: `${wB.BrowLine}`,
                 form: form = {
                     type: 'form', event: 'tapNameEditEvent:submit',
-                    input: input({ className: 'tapNameInput',  }),
+                    input: input({ className: 'tapNameInput', }),
                     sub: input({ kind: 'submit', value: 'sub', style_float: 'float:right', }),
-                    input_back:input({ className:'tapFont', kind:'color', style_width:'width:25px',style_float: 'float:right', value:'#000000'}),
-                    input_font:input({ className:'tapBack', kind:'color', style_width:'width:25px',style_float: 'float:right', value:'#FEF896'}),
-                    input3:input({ className:'tapWidth', kind:'number', placeholder:'width size', style_width:'width:20%', min:'300',style_float: 'float:right', }),//ttt
-                    button1:button({ innerText:'reset',style_width:'width:70px', event:'tapEditSetBasic:click', style_float: 'float:right',}),
+                    input_back: input({ className: 'tapFont', kind: 'color', style_width: 'width:25px', style_float: 'float:right', value: '#000000' }),
+                    input_font: input({ className: 'tapBack', kind: 'color', style_width: 'width:25px', style_float: 'float:right', value: '#FEF896' }),
+                    input3: input({ className: 'tapWidth', kind: 'number', placeholder: 'width size', style_width: 'width:20%', min: '300', style_float: 'float:right', }),//ttt
+                    button1: button({ innerText: 'reset', style_width: 'width:70px', event: 'tapEditSetBasic:click', style_float: 'float:right', }),
                 }
             }
         }
@@ -2368,7 +2107,7 @@ function tapRadioChangeEvent(event) {
     let set = {};
     set.target = Number(n);
     set.tapName = input.id;
-    if(event.target.tag=='TD'){
+    if (event.target.tag == 'TD') {
         let radio = event.target.childNodes[2];
         radio.click();
     }
@@ -2392,9 +2131,9 @@ function tapRadioChangeEvent(event) {
             }
         }
         let tapDiv = document.querySelector(`.${input.id.split('_')[0]} .tapDiv`);
-        for(i=0;i<tapDiv.childNodes.length;i++){
+        for (i = 0; i < tapDiv.childNodes.length; i++) {
             tapDiv.childNodes[i].style.display = 'none';
-            if(tapDiv.childNodes[i].className == input.id){tapDiv.childNodes[i].style.display = 'block'; }
+            if (tapDiv.childNodes[i].className == input.id) { tapDiv.childNodes[i].style.display = 'block'; }
         }
     } else if (event.target.type == 'submit') {
         let winName = event.target.parentNode.childNodes[1].name;
@@ -2463,7 +2202,7 @@ function tapNameEditEvent(event) {//tapNeme
     set.tapName = change.id;
     set.fontColor = event.target.childNodes[2].value;
     set.backColor = event.target.childNodes[3].value;
-    set.width = event.target.childNodes[4].value!=null ? event.target.childNodes[4].value : 456;
+    set.width = event.target.childNodes[4].value != null ? event.target.childNodes[4].value : 456;
     let setOb = Mwindow.save('editTap', set);
 
     let targetRadio = change.nextSibling;
@@ -2490,16 +2229,16 @@ function tapArraySort(array, option) {
     return basicArray;
 }
 
-function tapEditSetBasic(event){//ttt
+function tapEditSetBasic(event) {
     event.preventDefault();
     let color_back = event.target.previousSibling.previousSibling;
     let color_font = event.target.previousSibling.previousSibling.previousSibling;
     let width = event.target.previousSibling;
-    
+
     let regex = /[^0-9]/g;
     let winName = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className;
     let n = winName.replace(regex, "");
-    let set = {target: Number(n)};
+    let set = { target: Number(n) };
 
     let setOb = Mwindow.save('new');
     color_back.value = `#${setOb[set.target].BwinBack}`;
@@ -2507,4 +2246,217 @@ function tapEditSetBasic(event){//ttt
     width.value = setOb[set.target].BwinWidth;
 }
 
-//tap btn ===========================================================
+//======================= tap btn =====
+//======================= tap function end 
+
+//make html function start ======================= sss
+function makeEvent(ob, option) {
+    let option1 = option.split(':')[0];
+    let clickOption = option.split(':')[1];
+    if (option1 == 'NextShowEvent') {
+        ob.addEventListener(`${clickOption}`, NextShowEvent);
+    } else if (option1 == 'NextShowEvent2') {
+        ob.addEventListener(`${clickOption}`, NextShowEvent2);
+    } else if (option1 == 'NextNextNextShowEvent') {
+        ob.addEventListener(`${clickOption}`, NextNextNextShowEvent);
+    } else if (option1 == 'newWindow') {
+        ob.addEventListener(`${clickOption}`, newWindow);
+    } else if (option1 == 'mouseoverEvent') {
+        ob.addEventListener(`${clickOption}`, mouseoverEvent);
+    } else if (option1 == 'mouseoutEvent') {
+        ob.addEventListener(`${clickOption}`, mouseoutEvent);
+    } else if (option1 == 'selectAndNextObShow') {
+        ob.addEventListener(`${clickOption}`, selectAndNextObShow);
+    } else if (option1 == 'selectBeforAfterBtn') {
+        ob.addEventListener(`${clickOption}`, selectBeforAfterBtn);
+    } else if (option1 == 'editWin') {
+        ob.addEventListener(`${clickOption}`, editWin);
+    } else if (option1 == 'titleNameChange') {
+        ob.addEventListener(`${clickOption}`, titleNameChange);
+    } else if (option1 == 'newTapEvent') {
+        ob.addEventListener(`${clickOption}`, newTapEvent);
+    } else if (option1 == 'tapNameInputShow') {
+        ob.addEventListener(`${clickOption}`, tapNameInputShow);
+    } else if (option1 == 'tapMouseInEvent') {
+        ob.addEventListener(`${clickOption}`, tapMouseInEvent);
+    } else if (option1 == 'tapRadioChangeEvent') {
+        ob.addEventListener(`${clickOption}`, tapRadioChangeEvent);
+    } else if (option1 == 'tapNameEditEvent') {
+        ob.addEventListener(`${clickOption}`, tapNameEditEvent);
+    } else if (option1 == 'targetShow') {
+        ob.addEventListener(`${clickOption}`, targetShow);
+    } else if (option1 == 'memoNewSave') {
+        ob.addEventListener(`${clickOption}`, memoNewSave);
+    } else if (option1 == 'memoColorInputShow') {
+        ob.addEventListener(`${clickOption}`, memoColorInputShow);
+    } else if (option1 == 'memoTdFormShow') {
+        ob.addEventListener(`${clickOption}`, memoTdFormShow);
+    } else if (option1 == 'memoFormEditSub') {
+        ob.addEventListener(`${clickOption}`, memoFormEditSub);
+    } else if (option1 == 'memoDel') {
+        ob.addEventListener(`${clickOption}`, memoDel);
+    } else if (option1 == 'memoCheckedTd') {
+        ob.addEventListener(`${clickOption}`, memoCheckedTd);
+    } else if (option1 == 'memoMainColorChange') {
+        ob.addEventListener(`${clickOption}`, memoMainColorChange);
+    } else if (option1 == 'memoSort') {
+        ob.addEventListener(`${clickOption}`, memoSort);
+    } else if (option1 == 'memoChangeIndex') {
+        ob.addEventListener(`${clickOption}`, memoChangeIndex);
+    } else if (option1 == 'tapEditSetBasic') {
+        ob.addEventListener(`${clickOption}`, tapEditSetBasic);
+    }
+    return ob;
+}
+
+function makeOb(ob) {
+    let newOb = document.createElement(ob);
+    return newOb;
+}
+function makeAppend(parents, child) {
+    let dd = parents;
+    let bb = child;
+    dd.appendChild(bb);
+    return dd;
+}
+function makeClassName(ob, name) {
+    ob.className = `${name}`;
+    return ob;
+}
+function makeType(ob, kind) {
+    ob.type = kind;
+    return ob;
+}
+function makeValue(ob, key) {
+    ob.value = key;
+    return ob;
+}
+function makeInnerText(ob, text) {
+    ob.innerText = text;
+    return ob;
+}
+function makeFunction(ob, option, value) {
+    ob[`${option}`] = value;
+    return ob;
+}
+function makeStyle(ob, option, value) {
+    ob.style[option] = value;
+    return ob;
+}
+
+function makeHtml(ob, set) {
+    let newOb;
+    let child;
+    for (const key in ob) {
+        let keySorce = `${key}`
+        let keyy = keySorce.split('_')[0];
+        let sett = keySorce.split('_')[1];
+        const target = typeof ob[key];
+        //makeFunction(ob, option, value)
+        if (target == 'object') {
+            if (key == 'basic') {
+                continue
+            }
+            child = makeHtml(ob[key], set);
+            newOb = makeAppend(newOb, child);
+        } else if (target == 'string' && keyy == 'type') {
+            newOb = makeOb(ob[key]);
+        } else if (target == 'string' && keyy == 'kind') {
+            newOb = makeFunction(newOb, 'type', ob[key]);
+        } else if (target == 'string' && keyy == 'value') {
+            if (sett != null && sett.charAt(0) == 'B') {
+
+                if (newOb['placeholder'] == 'number') {
+                    let val = set[sett];
+                    let regex = /[^0-9.]/g; let va;
+                    if (val != null) {
+                        va = val.replace(regex, "");
+                    } else {
+                        va = set[sett];
+                    }
+
+                    newOb = makeFunction(newOb, keyy, va);
+                } else {
+                    newOb = makeFunction(newOb, keyy, set[sett]);
+                }
+            } else {
+                newOb = makeFunction(newOb, keyy, ob[key]);
+            }
+        } else if (target == 'string' && keyy == 'event') {
+            newOb = makeEvent(newOb, ob[key]);
+        } else if (target == 'string' && keyy == 'style') {
+
+            if (sett != null && sett.charAt(0) == 'B') {
+                let setOp = keySorce.split('_')[2];
+                newOb = makeStyle(newOb, setOp, set[sett]);
+            } else {
+                let op = ob[key].split(':')[0];
+                let va = ob[key].split(':')[1];
+                newOb = makeStyle(newOb, op, va);
+            }
+
+        } else {
+            if (sett != null && sett.charAt(0) == 'B') {
+                newOb = makeFunction(newOb, keyy, set[sett]);
+            } else {
+                newOb = makeFunction(newOb, keyy, ob[key]);
+            }
+        }
+    }
+    return newOb;
+}
+
+//======================= main make html function end 
+
+
+//main start make ssss =======================
+
+const main = document.querySelector('.main');
+
+let array2 = Mwindow.save('new');
+
+for (let i = 0; i < 10; i++) {
+    if (array2[i] != null) {
+        let set = copyReturn();
+
+        for (key in set) {
+            if (set[key] != null && array2[i][key] != null) {
+                set[key] = array2[i][key];
+            }
+        }
+        set = checkValue(set);
+        let aaaa = makeHtml(w, set);
+        main.appendChild(aaaa);
+
+
+        let q = document.querySelector(`.${set.BclassName} .tapBtnTr`);
+        let tapTable = tapBtnMake(set);
+        let tapReal = makeHtml(tapTable, set);
+        q.appendChild(tapReal);
+
+
+        let tapEdit = tapNameEditTable();
+        let tapReal2 = makeHtml(tapEdit, set);
+        q.appendChild(tapReal2);
+
+        for (j = 0; j < set.BtapArray.length; j++) {
+            let tapName = null;
+            if (set.BtapArray[j] != null) {
+                tapName = set.BtapArray[j][0];
+            }
+            if (tapName != null && tapName.split('_')[2] == 's1') {
+                let set2 = { tapClassName: `${tapName}` }
+                let memoArray = Tmemo.save('openNew', set2);
+                let memoOb = memoMake(tapName, memoArray, set.BtapArray[j]);
+                let tapMemoHtml = makeHtml(memoOb, set);
+                if (set.BtapArray[j][3] == 1) {
+                    tapMemoHtml.style.display = 'block';
+                } else { tapMemoHtml.style.display = 'none'; }
+                let tapDiv = document.querySelector(`.${set.BclassName} .tapDiv`);//ttt
+                tapDiv.appendChild(tapMemoHtml);
+            }
+        }
+    }
+}
+
+//======================= main end make
