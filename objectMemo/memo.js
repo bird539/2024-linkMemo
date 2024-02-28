@@ -55,7 +55,7 @@ function checkValue(ob) {
         'BwinBack', 'BwinFontColor', 'BhtmlBack',
         'BlineRowColor', 'BlineColColor',
         'BtitleBack', 'BtitleFontColor',
-        'BbtnHover', 'BbtnHoverfontColor'
+        'BbtnHover', 'BbtnHoverfontColor' //tap - BwinBack / BwinFontColor / BwinWidth 
     ]
     let number = [
         'BwinWidth', 'BwinHeight',
@@ -1502,6 +1502,7 @@ function memoMake(tapName, array, tapColorAlse) {
         type: 'div',
         className: `${tapName}`,
         style_back: `backgroundColor:${tapColorAlse[5]}`,
+        style_BwinWidth_width:'',
 
         memoHead: table1 = {
             type: 'table',
@@ -2448,6 +2449,15 @@ for (let i = 0; i < 10; i++) {
                 let set2 = { tapClassName: `${tapName}` }
                 let memoArray = Tmemo.save('openNew', set2);
                 let memoOb = memoMake(tapName, memoArray, set.BtapArray[j]);
+                
+                //tap - BwinBack / BwinFontColor / BwinWidth 
+                console.log(set)
+                set.BwinBack = set.BtapArray[j][5];
+                set.BwinFontColor = set.BtapArray[j][6];
+                set.BwinWidth = set.BtapArray[j][7];
+                set = checkValue(set);
+                console.log(set.BtapArray[j], set)
+
                 let tapMemoHtml = makeHtml(memoOb, set);
                 if (set.BtapArray[j][3] == 1) {
                     tapMemoHtml.style.display = 'block';
