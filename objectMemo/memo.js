@@ -178,7 +178,6 @@ let Mwindow = {
             let setOb = win[nn];
             for (let key in set) {
                 if (setOb[key] != null && key != 'target') {
-                    console.log(key, setOb[key], set[key]);
                     setOb[key] = set[key];
                 }
             }
@@ -261,7 +260,6 @@ let Mwindow = {
                 } else if (set.beforeOrNext == '>') {
                     newTapIndex = tapIndex + 1;
                     if (newTapIndex > array2.length - 1) { newTapIndex = 0 };
-                    console.log(tapIndex, newTapIndex)
                 }
                 array2[tapIndex][2] = newTapIndex;
                 array2[newTapIndex][2] = tapIndex;
@@ -300,10 +298,10 @@ let Tmemo = {
         if (option == 'firstNew') {
             let tapArray = [
                 [
-                    1, 0, [null, '#ea2525', '#fff200', '#00ffe9', '#E0E0E0', '#000000', '#EA2525']
+                    1, 0, [null, '#ea2525', '#fff200', '#00ffe9', '#E0E0E0', '#EA2525']
                 ],
                 // [ 0:sort[1:new 0:old, 1:color], 
-                //   2:highlight[0:none, 1:colo1, 2:colo2, 3:colo3, 4:doneColor, 5:textColor 6:chekColor] ],
+                //   2:highlight[0:none, 1:colo1, 2:colo2, 3:colo3, 4:doneColor, 5:chekColor] ],
 
                 []     //textArray [0:check, 
                 //                  1:text, 
@@ -370,6 +368,46 @@ let Tmemo = {
             return memo;
         }
     },
+    makeArrayToOb: function(tapArray11){
+        /*
+                    let tapArray = [
+                [
+                    1, 0, [null, '#ea2525', '#fff200', '#00ffe9', '#E0E0E0', '#000000', '#EA2525']
+                ],
+                // [ 0:sort[1:new 0:old, 1:color], 
+                //   2:highlight[0:none, 1:colo1, 2:colo2, 3:colo3, 4:doneColor, 5:textColor 6:chekColor] ],
+
+                []     //textArray [0:check, 
+                //                  1:text, 
+                //                  2:mark 0none 1~3-color 3-none]
+            ];
+            */
+            console.log(tapArray11)
+
+        let memoOb = {
+            colorArray:[ null,tapArray11[0][2][1],tapArray11[0][2][2],tapArray11[0][2][3] ],
+            op:{
+                sort:tapArray11[0][0],
+                showForm:tapArray11[0][1],
+                doneColor:tapArray11[0][2][4],
+                chekColor:tapArray11[0][2][5],
+            },
+            textArray:[],
+        }
+        for(i=0;i<tapArray11[1].length;i++){
+            let textOb = { 
+                checkV : tapArray11[1][i][0], 
+                text : tapArray11[1][i][1], 
+                colorIndex : tapArray11[1][i][2], 
+                index : i,
+            }
+            memoOb.textArray.push(textOb);
+        }
+        console.log(1111,memoOb)
+
+        return memoOb;
+        
+    }
 }
 //======================= tap memoOb end 
 
@@ -407,7 +445,7 @@ function newTapBtn(text, option) {
     return td;
 }
 
-function returnSelectOb(array, option) {
+function returnSelectOb(array, option, selectedIndex) {
     let select = {
         type: 'select',
         event_out: 'mouseoverEvent:mouseover',
@@ -429,6 +467,7 @@ function returnSelectOb(array, option) {
     }
     for (i = 0; i < array.length; i++) {
         let op = { type: 'option', innerText: array[i] };
+        if(selectedIndex != null && selectedIndex == i){  op['selected'] = 'selected'};
         select[`op${i}`] = op;
     }
     return select;
@@ -508,6 +547,7 @@ function textarea(option) {
         style_border: 'border:none',
         style_backGroundColor: 'backgroundColor:transparent',
 
+        style_BwinFontColor_color: '',
         style_BwinFontSize_fontSize: `${wB.BwinFontSize}`,
         style_BwinFontWeight_fontWeight: `${wB.BwinFontWeight}`,
         style_BwinFontFamily_fontFamily: `${wB.BwinFontFamily}`,
@@ -1410,7 +1450,7 @@ function editWin(event) {
 
 //memo function start =======================
 //===== tapMemo ddd start ======================= ttt
-function makeMemoTr(tapName, text, colorIndex, colorArray, index, checkV, formShow) {
+function makeMemoTr(tapName, textOb = {text, colorIndex, checkV, index}, colorArray, op ={sort, showForm, doneColor, chekColor},  formShow) {
     let tr = {
         type: 'tr',
         td1: td = {
@@ -1427,10 +1467,10 @@ function makeMemoTr(tapName, text, colorIndex, colorArray, index, checkV, formSh
 
             checkBox: check = {
                 type: 'input', kind: 'checkbox',
-                style_color: `color:${colorArray[6]}`,
-                className: `${tapName}_${index}_checkBox_${colorArray[4]}_${colorArray[5]}`,
+                style_color: `color:${op.chekColor}`,
+                className: `${tapName}_${textOb.index}_checkBox_${op.chekColor}_${op.doneColor}`,
                 event: 'memoFormEditSub:change',
-                checked: checkV,
+                checked: textOb.checkV,
             },
         },
         td2: td = {
@@ -1441,24 +1481,24 @@ function makeMemoTr(tapName, text, colorIndex, colorArray, index, checkV, formSh
 
             div1: d = {
                 type: 'div', style_margin: 'margin:0.3em',
-                className: `${tapName}_${index}_d`, style_display: `display:${formShow == null ? 'block' : 'none'}`,
+                className: `${tapName}_${textOb.index}_d`, style_display: `display:${formShow == null ? 'block' : 'none'}`,
 
                 mark2: mark({
                     type: 'mark',
-                    className: `${tapName}_${index}_d`,
-                    style: `backgroundColor:${colorIndex > 0 ? colorArray[colorIndex] : 'transparent'}`,
-                    style_color: `color:${checkV ? colorArray[4] : this.style_BwinFontColor_color}`,
-                    innerText: `${text}`,
-                    style_textDecorationLine: `textDecorationLine:${checkV ? 'line-through' : 'none'}`,
+                    className: `${tapName}_${textOb.index}_d`,
+                    style: `backgroundColor:${textOb.colorIndex > 0 ? colorArray[textOb.colorIndex] : 'transparent'}`,
+                    style_color: `color:${textOb.checkV ? colorArray[4] : this.style_BwinFontColor_color}`,
+                    innerText: `${textOb.text}`,
+                    style_textDecorationLine: `textDecorationLine:${textOb.checkV ? 'line-through' : 'none'}`,
                 }),
             },
 
             form: f = {
                 type: 'form',
-                className: `${tapName}_${index}_d_form`, style_display: `display:${formShow == null ? 'none' : 'block'}`,
+                className: `${tapName}_${textOb.index}_d_form`, style_display: `display:${formShow == null ? 'none' : 'block'}`,
                 event: 'memoFormEditSub:submit',
                 //style_display: 'display:none',
-                textarea: textarea({ placeholder: 'edit memo...', value: `${text}`, rows: '2' }),
+                textarea: textarea({ placeholder: 'edit memo...', value: `${textOb.text}`, rows: '2' }),
                 input_sub: input({ kind: 'submit', value: 'sub', style_float: 'float:right', }),
                 input_up: button({ innerText: 'Λ', style_float: 'float:right', event: 'memoChangeIndex:click' }),
                 input_dw: button({ innerText: 'V', style_float: 'float:right', event: 'memoChangeIndex:click' }),
@@ -1474,34 +1514,71 @@ function makeMemoTr(tapName, text, colorIndex, colorArray, index, checkV, formSh
                 style_textAlign: 'textAlign:right',
                 style_width: 'width:50px',
                 style_height: 'height:20px',
-                className: `${tapName}_${index}_colorSelect`,
+                className: `${tapName}_${textOb.index}_colorSelect`,
                 event: 'memoFormEditSub:change',
-            }),
+                
+            }, textOb.colorIndex, ),
         }
     }
     return tr;
 }
 
-function makeMemoTable(tapName, array) {
+function makeMemoTable(tapName, mOb) {
     let table = {
         type: 'table',
         style_width: 'width:100%',
         style_border: 'borderCollapse:collapse',
     }
-    for (k = 0; k < array[1].length; k++) {//makeMemoTr(tapName, text, colorIndex, colorArray, index)
-        if (array[1][k] != null) { //array[1][k][2]
-            let tr = makeMemoTr(tapName, array[1][k][1], array[1][k][2], array[0][2], k, array[1][k][0]);
+    table = sort(mOb, table, tapName);
+    //sort(option, option.memoTable, option.splitName, option.newArr.memo, option.newArr.winset);
+    //mamoTableMakeNew(option)
+    /*
+    for (k = 0; k < mOb.textArray.length; k++) {
+        if (mOb.textArray[k] != null) { 
+            let tr = makeMemoTr(tapName, mOb.textArray[k], mOb.colorArray, mOb.op);
             table[`${k}tr`] = tr;
         }
+    }*/
+
+    function sort(mOb, memoTable, tapName) {//op={SortIndex}
+
+        if (mOb.op.sort == 2) {
+            for (k = 1; k <= 3; k++) {
+                for (h = 0; h < mOb.textArray.length; h++) {
+                    if (mOb.textArray[h].colorIndex == k) {
+                        let newMemoTableOb = makeMemoTr(tapName, mOb.textArray[h], mOb.colorArray, mOb.op );
+                        memoTable[`${h}tr`] = newMemoTableOb;
+                    }
+                }
+            }
+            for (h = 0; h < mOb.textArray.length; h++) {
+                if (mOb.textArray[h].colorIndex == 0) {
+                    let newMemoTableOb = makeMemoTr(tapName, mOb.textArray[h], mOb.colorArray, mOb.op );
+                    memoTable[`${h}tr`] = newMemoTableOb;
+                }
+            }
+        } else {
+            for (j = 0; j < mOb.textArray.length; j++) {
+                let newMemoTableOb = makeMemoTr(tapName, mOb.textArray[j], mOb.colorArray, mOb.op );
+                if (mOb.op.sort== 0) {
+                    memoTable[`${j}tr`] = newMemoTableOb;
+                } else if (mOb.op.sort == 1) {
+                    memoTable[`${j}tr`] = newMemoTableOb;
+                }
+            }
+        }
+        return memoTable;
     }
     return table;
 }
 
-function memoMake(tapName, array, tapColorAlse) {
+function memoMake(tapName, array) {
+    let mOb = Tmemo.makeArrayToOb(array);
+
     let memoOb = {
         type: 'div',
         className: `${tapName}`,
-        style_back: `backgroundColor:${tapColorAlse[5]}`,
+        style_BwinBack_backgroundColor:'',
         style_BwinWidth_width:'',
 
         memoHead: table1 = {
@@ -1514,22 +1591,21 @@ function memoMake(tapName, array, tapColorAlse) {
                     style_width: 'width:20px',
                     className: 'rowCol',
                     style_verticalAlign: 'verticalAlign:super',
-                    style_BrowLine_borderBottom: `${wB.BrowLine}`,
-                    style_BcolLine_borderRight: `${wB.BcolLine}`,
+                    style_BrowLine_borderBottom:'',
+                    style_BcolLine_borderRight:'',
 
                     showForm: button({
                         innerText: 'i',
                         style_2: 'border:0',
                         event_11: 'targetShow:click',
                         className: `${tapName}_i`,
-                        style_font: `color:${tapColorAlse[6]}`,
                     }),
 
                 },
                 td2: td = {
                     type: 'td',
                     className: 'row', style_width: 'width:100%',
-                    style_BrowLine_borderBottom: `${wB.BrowLine}`,
+                    style_BrowLine_borderBottom: '',
 
                     form: txt = {
                         type: 'form',
@@ -1537,7 +1613,7 @@ function memoMake(tapName, array, tapColorAlse) {
                         event_submit: 'memoNewSave:submit',///dddd
                         className: `${tapName}_i_form`,
                         submit: input({ kind: 'submit', value: 'sub', style_float: 'float:right', style_display: 'display:inline-block', style_height: 'height:25px', style_width: 'width:40px' }),
-                        select: returnSelectOb(['⁙⁙⁙⁙', 'color1', 'color2', 'color3', 'done', 'text', 'chek'], {
+                        select: returnSelectOb(['⁙⁙⁙⁙', 'color1', 'color2', 'color3', 'done', 'chek'], {
                             style_appearance: 'appearance:none', style_border: 'border:none',
                             style_float: 'float:right', style_width: 'width:45px', style_height: 'height:25px',
                             event: 'memoColorInputShow:change',
@@ -1546,33 +1622,28 @@ function memoMake(tapName, array, tapColorAlse) {
                             type: 'span',
                             color1: input({
                                 kind: 'color', style_float: 'float:right', style_height: 'height:25px',
-                                style_width: 'width:40px', style_display: 'display:none', value: `${array[0][2][1]}`,
+                                style_width: 'width:40px', style_display: 'display:none', value: `${mOb.colorArray[1]}`,
                                 className: 1, event: 'memoMainColorChange:input',
                             }),
                             color2: input({
                                 kind: 'color', style_float: 'float:right', style_height: 'height:25px',
-                                style_width: 'width:40px', style_display: 'display:none', value: `${array[0][2][2]}`,
+                                style_width: 'width:40px', style_display: 'display:none', value: `${mOb.colorArray[2]}`,
                                 className: 2, event: 'memoMainColorChange:input',
                             }),
                             color3: input({
                                 kind: 'color', style_float: 'float:right', style_height: 'height:25px',
-                                style_width: 'width:40px', style_display: 'display:none', value: `${array[0][2][3]}`,
+                                style_width: 'width:40px', style_display: 'display:none', value: `${mOb.colorArray[3]}`,
                                 className: 3, event: 'memoMainColorChange:input',
                             }),
                             doneColor: input({
                                 kind: 'color', style_float: 'float:right', style_height: 'height:25px',
-                                style_width: 'width:40px', style_display: 'display:none', value: `${array[0][2][4]}`,
+                                style_width: 'width:40px', style_display: 'display:none', value: `${mOb.op.doneColor}`,
                                 className: 4, event: 'memoMainColorChange:input',
                             }),
                             textColor: input({
                                 kind: 'color', style_float: 'float:right', style_height: 'height:25px',
-                                style_width: 'width:40px', style_display: 'display:none', value: `${array[0][2][5]}`,
+                                style_width: 'width:40px', style_display: 'display:none', value: `${mOb.op.chekColor}`,
                                 className: 5, event: 'memoMainColorChange:input',
-                            }),
-                            chekColor: input({
-                                kind: 'color', style_float: 'float:right', style_height: 'height:25px',
-                                style_width: 'width:40px', style_display: 'display:none', value: `${array[0][2][6]}`,
-                                className: 6, event: 'memoMainColorChange:input',
                             }),
                         }
 
@@ -1586,7 +1657,7 @@ function memoMake(tapName, array, tapColorAlse) {
                 }
             }
         },
-        memoBody: makeMemoTable(tapName, array, tapColorAlse),
+        memoBody: makeMemoTable(tapName, mOb),
 
         memoFoot: table = {
             type: 'table',
@@ -1602,14 +1673,14 @@ function memoMake(tapName, array, tapColorAlse) {
                     },
                     className: 'rowCol',
                     style_width: 'width:20px',
-                    style_BrowLine_borderBottom: `${wB.BrowLine}`,
-                    style_BcolLine_borderRight: `${wB.BcolLine}`,
+                    style_BrowLine_borderBottom: ``,
+                    style_BcolLine_borderRight: ``,
                 },
                 td2: td = {
                     type: 'td',
                     className: 'row',
-                    style_BrowLine_borderBottom: `${wB.BrowLine}`,
-                    select: returnSelectOb(['checked', 'color1', 'color2', 'color3'], {
+                    style_BrowLine_borderBottom: ``,
+                    select: returnSelectOb(['check all', 'check color1', 'check color2', 'check color3'], {
                         style_appearance: 'appearance:none',
                         style_border: 'border:none',
                         style_marginLeft: 'marginLeft:0.5em',
@@ -1633,9 +1704,9 @@ function memoNewSave(event) {
     let tapClassName = `${name.split('_')[0]}_${name.split('_')[1]}_${name.split('_')[2]}`;
     let text = event.target.childNodes[0].value;
     let colorIndex = event.target.childNodes[2].selectedIndex;
-
+    console.log(11)
     let tapArray = Tmemo.save('plusNew', { tapClassName: tapClassName, text: text, colorIndex: colorIndex })
-
+    tapArray;
     let sortIndex = event.target.nextSibling.selectedIndex;
     let option = { index: sortIndex, op: 'new', originalName: tapClassName, };
     mamoTableMakeNew(option);
@@ -1766,7 +1837,7 @@ function memoDel(event) {
     let set = { target: index, tapClassName: splitName };
     let newMemoArray = Tmemo.save('del', set);
 
-    let sortIndex = event.target.parentNode.parentNode.parentNode.parentNode.nextSibling.childNodes[0].childNodes[0].childNodes[1].childNodes[1].selectedIndex;
+    let sortIndex = event.target.parentNode.parentNode.parentNode.parentNode.childNodes[0].childNodes[0].childNodes[1].childNodes[1].selectedIndex;
     let option = { index: sortIndex, op: 'new', originalName: splitName, };
     mamoTableMakeNew(option);
 }
@@ -1827,6 +1898,8 @@ function mamoTableMakeNew(option) {
 
         let newArr = newArray();
         sort(option, memoTable, splitName, newArr.memo, newArr.winset);
+    }else if(option.return == 'return'){
+        sort(option, option.memoTable, option.splitName, option.newArr.memo, option.newArr.winset);
     }
 
     function newArray() {
@@ -1843,32 +1916,34 @@ function mamoTableMakeNew(option) {
     }
 
     function sort(option, memoTable, splitName, newMemoArray, winSet) {//op={SortIndex}
+        let mOb = Tmemo.makeArrayToOb(newMemoArray);
+
         if (option.index == 2) {
             for (k = 1; k <= 3; k++) {
-                for (h = 0; h < newMemoArray[1].length; h++) {
-                    if (newMemoArray[1][h][2] == k) {
-                        let formShow = null;
-                        if(option.formShow != null && option.formShow==h){ formShow = 1 } else { formShow = null}
-                        let newMemoTableOb = makeMemoTr(splitName, newMemoArray[1][h][1], newMemoArray[1][h][2], newMemoArray[0][2], h, newMemoArray[1][h][0], formShow);
+                for (h = 0; h < mOb.textArray.length; h++) {
+                    if (mOb.textArray[h].colorIndex == k) {
+                        let formShow1 = null;
+                        if(option.formShow != null && option.formShow==h){ formShow1 = 1 } else { formShow1 = null};
+                        let newMemoTableOb = makeMemoTr(splitName, mOb.textArray[h], mOb.colorArray, mOb.op ,formShow1);
                         newMemoTableOb = makeHtml(newMemoTableOb, winSet);
                         memoTable.appendChild(newMemoTableOb);
                     }
                 }
             }
-            for (h = 0; h < newMemoArray[1].length; h++) {
-                if (newMemoArray[1][h][2] == 0) {
-                    let formShow = null;
-                    if(option.formShow != null && option.formShow==h){ formShow = 1 }else{ formShow = null}
-                    let newMemoTableOb = makeMemoTr(splitName, newMemoArray[1][h][1], newMemoArray[1][h][2], newMemoArray[0][2], h, newMemoArray[1][h][0], formShow);
+            for (h = 0; h < mOb.textArray.length; h++) {
+                if (mOb.textArray[h].colorIndex == 0) {
+                    let formShow2 = null;
+                    if(option.formShow != null && option.formShow==h){ formShow2 = 1 } else { formShow2 = null}
+                    let newMemoTableOb = makeMemoTr(splitName, mOb.textArray[h], mOb.colorArray, mOb.op ,formShow2);
                     newMemoTableOb = makeHtml(newMemoTableOb, winSet);
                     memoTable.appendChild(newMemoTableOb);
                 }
             }
         } else {
-            for (j = 0; j < newMemoArray[1].length; j++) {
-                let formShow = null;
-                if(option.formShow != null && option.formShow==j){ formShow = 1 }else{ formShow = null}
-                let newMemoTableOb = makeMemoTr(splitName, newMemoArray[1][j][1], newMemoArray[1][j][2], newMemoArray[0][2], j, newMemoArray[1][j][0], formShow);
+            for (j = 0; j < mOb.textArray.length; j++) {
+                let formShow3 = null;
+                if(option.formShow != null && option.formShow==j){ formShow3 = 1 }else{ formShow3 = null}
+                let newMemoTableOb = makeMemoTr(splitName, mOb.textArray[j], mOb.colorArray, mOb.op ,formShow3);
                 newMemoTableOb = makeHtml(newMemoTableOb, winSet);
                 if (option.index == 0) {
                     memoTable.appendChild(newMemoTableOb);
@@ -1876,6 +1951,9 @@ function mamoTableMakeNew(option) {
                     memoTable.prepend(newMemoTableOb);
                 }
             }
+        }
+        if(option.return == 'return'){
+            return memoTable;
         }
     }
 }
@@ -2440,26 +2518,25 @@ for (let i = 0; i < 10; i++) {
         let tapReal2 = makeHtml(tapEdit, set);
         q.appendChild(tapReal2);
 
-        for (j = 0; j < set.BtapArray.length; j++) {
+        for (g = 0; g < set.BtapArray.length; g++) {
             let tapName = null;
-            if (set.BtapArray[j] != null) {
-                tapName = set.BtapArray[j][0];
+            if (set.BtapArray[g] != null) {
+                tapName = set.BtapArray[g][0];
             }
             if (tapName != null && tapName.split('_')[2] == 's1') {
                 let set2 = { tapClassName: `${tapName}` }
                 let memoArray = Tmemo.save('openNew', set2);
-                let memoOb = memoMake(tapName, memoArray, set.BtapArray[j]);
+                let memoOb = memoMake(tapName, memoArray, set.BtapArray[g]);
                 
                 //tap - BwinBack / BwinFontColor / BwinWidth 
-                console.log(set)
-                set.BwinBack = set.BtapArray[j][5];
-                set.BwinFontColor = set.BtapArray[j][6];
-                set.BwinWidth = set.BtapArray[j][7];
-                set = checkValue(set);
-                console.log(set.BtapArray[j], set)
+                let tapSet = set;
+                tapSet.BwinBack = set.BtapArray[g][5];
+                tapSet.BwinFontColor = set.BtapArray[g][6];
+                tapSet.BwinWidth = set.BtapArray[g][7];
+                tapSet = checkValue(tapSet);
 
-                let tapMemoHtml = makeHtml(memoOb, set);
-                if (set.BtapArray[j][3] == 1) {
+                let tapMemoHtml = makeHtml(memoOb, tapSet);
+                if (set.BtapArray[g][3] == 1) {
                     tapMemoHtml.style.display = 'block';
                 } else { tapMemoHtml.style.display = 'none'; }
                 let tapDiv = document.querySelector(`.${set.BclassName} .tapDiv`);//ttt
