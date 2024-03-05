@@ -1704,7 +1704,7 @@ function memoNewSave(event) {
     let tapClassName = `${name.split('_')[0]}_${name.split('_')[1]}_${name.split('_')[2]}`;
     let text = event.target.childNodes[0].value;
     let colorIndex = event.target.childNodes[2].selectedIndex;
-    console.log(11)
+
     let tapArray = Tmemo.save('plusNew', { tapClassName: tapClassName, text: text, colorIndex: colorIndex })
     tapArray;
     let sortIndex = event.target.nextSibling.selectedIndex;
@@ -1906,7 +1906,15 @@ function mamoTableMakeNew(option) {
         let set = { tapClassName: splitName }
         let newMemoArray = Tmemo.save('openNew', set);
         let win = Mwindow.save('new');
-        let winSet = checkValue(win[n]);
+
+        let tapSet = win[n];
+        let tapInfo = tapSet.BtapArray[className[1]];
+
+        tapSet.BwinBack = tapInfo[5];
+        tapSet.BwinFontColor =  tapInfo[6];
+        tapSet.BwinWidth =  tapInfo[7];
+
+        let winSet = checkValue(tapSet);
 
         let arr = {
             memo: newMemoArray,
