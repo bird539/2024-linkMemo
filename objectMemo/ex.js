@@ -2023,8 +2023,11 @@ function tapBtnMake(set) {
     return table;
 }
 function tapBtnTd(array, check, buttonShow) {
+    console.log('array');
+
     let td = {
         type: 'td', event: 'tapRadioChangeEvent:click', style_back: `backgroundColor:${array[5]}`,
+        style_borderBottom: `borderBottom:1px solid ${array[5]}`,
         button_before: button({
             innerText: '<', style: 'display:none',//tapRadioChangeEvent
             style_width: 'width:15px', style_height: 'height:20px',
