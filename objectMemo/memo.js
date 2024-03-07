@@ -268,7 +268,6 @@ let Mwindow = {
                     sortArray[i][2] = i;
                     basicArray[sortArray[i][4]] = sortArray[i];
                 }
-                console.log(basicArray);
                 setOb.BtapArray = basicArray;
 
             } if (set.option == 'tapNameEdit') {
@@ -1544,8 +1543,6 @@ function makeMemoTable(tapName, mOb) {
         style_border: 'borderCollapse:collapse',
     }
     function sort(mOb, memoTable, tapName) {//op={SortIndex}
-        console.log(mOb.op.sort);
-        console.log('in', tapName)
 
         if (mOb.op.sort == 2) {
             for (k = 1; k <= 3; k++) {
@@ -1568,17 +1565,14 @@ function makeMemoTable(tapName, mOb) {
                 if (mOb.op.sort== 1) {
                     let newMemoTableOb = makeMemoTr(tapName, mOb.textArray[j], mOb.colorArray, mOb.op );
                     memoTable[`${j}tr`] = newMemoTableOb;
-                    console.log('new',j)
                 } else if (mOb.op.sort == 0) {
                     let newMemoTableOb = makeMemoTr(tapName, mOb.textArray[textLen-1-j], mOb.colorArray, mOb.op );
                     memoTable[`${textLen-1-j}tr`] = newMemoTableOb;
-                    console.log('old',textLen-1-j)
                 }
             }
         }
         return memoTable;
     }
-    console.log('out')
     table = sort(mOb, table, tapName);
 
     return table;
@@ -2143,7 +2137,7 @@ function tapBtnTd(array, check, buttonShow) {
         button_before: button({
             innerText: '<', style: 'display:none',//tapRadioChangeEvent
             style_width: 'width:15px', style_height: 'height:20px',
-            event: 'tapRadioChangeEvent:click',
+            event: 'tapBeforNextBtnEvent:click',
         }),
         radio: tapRadio = {
             type: 'input',
@@ -2170,7 +2164,7 @@ function tapBtnTd(array, check, buttonShow) {
         button_next: button({
             innerText: '>', style: 'display:none',
             style_width: 'width:15px', style_height: 'height:20px',
-            event: 'tapRadioChangeEvent:click',
+            event: 'tapBeforNextBtnEvent:click',
         }),
         button_x: button({ innerText: 'x', style: 'display:none' }),
     }
@@ -2273,7 +2267,18 @@ function tapRadioChangeEvent(event) {
             tapDiv.childNodes[i].style.display = 'none';
             if (tapDiv.childNodes[i].className == input.id) { tapDiv.childNodes[i].style.display = 'block'; }
         }
-    } else if (event.target.type == 'submit') {
+    }
+}
+function tapBeforNextBtnEvent(event){
+    let input = event.target;
+    if (event.target.type == null) {
+        input = event.target.childNodes[1];
+    }
+    let regex = /[^0-9]/g;
+    if (input == null) {
+        return;
+    }
+
         let winName = event.target.parentNode.childNodes[1].name;
         let n = winName.replace(regex, "");
         let set2 = {};
@@ -2286,7 +2291,6 @@ function tapRadioChangeEvent(event) {
         } else {
             set2.beforeOrNext = '>';
         }
-        console.log(set2.beforeOrNext)
 
         let setOb = Mwindow.save('editTap', set2);
         setOb = checkValue(setOb);
@@ -2317,7 +2321,7 @@ function tapRadioChangeEvent(event) {
         }
         tdLast = makeHtml(tdLast, setOb);
         tapBtnDiv.childNodes[0].childNodes[0].appendChild(tdLast);
-    }
+
 }
 function tapNameEditEvent(event) {//tapNeme
     event.preventDefault();
@@ -2448,6 +2452,8 @@ function makeEvent(ob, option) {
         ob.addEventListener(`${clickOption}`, mouseoutEvent_boderLine);
     } else if (option1 == 'mouseoverEvent_boderLine') {
         ob.addEventListener(`${clickOption}`, mouseoverEvent_boderLine);
+    }else if (option1 == 'tapBeforNextBtnEvent') {
+        ob.addEventListener(`${clickOption}`, tapBeforNextBtnEvent);
     }
     return ob;
 }
