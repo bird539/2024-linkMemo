@@ -688,6 +688,7 @@ let w = {
                         style_width: 'width:100%',
                         style_height: 'heigth:20px',
                         style_textAlign: 'textAlign:left',
+                        style_borderLeft:'paddingLeft:6px',
 
                         style_BtitleFontWeight: ''
                     }),
@@ -1481,6 +1482,7 @@ function makeMemoTr(tapName, textOb = {text, colorIndex, checkV, index}, colorAr
             checkBox: check = {
                 type: 'input', kind: 'checkbox',
                 style_color: `color:${op.chekColor}`,
+                style_width: 'width:20px',
                 className: `${tapName}_${textOb.index}_checkBox_${op.chekColor}_${op.doneColor}`,
                 event: 'memoFormEditSub:change',
                 checked: textOb.checkV,
