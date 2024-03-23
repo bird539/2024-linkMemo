@@ -1520,7 +1520,7 @@ function makeMemoTr(tapName, textOb = {text, colorIndex, checkV, index}, colorAr
             },
             input_edit: button({ innerText: 'e', style: 'width:30px', style_float: 'float:right', event: 'memoTdFormShow:click', }),
             input_del: button({ innerText: 'x', style: 'width:30px', style_float: 'float:right', event_del: 'memoDel:click' }),
-            input_copy: button({ innerText: 'c', style: 'width:30px', style_float: 'float:right', }),
+            input_copy: button({ innerText: 'c', style: 'width:30px', style_float: 'float:right',event:'memoCopy:click' }),
             select_sort: returnSelectOb(['⁙⁙⁙⁙', 'color1', 'color2', 'color3'], {
                 style_float: 'float:right',
                 style_appearance: 'appearance:none',
@@ -1679,7 +1679,8 @@ function memoMake(tapName, array) {
                     type: 'td',
                     checkBox: check = {
                         type: 'input', kind: 'checkbox',
-                        style_color: 'color:red'
+                        style_color: 'color:red',
+                        event: 'memoAllCheck:change',
                     },
                     className: 'rowCol',
                     style_width: 'width:20px',
@@ -1706,7 +1707,44 @@ function memoMake(tapName, array) {
 }
 //======================= tapMemo ddd end =====
 
+function memoAllCheck(event){
+    let table = event.target.parentNode.parentNode.parentNode.parentNode.childNodes[1];
+    let check = event.target.checked;
+    for(i=0;i<table.childNodes.length;i++){
+        const box = table.childNodes[i].childNodes[0].childNodes[0];
+        if(box.checked == check){
+            continue;
+        }else{
+            box.click();
+        }
+    } 
+}
 
+
+const unsecuredCopyToClipboard = (text) => { 
+    const textArea = document.createElement("textarea"); 
+    textArea.value=text; document.body.appendChild(textArea); 
+    textArea.focus();textArea.select(); 
+    try{document.execCommand('copy')}catch(err){console.error('Unable to copy to clipboard',err)}document.body.removeChild(textArea)
+};
+/**
+ * Copies the text passed as param to the system clipboard
+ * Check if using HTTPS and navigator.clipboard is available
+ * Then uses standard clipboard API, otherwise uses fallback
+*/
+const copyToClipboard = (content) => {
+  if (window.isSecureContext && navigator.clipboard) {
+    navigator.clipboard.writeText(content);
+  } else {
+    unsecuredCopyToClipboard(content);
+  }
+};
+
+function memoCopy(event) {
+    const copyText = event.target.parentElement.childNodes[0].childNodes[0].innerText;
+    //window.navigator.clipboard.writeText(copyText);
+    copyToClipboard(copyText);
+}
 
 function memoNewSave(event) {
     event.preventDefault()
@@ -2456,6 +2494,10 @@ function makeEvent(ob, option) {
         ob.addEventListener(`${clickOption}`, mouseoverEvent_boderLine);
     }else if (option1 == 'tapBeforNextBtnEvent') {
         ob.addEventListener(`${clickOption}`, tapBeforNextBtnEvent);
+    }else if (option1 == 'memoAllCheck') {
+        ob.addEventListener(`${clickOption}`, memoAllCheck);
+    }else if (option1 == 'memoCopy') {
+        ob.addEventListener(`${clickOption}`, memoCopy);
     }
     return ob;
 }
